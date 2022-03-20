@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+/*표준 글꼴 서식 스타일*/
+body {
+	font-family: 'NanumGothic', 'MalgunGothic' ; 
+	font-size: 12pt;
+	color: navy;
+}
+
+#sideinfo	{ background-color: #E6E6E6;  
+              min-height: 1024px; }
+                  
+#maininfo	{ background-color: #F5F5F5; 
+              min-height: 1024px; }  
+
+#footer	{ color: #696969;
+		  padding: 30px 0 70px 0;
+		  font-size: 9pt;
+ 			  /* background-color: transparent; 
+              height: 100px; */ } 
+.btn_footer {
+	border: none;
+	border-radius: 5%;
+	font-size: 8pt; 
+	width: 100px;
+	}
+
+td, th, input, select, textarea, p {
+	padding: 0.5%; /* 안쪽 여백 */
+}
+
+img { border: 0px; }
+
+i:hover {
+	cursor: pointer;
+}
+
+/* 표준 링크 스타일 */
+a {text-decoration: none !important;}
+
+/* unvisited link */
+a:link {color: #696969;	}
+
+/* visited link */
+a:visited {color: #696969;} 
+
+/* mouse over link */
+a:hover { color: black; 
+          font-weight: bold; }
+          
+/* selected link */
+a:active { color: navy; }          
+
+.box { border:1px solid navy; }
+
+.box2 { border:1px dotted red; }
+
+table.outline { width: 95%;
+	            border-top: 4px double navy;
+	            border-bottom: 4px double navy; }
+	             
+table.outline th {background-color: #e6e6e6;}	             
+
+.error { color: red; padding-left: 10px; margin-bottom: 5px;}
+
+.bgcol {background-color: LightGray;}
