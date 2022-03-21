@@ -119,7 +119,8 @@
         display: block;
 }
 .dropdown-menu{
-        margin-top: 0;
+      margin-top: 0;
+      min-width:80px;
 }
 
 .dropdown-menu a{
@@ -169,8 +170,14 @@
 			 <li class="nav-item">
 			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Cart</a>
 			 </li>
-			 <li class="nav-item">
-			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Help</a>
+			 <li class="nav-item dropdown">
+			        <a class="nav-link h6" href="#" id="navbarDropdown"> 
+			                      Help                     
+			        </a>
+			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			           <a class="dropdown-item" href="#">공지사항</a>
+			           <a class="dropdown-item" href="#">QnA</a>
+			        </div>
 			 </li>
 			 
 		  </ul>
@@ -179,7 +186,7 @@
 		<div class="collapse navbar-collapse row-vh "  >
 		  <ul class="navbar-nav flex-row mb-2"  style="font-size: 12pt;">
 		       <li class="nav-item dropdown">
-			        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+			        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
 			                      Necklaces                     
 			        </a>
 			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -189,7 +196,7 @@
 			        </div>
 			 </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+		        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
 		                      Earings                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -199,7 +206,7 @@
 		        </div>
 		     </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+		        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
 		                      Rings                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -209,7 +216,7 @@
 		        </div>
 		     </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+		        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
 		                      Bracelets                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -219,21 +226,21 @@
 		        </div>
 		     </li>
 		     <li class="nav-item active">
-		     	<a class="nav-link menufont_size" href="#" style="color:gray;">Sale</a>
+		     	<a class="nav-link menufont_size" href="#" style="color:#00000080;">Sale</a>
 		     </li>
 		  </ul>
   		</div>		
+	  	
 	  	<div class="navbar-nav flex-row mb-2" id = "search">
      		<form class="form-inline" >
 		     	<div class="input-group rounded mb-2">
 		           <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon"/>
 		           <span class="input-group-text border-0" id="search-addon">
-		           <i class="fas fa-search"></i>
+		           <i type="submit" class="fas fa-search"></i>
 		          </span>
 		       </div>
      		</form>
       	</div>
-
 	</nav>
 	
 	
@@ -258,5 +265,5 @@
 
 	<!-- 상단 네비게이션 끝 -->
 
-
+    <hr style="background-color: #ccc; height: 1.2px; position: relative; top:200px; margin: 0 48px;">
 	  
