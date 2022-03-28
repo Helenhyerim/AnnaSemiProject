@@ -120,6 +120,7 @@
 }
 .dropdown-menu{
         margin-top: 0;
+        min-width:80px;
 }
 
 .dropdown-menu a{
@@ -133,16 +134,16 @@
 <body>
 
 	<!-- 상단 네비게이션 시작 -->
-	<nav class="navbar-expand-lg  navbar-light mx-5 my-3 fixed-top" id = "first-nav">
+	<nav class="navbar-expand-lg  bg-white navbar-light fixed-top" id = "first-nav" >
 		<!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
-		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
+		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img class="mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
 		
 		<!-- 아코디언 같은 Navigation Bar 만들기 -->
 	    <button class="navbar-toggler " type="button"onclick="openNav()">
 	      <span class="navbar-toggler-icon" > </span>
 	    </button>
 		
-		<div class="collapse navbar-collapse row-vh justify-content-end" >
+		<div class="collapse navbar-collapse row-vh justify-content-end mx-2" >
 		  <ul class="navbar-nav">
 		     <li class="nav-item">
 		        <a class="nav-link h6" href="<%= ctxPath %>/index.jsp">Mypage</a>
@@ -169,17 +170,23 @@
 			 <li class="nav-item">
 			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Cart</a>
 			 </li>
-			 <li class="nav-item">
-			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Help</a>
+			  <li class="nav-item dropdown">
+			        <a class="nav-link h6" href="#" id="navbarDropdown"> 
+			                      Help                     
+			        </a>
+			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			           <a class="dropdown-item" href="#">공지사항</a>
+			           <a class="dropdown-item" href="#">QnA</a>
+			        </div>
 			 </li>
 			 
 		  </ul>
 		</div>
 		
-		<div class="collapse navbar-collapse row-vh "  >
+		<div class="collapse navbar-collapse row-vh mx-2"  >
 		  <ul class="navbar-nav flex-row mb-2"  style="font-size: 12pt;">
 		       <li class="nav-item dropdown">
-			        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+			        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
 			                      Necklaces                     
 			        </a>
 			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -189,7 +196,7 @@
 			        </div>
 			 </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+		        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
 		                      Earings                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -199,7 +206,7 @@
 		        </div>
 		     </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+		        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
 		                      Rings                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -209,7 +216,7 @@
 		        </div>
 		     </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+		        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
 		                      Bracelets                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -218,22 +225,23 @@
 		           <a class="dropdown-item" href="#">diamond</a>
 		        </div>
 		     </li>
-		     <li class="nav-item active">
-		     	<a class="nav-link menufont_size" href="#" style="color:gray;">Sale</a>
+		      <li class="nav-item active">
+		     	<a class="nav-link menufont_size" href="#" style="color:#00000080;">Sale</a>
 		     </li>
 		  </ul>
   		</div>		
-	  	<div class="navbar-nav flex-row mb-2" id = "search">
+	  	
+	  	<div class="navbar-nav flex-row mb-2 mx-3" id = "search">
      		<form class="form-inline" >
 		     	<div class="input-group rounded mb-2">
 		           <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon"/>
 		           <span class="input-group-text border-0" id="search-addon">
-		           <i class="fas fa-search"></i>
+		           <i type="submit" class="fas fa-search"></i>
 		          </span>
 		       </div>
      		</form>
       	</div>
-
+    <hr style="background-color: #ccc; height: 1.2px; position: relative; top:10px; margin: 0; margin-bottom: 10px;">
 	</nav>
 	
 	
@@ -255,8 +263,6 @@
 	</div>
 
 
-
 	<!-- 상단 네비게이션 끝 -->
 
-
-	  
+    

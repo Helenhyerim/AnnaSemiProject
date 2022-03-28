@@ -9,4 +9,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+     <!-- ========= MyDBCP Setting Start  ===========  -->
+  <resource-ref>
+ 	<description>Oracle Datasource example</description>
+ 	<res-ref-name>jdbc/anna_oracle</res-ref-name>
+ 	<res-type>javax.sql.DataSource</res-type>
+ 	<res-auth>Container</res-auth>
+  </resource-ref>
+  <!-- ========= MyDBCP Setting End  ===========  -->
+  
 </web-app>

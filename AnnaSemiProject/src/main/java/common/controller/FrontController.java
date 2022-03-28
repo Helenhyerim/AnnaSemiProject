@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 			description = "사용자가 웹에서 *.an 을 했을 경우 이 서블릿이 응답해준다.", 
 			urlPatterns = { "*.an" },
 			initParams = { 
-					@WebInitParam(name = "propertyConfig", value = "C:/NCS/workspace(jsp)/AnnaDiaPrj/WebContent/WEB-INF/Command.properties", description = "*.an 에 대한 클래스의 매핑파일")
+					@WebInitParam(name = "propertyConfig", value = "C:/Users/sist/git/AnnaSemiProject/AnnaSemiProject/WebContent/WEB-INF/Command.properties", description = "*.an 에 대한 클래스의 매핑파일")
 			})
 public class FrontController extends HttpServlet {
 	
@@ -80,7 +80,7 @@ public class FrontController extends HttpServlet {
 				while(en.hasMoreElements()) {
 					
 					String key = (String)en.nextElement(); // 원래 리턴타입은 Object 이지만, pr의 key가 String타입이어서 캐스팅함
-					// System.out.println("~~~ 확인용 key 값들 =>" + key);
+					//System.out.println("~~~ 확인용 key 값들 =>" + key);
 					/*
 						~~~ 확인용 key 값들 =>/main.up
 						~~~ 확인용 key 값들 =>/index.up
@@ -128,7 +128,7 @@ public class FrontController extends HttpServlet {
 				
 			} catch (FileNotFoundException e) {
 				// properties 파일이 없을 수 있으니까
-				System.out.println(">>>C:/NCS/workspace(jsp)/MyMVC/WebContent/WEB-INF/Command.properties 파일을 찾을 수 없습니다. <<<");
+				System.out.println(">>>C:/Users/sist/git/AnnaSemiProject/AnnaSemiProject/WebContent/WEB-INF/Command.properties 파일을 찾을 수 없습니다. <<<");
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -2,9 +2,10 @@
 
 /*표준 글꼴 서식 스타일*/
 body {
-	font-family: 'NanumGothic', 'MalgunGothic' ; 
+/*	font-family: 'NanumGothic', 'MalgunGothic' ; */
+	font: Poppins;
 	font-size: 12pt;
-	color: navy;
+	color: #353535;
 }
 
 #sideinfo	{ background-color: #E6E6E6;  
@@ -61,6 +62,6 @@ table.outline { width: 95%;
 	             
 table.outline th {background-color: #e6e6e6;}	             
 
-.error { color: red; padding-left: 10px; margin-bottom: 5px;}
+.error { color: red; padding-left: 0px; margin-bottom: 5px;}
 
 .bgcol {background-color: LightGray;}
