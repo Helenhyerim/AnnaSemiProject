@@ -1,4 +1,4 @@
-package member.controller;
+package member.controller.YJ;
 
 import java.sql.SQLException;
 
