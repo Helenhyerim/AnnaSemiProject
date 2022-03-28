@@ -2,6 +2,7 @@ package member.model;
 
 public class MemberVO {
 
+
 	private String userid; // 회원아이디
 	private String pwd;  // 회원비밀번호 (SHA-256 암호화 대상)
 	private String name;  // 회원명
@@ -192,6 +193,5 @@ public class MemberVO {
 }
 	
 	
-
 
 

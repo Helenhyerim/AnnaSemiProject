@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -244,8 +245,9 @@
     <hr style="background-color: #ccc; height: 1.2px; position: relative; top:10px; margin: 0; margin-bottom: 10px;">
 	</nav>
 	
+		
 	
-	<div id="myNav" class="overlay">
+		<div id="myNav" class="overlay">
 	  <a href="javascript:void(0)" class="closebtn"onclick="closeNav()" >&times;</a>
 	  <div class="overlay-content">
 	    <a href="#">Necklaces</a>
@@ -253,8 +255,13 @@
 	    <a href="#">Ring</a>
 	    <a href="#">Bracelets</a>
 	    <a href="#">Sale</a>
-	    <a href="#">Login</a>
-	    <a href="#">Join</a>
+	    <c:if test="${empty sessionScope.loginuser}">
+	    	<a href="<%= ctxPath %>/login/login.an">Login</a>
+	    	<a href="<%= ctxPath %>/member/memberRegister.an">Join</a>
+	    </c:if>
+	    <c:if test="">
+	    	<a href="<%= ctxPath %>/login/logout.an">Login</a>
+	    </c:if>
 	    <a href="#">Event</a>
 	    <a href="#">Review</a>
 	    <a href="#">Cart</a>
@@ -265,4 +272,4 @@
 
 	<!-- 상단 네비게이션 끝 -->
 
-    
+    <hr style="position: relative; top:10px; margin: 0; margin-bottom: 250px; ">
