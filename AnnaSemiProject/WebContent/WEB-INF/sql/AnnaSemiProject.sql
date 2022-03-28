@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 /* 제품 */
 CREATE TABLE tbl_product (
@@ -638,3 +639,20 @@ create sequence seq_cartno
   
   
   
+=======
+show user;
+
+select * from tab;
+
+select *
+  from user_sequences;
+  
+select *
+from tbl_member
+order by registerday desc;
+
+delete from tbl_member
+where userid='simyj';
+
+commit;
+>>>>>>> branch 'member_branch' of https://github.com/Helenhyerim/AnnaSemiProject.git
