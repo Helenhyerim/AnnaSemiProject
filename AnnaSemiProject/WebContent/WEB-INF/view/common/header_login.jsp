@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%
     String ctxPath = request.getContextPath();
-    //    /MyMVC
+    //    /AnnaSemiProject
 %>
 <%-- ==== JSTL(Java Standard Tag Library) 사용하기 ==== --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>        
@@ -133,9 +133,10 @@
 <body>
 
 	<!-- 상단 네비게이션 시작 -->
-	<nav class="navbar-expand-lg  navbar-light mx-5 my-3 fixed-top" id = "first-nav">
+	<nav class="navbar-expand-lg bg-white navbar-light fixed-top" id="first-nav">
+	
 		<!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
-		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
+		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img class = "mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
 		
 		<!-- 아코디언 같은 Navigation Bar 만들기 -->
 	    <button class="navbar-toggler " type="button"onclick="openNav()">
@@ -179,7 +180,7 @@
 		<div class="collapse navbar-collapse row-vh "  >
 		  <ul class="navbar-nav flex-row mb-2"  style="font-size: 12pt;">
 		       <li class="nav-item dropdown">
-			        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+			        <a class="nav-link menufont_size" href="<%=ctxPath %>/category/necklaces.an" id="navbarDropdown" data-toggle="dropdown"> 
 			                      Necklaces                     
 			        </a>
 			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -233,9 +234,8 @@
 		       </div>
      		</form>
       	</div>
-
+		<hr style="background-color: #ccc; height: 1.2px; position: relative; top: 10px; margin: 0; margin-bottom: 10px;">
 	</nav>
-	
 	
 	<div id="myNav" class="overlay">
 	  <a href="javascript:void(0)" class="closebtn"onclick="closeNav()" >&times;</a>
