@@ -438,7 +438,7 @@ $(document).ready(function(){
 			//입력하고자 하는 아이디가 데이터베이스 테이블에 존재하는지 존재하지 않는지 알아와야 한다. 
 	         // === jQuery를 이용한 Ajax(Asynchronous JavaScript and XML) 처리하기 === ..
                $.ajax({
-            	   url: "<%= ctxPath%>/member/idDuplicateCheck_SYJ.an",
+            	   url: "<%= ctxPath%>/member/idDuplicateCheck.an",
             	   data: {"userid":$("input#userid").val()}, 
             	   type: "post",
             	   async: true, 
@@ -470,7 +470,7 @@ $(document).ready(function(){
 		//입력하고자 하는 아이디가 데이터베이스 테이블에 존재하는지 존재하지 않는지 알아와야 한다. 
          // === jQuery를 이용한 Ajax(Asynchronous JavaScript and XML) 처리하기 === ..
            $.ajax({
-        	   url: "<%= ctxPath%>/member/emailDuplicateCheck_SYJ.an",
+        	   url: "<%= ctxPath%>/member/emailDuplicateCheck.an",
         	   data: {"email":$("input#email").val()}, 
         	   type: "post",
         	   async: true, 
@@ -553,7 +553,7 @@ function goRegister() {
 		
 	 	// *** 넘겨주기 **// 
 		const frm = document.registerFrm;
-		frm.action = "memberRegister_SYJ.an";
+		frm.action = "memberRegister.an";
 		frm.method = "post";
 		frm.submit();
 	}

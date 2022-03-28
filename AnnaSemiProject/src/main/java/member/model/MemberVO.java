@@ -1,6 +1,6 @@
 package member.model;
 
-public class MemberVO_SYJ {
+public class MemberVO {
 
 	private String userid; // 회원아이디
 	private String pwd;  // 회원비밀번호 (SHA-256 암호화 대상)
@@ -28,9 +28,9 @@ public class MemberVO_SYJ {
 	
 	/////////////////////////////////////////////////////////////////////
 
-	public MemberVO_SYJ() {}
+	public MemberVO() {}
 
-	public MemberVO_SYJ(String userid, String pwd, String name, String email, String mobile, String postcode,	String address, String detailaddress, String birthday, int sms_status, int email_status) {
+	public MemberVO(String userid, String pwd, String name, String email, String mobile, String postcode,	String address, String detailaddress, String birthday, int sms_status, int email_status) {
 
 		this.userid = userid;
 		this.pwd = pwd;

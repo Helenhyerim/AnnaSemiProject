@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import common.controller.AbstractController;
 import member.model.*;
 
-public class IdDuplicateCheckAction_SYJ extends AbstractController {
+public class IdDuplicateCheckAction extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -19,7 +19,7 @@ public class IdDuplicateCheckAction_SYJ extends AbstractController {
 					String userid = request.getParameter("userid");
 				//	System.out.println(">>>확인용 userid =>"+userid);
 					
-					InterMemberDAO_SYJ mdao = new MemberDAO_SYJ();
+					InterMemberDAO mdao = new MemberDAO();
 					boolean isExist = mdao.idDuplicateCheck(userid);
 					
 					JSONObject jsonObj = new JSONObject(); // {}

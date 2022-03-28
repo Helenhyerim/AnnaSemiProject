@@ -17,7 +17,7 @@ import util.security.AES256;
 import util.security.SecretMyKey;
 import util.security.Sha256;
 
-public class MemberDAO_SYJ implements InterMemberDAO_SYJ {
+public class MemberDAO implements InterMemberDAO {
 
 	private DataSource ds;    // DataSource ds 는 아파치톰캣이 제공하는 DBCP(DB Connection Pool) 이다.
 	private Connection conn;
@@ -26,7 +26,7 @@ public class MemberDAO_SYJ implements InterMemberDAO_SYJ {
 	private AES256 aes;
 	
 	// 기본생성자
-		public MemberDAO_SYJ() {
+		public MemberDAO() {
 			try {
 				Context initContext = new InitialContext();
 			    Context envContext  = (Context)initContext.lookup("java:/comp/env");
@@ -58,7 +58,7 @@ public class MemberDAO_SYJ implements InterMemberDAO_SYJ {
 	
 	// 회원가입을 해주는 메소드 (tbl_member 테이블에 insert)
 	@Override
-	public int registerMember(MemberVO_SYJ member) throws SQLException {
+	public int registerMember(MemberVO member) throws SQLException {
 		// TODO Auto-generated method stub
 		int result = 0;
 		
@@ -152,10 +152,10 @@ public class MemberDAO_SYJ implements InterMemberDAO_SYJ {
 
 	// 입력 받은 paraMap으로 한명의 회원정보를 리턴시켜주는 메소드 (로그인 처리) 
 	@Override
-	public MemberVO_SYJ selectOneMember(Map<String, String> paraMap) throws SQLException {
+	public MemberVO selectOneMember(Map<String, String> paraMap) throws SQLException {
 		// TODO Auto-generated method stub
 		
-		MemberVO_SYJ member = null;
+		MemberVO member = null;
 		
 		try {
 			conn = ds.getConnection();
@@ -188,7 +188,7 @@ public class MemberDAO_SYJ implements InterMemberDAO_SYJ {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) { // select되어진 게 있느냐, 있다면, 
-				member = new MemberVO_SYJ();
+				member = new MemberVO();
 				
 				member.setUserid(rs.getString(1));
 				member.setName(rs.getString(2));
