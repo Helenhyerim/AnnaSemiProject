@@ -9,7 +9,7 @@ import common.controller.AbstractController;
 import member.model.*;
 
 
-public class EmailDuplicateCheckAction_SYJ extends AbstractController {
+public class EmailDuplicateCheckAction extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -20,7 +20,7 @@ public class EmailDuplicateCheckAction_SYJ extends AbstractController {
 			String email = request.getParameter("email");
 		//	System.out.println(">>>확인용 email =>"+email);
 			
-			InterMemberDAO_SYJ mdao = new MemberDAO_SYJ();
+			InterMemberDAO mdao = new MemberDAO();
 			boolean isExist = mdao.emailDuplicateCheck(email);
 			
 			JSONObject jsonObj = new JSONObject(); // {}

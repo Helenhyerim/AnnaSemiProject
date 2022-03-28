@@ -9,7 +9,7 @@ import common.controller.AbstractController;
 import member.model.*;
 
 
-public class MemberRegisterAction_SYJ extends AbstractController {
+public class MemberRegisterAction extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -18,7 +18,7 @@ public class MemberRegisterAction_SYJ extends AbstractController {
 		
 		if("GET".equalsIgnoreCase(method)) {
 			// super.setRedirect(false);	
-			super.setViewPage("/WEB-INF/member/memberRegister_SYJ.jsp");
+			super.setViewPage("/WEB-INF/member/memberRegister.jsp");
 		}
 		else {
 			// 가입하기 버튼을 클릭했을 경우 
@@ -51,7 +51,7 @@ public class MemberRegisterAction_SYJ extends AbstractController {
 			System.out.println(">>>확인용 sms_status =>"+sms_status);
 			System.out.println(">>>확인용 email_status =>"+email_status);
 			
-			MemberVO_SYJ member = new MemberVO_SYJ(userid, pwd, name, email, mobile, postcode, address, detailaddress, birthday, sms_status, email_status );    
+			MemberVO member = new MemberVO(userid, pwd, name, email, mobile, postcode, address, detailaddress, birthday, sms_status, email_status );    
 			
 			String message = "";
 			String loc = "";
@@ -59,7 +59,7 @@ public class MemberRegisterAction_SYJ extends AbstractController {
 			
 			
 			try {
-			    InterMemberDAO_SYJ mdao = new MemberDAO_SYJ();
+			    InterMemberDAO mdao = new MemberDAO();
 			    int n = mdao.registerMember(member);
 			    
 			    if(n==1) {
