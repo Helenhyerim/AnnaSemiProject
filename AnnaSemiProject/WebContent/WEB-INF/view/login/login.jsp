@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%
+	String cntPath = request.getContextPath();
+%>
 
 <jsp:include page="../common/header_login.jsp"></jsp:include>
 
@@ -22,6 +24,8 @@ button {
 	outline: 0;
 }
 </style>
+
+
 <script type = "text/javascript">
 $(document).ready(function(){
 	
@@ -33,7 +37,7 @@ $(document).ready(function(){
 	
 });
 
-// 로그인 버튼을 눌렀을 경우 로그인을 실행하는 함수 
+//로그인 버튼을 눌렀을 경우 로그인을 실행하는 함수 
 function goLogin(){
 	
 	
@@ -44,7 +48,11 @@ function goLogin(){
 	
 }// end of function goLgoin() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
 </script>
+
+
+
 
 	<div class="container" >
 	  <div class = "mt-1 ml-0 mb-5"style="width: 80%; margin: 80% auto; ">
@@ -69,7 +77,7 @@ function goLogin(){
 						</td>
 					</tr>	
 					
-					<tr>	
+					<tr>
 						<td style = "width:80%;">
 							<input type = "password" name = pwd placeholder="password" class = "login_element" id = "loginPwd"/>
 						</td>
@@ -89,9 +97,9 @@ function goLogin(){
 					
 					<tr>
 						<td>
-							<a class = "login_element" id = "btnRegister" onclick = "goUseridFind()">아이디 찾기</a>
+							<a class = "login_element" id = "btnRegister" href = "<%= cntPath%>/login/idFind.an">아이디 찾기</a>
 							<span> | </span>
-							<a class = "login_element" id = "btnRegister" onclick = "gopwdFind()">비밀번호 찾기</a>
+							<a class = "login_element" id = "btnRegister" href = "<%= cntPath%>/login/pwdFind.an">비밀번호 찾기</a>
 						</td>
 					</tr>
 					

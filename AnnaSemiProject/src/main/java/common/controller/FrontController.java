@@ -76,7 +76,6 @@ public class FrontController extends HttpServlet {
 		          C:/NCS/workspace(jsp)/MyMVC/WebContent/WEB-INF/Command.properties 파일의 내용물에서 
 		          = 을 기준으로 왼쪽에 있는 모든 key 들만 가져오는 것이다.    
 		       */
-				
 				while(en.hasMoreElements()) {
 					
 					String key = (String)en.nextElement(); // 원래 리턴타입은 Object 이지만, pr의 key가 String타입이어서 캐스팅함
@@ -93,14 +92,15 @@ public class FrontController extends HttpServlet {
 					*/
 					
 					String className = pr.getProperty(key); // 이건 property 글자만 가져온 것. 가져온 property 를 클래스화 해서 그 안의 메소드를 돌리고 싶다.
-					
 					if(className != null) {
 						className = className.trim();
 						
 						// 클래스를 객체화(인스턴스화) 하겠다. (설계도면)
+						
 						Class<?> cls = Class.forName(className); 
 						// <?> 은 generic 인데 어떤 클래스 타입인지는 모르지만 하여튼 클래스 타입이 들어온다는 뜻이다.
-		                // String 타입으로 되어진 className 을 클래스화 시켜주는 것이다.
+		                
+						// String 타입으로 되어진 className 을 클래스화 시켜주는 것이다.
 		                // 주의할 점은 실제로 String 으로 되어져 있는 문자열이 클래스로 존재해야만 한다는 것이다.
 						
 						// Constructor<Object> constrt = cls.getDeclaredConstructor(); // 파라미터에 뭐 안넣었으므로 일단 기본생성자
