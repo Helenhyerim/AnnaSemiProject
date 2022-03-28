@@ -134,9 +134,9 @@
 <body>
 
 	<!-- 상단 네비게이션 시작 -->
-	<nav class="navbar-expand-lg  navbar-light mx-5 my-3 fixed-top" id = "first-nav">
+	<nav class="navbar-expand-lg  navbar-light mx-5 my-0 fixed-top bg-white" id = "first-nav">
 		<!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
-		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
+		<a class="d-flex justify-content-center mr-0" href="<%= ctxPath %>/index.an" style="margin-right: 10%;"><img class = "pt-3"  id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
 		
 		<!-- 아코디언 같은 Navigation Bar 만들기 -->
 	    <button class="navbar-toggler " type="button"onclick="openNav()">
@@ -146,17 +146,17 @@
 		<div class="collapse navbar-collapse row-vh justify-content-end" >
 		  <ul class="navbar-nav">
 		     <li class="nav-item">
-		        <a class="nav-link h6" href="<%= ctxPath %>/index.jsp">Mypage</a>
+		        <a class="nav-link h6" href="<%= ctxPath %>/index.an">Mypage</a>
 		     </li>
-		     <c:if test="${member == null}">
+		     <c:if test="${empty sessionScope.loginuser}">
 			     <li class="nav-item">
-			     	<a class="nav-link h6" href="<%= ctxPath %>/member/memberform.jsp">Login</a>
+			     	<a class="nav-link h6" href="<%= ctxPath %>/login/login.an">Login</a>
 			     </li>
 				 <li class="nav-item">
-				    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Join</a>
+				    <a class="nav-link h6" href="<%= ctxPath %>/member/memberRegister.an">Join</a>
 				 </li>
 			 </c:if>
-			 <c:if test="${member != null}">
+			 <c:if test="${not empty sessionScope.loginuser}">
 			 	<li class="nav-item">
 				    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Logout</a>
 				 </li>
@@ -241,6 +241,7 @@
 		       </div>
      		</form>
       	</div>
+      	<hr style="background-color: #ccc; height: 1.2px; position: relative; top:10px; margin: 0; margin-bottom: 10px;">
 	</nav>
 	
 	
@@ -252,8 +253,8 @@
 	    <a href="#">Ring</a>
 	    <a href="#">Bracelets</a>
 	    <a href="#">Sale</a>
-	    <a href="#">Login</a>
-	    <a href="#">Join</a>
+	    <a href="<%= ctxPath %>/login/login.an">Login</a>
+	    <a href="<%= ctxPath %>/member/memberRegister.an">Join</a>
 	    <a href="#">Event</a>
 	    <a href="#">Review</a>
 	    <a href="#">Cart</a>
@@ -262,8 +263,7 @@
 	</div>
 
 
-
 	<!-- 상단 네비게이션 끝 -->
 
-    <hr style="background-color: #ccc; height: 1.2px; position: relative; top:200px; margin: 0 48px;">
+    <hr style="position: relative; top:10px; margin: 0; margin-bottom: 250px; ">
 	  
