@@ -19,5 +19,8 @@
  	<res-auth>Container</res-auth>
   </resource-ref>
   <!-- ========= MyDBCP Setting End  ===========  -->
+<<<<<<< HEAD
   
+=======
+>>>>>>> branch 'product_branch4' of https://github.com/Helenhyerim/AnnaSemiProject.git
 </web-app>

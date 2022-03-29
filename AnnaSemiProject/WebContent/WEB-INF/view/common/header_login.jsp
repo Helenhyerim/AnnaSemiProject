@@ -133,10 +133,18 @@
 <body>
 
 	<!-- 상단 네비게이션 시작 -->
+<<<<<<< HEAD
 	<nav class="navbar-expand-lg bg-white navbar-light fixed-top" id="first-nav">
 	
+=======
+	<nav class="navbar-expand-lg bg-white navbar-light fixed-top" id = "first-nav">
+>>>>>>> branch 'product_branch4' of https://github.com/Helenhyerim/AnnaSemiProject.git
 		<!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
+<<<<<<< HEAD
 		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img class = "mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
+=======
+		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img class="mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
+>>>>>>> branch 'product_branch4' of https://github.com/Helenhyerim/AnnaSemiProject.git
 		
 		<!-- 아코디언 같은 Navigation Bar 만들기 -->
 	    <button class="navbar-toggler " type="button"onclick="openNav()">
@@ -234,7 +242,13 @@
 		       </div>
      		</form>
       	</div>
+<<<<<<< HEAD
 		<hr style="background-color: #ccc; height: 1.2px; position: relative; top: 10px; margin: 0; margin-bottom: 10px;">
+=======
+      	
+      	<hr style="background-color: #ccc; height: 1.2px; position: relative; top: 10px; margin: 0; margin-bottom: 10px;">
+
+>>>>>>> branch 'product_branch4' of https://github.com/Helenhyerim/AnnaSemiProject.git
 	</nav>
 	
 	<div id="myNav" class="overlay">
@@ -257,6 +271,5 @@
 
 
 	<!-- 상단 네비게이션 끝 -->
-
 
 	  
