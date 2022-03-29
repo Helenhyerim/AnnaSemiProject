@@ -1,90 +1,50 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<% String ctxPath = request.getContextPath(); %>
+
+<!-- c:if 태그 사용해서 헤더 변경(로그인 세션 정보 얻어오기) -->
 <jsp:include page="../view/common/header_login.jsp"/>
 
-<style>
-	div#contianer {
-		width: 90%;
-		margin: 250px auto;
-	}
-	
-	div#sidebar {
-		position: fixed;
-		top: 250px;
-		left: 50px;
-		width: 15%;
-		height: 500px;
-		overflow: auto;
-		margin:0 auto;
-	}
-	
-	div#sidebar ul {
-		list-style-type: none;
-		padding: 0;
-	}
-	
-	div#sidebar li a {
-		line-height: 60px;
-		font-size: 18pt;
-		color: gray;
-	}
-	
-	div#main_content {
-		margin-left: 200px;
-	}
-	
-	div#product_cover {
-		padding: 0;
-		/* text-align: center; */
-	}
-	
-	div#cover > img {
-		width: 90%;
-	}
-	
-	div#img_list {
-		margin: 10px auto;
-		/* text-align: center; */
-	}
-	
-	div#img_list > img {
-		width: 15%;
-		margin: 0 5px;
-	}
-	
-	div#img_list > img:hover {
-		opacity: 0.8;
-	}
-	
-	div#product_option {padding: 10px;}
-	
- 	table#tbl_option tr {height: 40px;}
-	
-	table#tbl_option th {width: 100px;}
-	
-	div#bottom_content {width: 90%;}
-	
-	div#productInfo {
-		margin-top: 50px;
-		margin-bottom: 100px;
-	}
-	
-	div#productDetailImg {
-		text-align: center;
-		margin-bottom: 250px;
-	}
-	
-	div#productDetailImg > img {
-		width: 90%;
-	}
-	
-	div#productDetailImg > img:first-child {margin-bottom: 200px;}
-	
-	div#review_board, div#QnA_board {margin: 50px auto;}
-</style>
+<!-- 직접 만든 CSS -->
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/productDetail_lsh.css" />
 
+<script type="text/javascript">
 
+	$(document).ready(function() {
+		// 대표이미지 변경하기(hover)
+		
+		
+		// 옵션 선택하면 옵션 보이기
+		$("#reqOption").change(function() {
+			
+			const $target = $(event.target);
+			
+			let productName = $("#reqOption option:selected").text();
+			
+			$("th#productName").text(productName);
+		});
+		
+		// 옵션 변경하면(수정, 삭제) 변경된 값 보이기
+		
+		
+		// 구매하기 클릭(로그인별 처리)
+			// 로그인 한 경우 : 구매 페이지로 이동
+			// 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
+			
+		
+		// 장바구니 클릭(로그인별 처리)
+			// 로그인 한 경우 : 장바구니에 추가했습니다(alert), 장바구니 페이지에 갈 것인지 쇼핑 계속하기로 현재 창에 머무를 것인지 선택
+			// 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
+			
+			
+		// 찜하기 클릭(로그인별 처리)
+			// 로그인 한 경우 : 찜한 상품으로 등록되었습니다(alert), 현재 창에 자동 머무르기
+			// 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
+	});
+</script>
 
 <div id="contianer">
 	<div id="sidebar">
@@ -102,11 +62,11 @@
 			<div id="product_cover" class="col-md-7">
 				<div id="cover"><img alt="p1" src="../images/p1.png"></div>	<!-- hover html div 집어넣기 트리거로 기본 p1 보여주기 -->
 				<div id="img_list">
-					<img alt="p1" src="../images/p1.png">	<!-- 파일명 db연동 -->
-					<img alt="p2" src="../images/p2.png">	<!-- 파일명 db연동 -->
-					<img alt="p3" src="../images/p3.png">	<!-- 파일명 db연동 -->
-					<img alt="p4" src="../images/p4.png">	<!-- 파일명 db연동 -->
-					<img alt="p5" src="../images/p5.png">	<!-- 파일명 db연동 -->
+					<img alt="p1" src="../images/p1.png">
+					<img alt="p2" src="../images/p2.png">
+					<img alt="p3" src="../images/p3.png">
+					<img alt="p4" src="../images/p4.png">
+					<img alt="p5" src="../images/p5.png">
 				</div>
 			</div>
 			<div id="product_option" class="col-md-5">
@@ -120,20 +80,20 @@
 					<tr>
 						<th>필수 옵션</th>
 						<td>
-							<select>
-								<option>[필수] 옵션을 선택해주세요</option>
-								<option>14K 로즈골드 5호</option>
-								<option>14K 로즈골드 6호</option>
-								<option>14K 로즈골드 7호</option>
-								<option>14K 옐로우골드 5호</option>
-								<option>14K 옐로우골드 6호</option>
-								<option>14K 옐로우골드 7호</option>
-								<option>18K 로즈골드 5호</option>
-								<option>18K 로즈골드 6호</option>
-								<option>18K 로즈골드 7호</option>
-								<option>18K 로즈골드 5호</option>
-								<option>18K 로즈골드 6호</option>
-								<option>18K 로즈골드 7호</option>
+							<select id="reqOption">
+								<option value="">[필수] 옵션을 선택해주세요</option>
+								<option value="14rg5">14K 로즈골드 5호</option>
+								<option value="14rg6">14K 로즈골드 6호</option>
+								<option value="14rg7">14K 로즈골드 7호</option>
+								<option value="14yg5">14K 옐로우골드 5호</option>
+								<option value="14yg6">14K 옐로우골드 6호</option>
+								<option value="14yg7">14K 옐로우골드 7호</option>
+								<option value="18rg5">18K 로즈골드 5호</option>
+								<option value="18rg6">18K 로즈골드 6호</option>
+								<option value="18rg7">18K 로즈골드 7호</option>
+								<option value="18yg5">18K 옐로우골드 5호</option>
+								<option value="18yg6">18K 옐로우골드 6호</option>
+								<option value="18yg7">18K 옐로우골드 7호</option>
 							</select>
 						</td>
 					</tr>
@@ -148,7 +108,7 @@
 						</td>
 						<td id="card_msg"></td>
 					</tr>
-					<tr><th data-toggle="tooltip" title="옵션 선택 후 보이기(script)">상품명</th><td  data-toggle="tooltip" title="+-x 버튼 추가(img, script)"><input type="number" min="1" max="100" value="1"></input></td></tr>
+					<tr><th id="productName">상품명</th><td  data-toggle="tooltip" title="+-x 버튼 추가(img, script)"><input type="number" min="1" max="100" value="1"></input></td></tr>
 				</table>
 				
 				<hr style="border: solid 1px lightgray">
