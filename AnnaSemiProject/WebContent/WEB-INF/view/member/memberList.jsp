@@ -72,6 +72,12 @@
 		background-color: #d5d5d5;
 		cursor: pointer;
 	}
+	
+	.pagination {
+		color: black;
+		background-color: #ddd;
+	
+	}
 </style>
 
 <script type="text/javascript">
@@ -129,7 +135,7 @@
 	    </table>    
 	
 	    <nav class="my-5">
-	       <div style="display: flex; width: 80%;">
+	       <div style="display: flex;">
 	       	   <ul class="pagination" style='margin:auto;'>${requestScope.pageBar}</ul>
 	       </div>
 	    </nav>

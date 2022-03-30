@@ -5,5 +5,4 @@
 
     
 <%-- html식 주석문. 주석문을 단다. --%>    
->>>>>>> branch 'member_branch' of https://github.com/Helenhyerim/AnnaSemiProject.git
 ${requestScope.json}
