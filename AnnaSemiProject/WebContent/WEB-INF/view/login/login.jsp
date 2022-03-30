@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	String cntPath = request.getContextPath();
+	String ctxPath = request.getContextPath();
 %>
 
 <jsp:include page="../common/header_login.jsp"></jsp:include>
 
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
 <style type ="text/css">
@@ -27,7 +27,10 @@ button {
 
 
 <script type = "text/javascript">
+
+
 $(document).ready(function(){
+	
 	
 	$("input#loginPwd").bind("keydown", function(event){
 		if(event.keyCode == 13) { // 암호입력란에 엔터를 했을 경우 
@@ -35,23 +38,58 @@ $(document).ready(function(){
 		}
 	});
 	
+
+	
+	
+	
 });
 
 //로그인 버튼을 눌렀을 경우 로그인을 실행하는 함수 
 function goLogin(){
 	
+	const loginUserid = $("input#loginUserid").val().trim();
+	const loginPwd = $("input#loginPwd").val().trim();
+	
+	if(loginUserid == "") {
+		alert("아이디를 입력하세요!!");
+		$("input#loginUserid").val("");
+		$("input#loginUserid").focus();
+		return;  // goLogin() 함수 종료
+	}
+	
+	if(loginPwd == "") {
+		alert("암호를 입력하세요!!");
+		$("input#loginPwd").val("");
+		$("input#loginPwd").focus();
+		return;  // goLogin() 함수 종료
+	}
 	
 	const frm = document.loginfrm;
-	frm.action = "login.an";
+	frm.action = "<%= request.getContextPath()%>/login/login.an";
 	frm.method = "post";
 	frm.submit();
 	
 }// end of function goLgoin() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+function goIdFind(){
+	location.href="<%= ctxPath%>/login/idFind.an";
+		
+}
+function goPwdFind(){
+	location.href="<%= ctxPath%>/login/pwdFind.an";	
+}
+
+
+
 </script>
 
 
+<c:if test="${requestScope.method eq 'POST'}" >
+	<script type="text/javascript">
+		alert("회원님의 아이디를 성공적으로 찾았습니다.");
+	</script>
+</c:if>
 
 
 	<div class="container" >
@@ -73,7 +111,7 @@ function goLogin(){
 				<tbody>
 					<tr>
 						<td style = "width:80%;">
-							<input type = "text" name = userid placeholder="ID" class = "login_element"/>
+							<input type = "text" name = userid placeholder="ID" class = "login_element" id = "loginUserid" value = "${requestScope.findUserid}"/>
 						</td>
 					</tr>	
 					
@@ -94,12 +132,19 @@ function goLogin(){
 							<button class = "login_element" type = "button" id = "btnRegister">회원가입</button>
 						</td>
 					</tr>
-					
+			
 					<tr>
 						<td>
-							<a class = "login_element" id = "btnRegister" href = "<%= cntPath%>/login/idFind.an">아이디 찾기</a>
+
+							
+
+							<a class = "login_element" id = "btnRegister" href = "<%= ctxPath%>/login/idFind.an">아이디 찾기</a>
+
 							<span> | </span>
-							<a class = "login_element" id = "btnRegister" href = "<%= cntPath%>/login/pwdFind.an">비밀번호 찾기</a>
+
+							
+
+							<a class = "login_element" id = "btnRegister" href = "<%= ctxPath%>/login/pwdFind.an">비밀번호 찾기</a>
 						</td>
 					</tr>
 					

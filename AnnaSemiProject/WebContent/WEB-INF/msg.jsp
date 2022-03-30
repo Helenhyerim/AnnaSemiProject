@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 <script type="text/javascript">
 
+	alert("${requestScope.message} ");       // 메시지 출력해주기 	
 
-	alert("${requestScope.message}"); // 메시지 출력해주기 
+	location.href = "${requestScope.loc}";  // 페이지 이동
 	
-	location.href = "${requestScope.loc}"; // 페이지 이동
+</script>    
 
-</script>
