@@ -3,8 +3,7 @@ package util.security;
 import java.security.MessageDigest;
 
 public class Sha256 {
-    
-	public static String encrypt(String plainText) {
+    public static String encrypt(String plainText) {
         try{
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(plainText.getBytes());
@@ -24,6 +23,7 @@ public class Sha256 {
                 해시된 데이터는 바이트 배열타입의 바이너리 데이터(이진 데이터)이므로
                 이것을 16진수 문자열(String)타입으로 변환해준다.
             */
+
 
             StringBuffer hexString = new StringBuffer();
             for (int i=0;i<byteData.length;i++) {

@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -119,8 +120,8 @@
         display: block;
 }
 .dropdown-menu{
-      margin-top: 0;
-      min-width:80px;
+        margin-top: 0;
+        min-width:80px;
 }
 
 .dropdown-menu a{
@@ -134,18 +135,24 @@
 <body>
 
 	<!-- 상단 네비게이션 시작 -->
-	<nav class="navbar-expand-lg  navbar-light mx-5 my-0 fixed-top bg-white" id = "first-nav">
+	<nav class="navbar-expand-lg  bg-white navbar-light fixed-top" id = "first-nav" >
 		<!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
-		<a class="d-flex justify-content-center mr-0" href="<%= ctxPath %>/index.an" style="margin-right: 10%;"><img class = "pt-3"  id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
+		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img class="mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
 		
 		<!-- 아코디언 같은 Navigation Bar 만들기 -->
 	    <button class="navbar-toggler " type="button"onclick="openNav()">
 	      <span class="navbar-toggler-icon" > </span>
 	    </button>
 		
-		<div class="collapse navbar-collapse row-vh justify-content-end" >
+		<div class="collapse navbar-collapse row-vh justify-content-end mx-2" >
 		  <ul class="navbar-nav">
+
 		     
+		     
+
+		     <li class="nav-item">
+		        <a class="nav-link h6" href="<%= ctxPath %>/index.an">Mypage</a>
+		     </li>
 		     <c:if test="${empty sessionScope.loginuser}">
 			     <li class="nav-item">
 			     	<a class="nav-link h6" href="<%= ctxPath %>/login/login.an">Login</a>
@@ -154,10 +161,11 @@
 				    <a class="nav-link h6" href="<%= ctxPath %>/member/memberRegister.an">Join</a>
 				 </li>
 			 </c:if>
-			 <c:if test="${not empty sessionScope.loginuser}">
+
 				 <li class="nav-item">
 			        <a class="nav-link h6" href="<%= ctxPath %>/index.an">Mypage</a>
 			     </li>
+			<c:if test="${not empty sessionScope.loginuser}">
 			 	<li class="nav-item">
 				    <a class="nav-link h6" href="<%= ctxPath %>/login/logout.an">Logout</a>
 				 </li>
@@ -171,7 +179,7 @@
 			 <li class="nav-item">
 			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Cart</a>
 			 </li>
-			 <li class="nav-item dropdown">
+			  <li class="nav-item dropdown">
 			        <a class="nav-link h6" href="#" id="navbarDropdown"> 
 			                      Help                     
 			        </a>
@@ -184,7 +192,7 @@
 		  </ul>
 		</div>
 		
-		<div class="collapse navbar-collapse row-vh "  >
+		<div class="collapse navbar-collapse row-vh mx-2"  >
 		  <ul class="navbar-nav flex-row mb-2"  style="font-size: 12pt;">
 		       <li class="nav-item dropdown">
 			        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
@@ -226,13 +234,13 @@
 		           <a class="dropdown-item" href="#">diamond</a>
 		        </div>
 		     </li>
-		     <li class="nav-item active">
+		      <li class="nav-item active">
 		     	<a class="nav-link menufont_size" href="#" style="color:#00000080;">Sale</a>
 		     </li>
 		  </ul>
   		</div>		
 	  	
-	  	<div class="navbar-nav flex-row mb-2" id = "search">
+	  	<div class="navbar-nav flex-row mb-2 mx-3" id = "search">
      		<form class="form-inline" >
 		     	<div class="input-group rounded mb-2">
 		           <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon"/>
@@ -242,11 +250,12 @@
 		       </div>
      		</form>
       	</div>
-      	<hr style="background-color: #ccc; height: 1.2px; position: relative; top:10px; margin: 0; margin-bottom: 10px;">
+    <hr style="background-color: #ccc; height: 1.2px; position: relative; top:10px; margin: 0; margin-bottom: 10px;">
 	</nav>
 	
+		
 	
-	<div id="myNav" class="overlay">
+		<div id="myNav" class="overlay">
 	  <a href="javascript:void(0)" class="closebtn"onclick="closeNav()" >&times;</a>
 	  <div class="overlay-content">
 	    <a href="#">Necklaces</a>
@@ -255,12 +264,19 @@
 	    <a href="#">Bracelets</a>
 	    <a href="#">Sale</a>
 	    <c:if test="${empty sessionScope.loginuser}">
+
 		    <a href="<%= ctxPath %>/login/login.an">Login</a>
 		    <a href="<%= ctxPath %>/member/memberRegister.an">Join</a>
 	    </c:if>
 	     <c:if test="${empty sessionScope.loginuser}">
 		    <a href="<%= ctxPath %>/login/logout.an">Logout</a>
 		    <a href="<%= ctxPath %>/member/myPage.an">mypage</a>
+
+	    	<a href="<%= ctxPath %>/login/login.an">Login</a>
+	    	<a href="<%= ctxPath %>/member/memberRegister.an">Join</a>
+	    </c:if>
+	    <c:if test="">
+	    	<a href="<%= ctxPath %>/login/logout.an">Login</a>
 	    </c:if>
 	    <a href="#">Event</a>
 	    <a href="#">Review</a>
@@ -273,4 +289,3 @@
 	<!-- 상단 네비게이션 끝 -->
 
     <hr style="position: relative; top:10px; margin: 0; margin-bottom: 250px; ">
-	  

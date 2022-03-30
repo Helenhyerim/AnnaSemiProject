@@ -24,6 +24,8 @@ button {
 	outline: 0;
 }
 </style>
+
+
 <script type = "text/javascript">
 
 
@@ -42,7 +44,7 @@ $(document).ready(function(){
 	
 });
 
-// 로그인 버튼을 눌렀을 경우 로그인을 실행하는 함수 
+//로그인 버튼을 눌렀을 경우 로그인을 실행하는 함수 
 function goLogin(){
 	
 	const loginUserid = $("input#loginUserid").val().trim();
@@ -69,6 +71,7 @@ function goLogin(){
 	
 }// end of function goLgoin() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+<<<<<<< HEAD
 function goIdFind(){
 	location.href="<%= ctxPath%>/login/idFind.an";
 		
@@ -77,8 +80,11 @@ function goPwdFind(){
 	location.href="<%= ctxPath%>/login/pwdFind.an";	
 }
 
+=======
+>>>>>>> branch 'member_branch' of https://github.com/Helenhyerim/AnnaSemiProject.git
 
 </script>
+
 
 <c:if test="${requestScope.method eq 'POST'}" >
 	<script type="text/javascript">
@@ -86,7 +92,11 @@ function goPwdFind(){
 	</script>
 </c:if>
 
-	
+
+
+
+
+>>>>>>> branch 'member_branch' of https://github.com/Helenhyerim/AnnaSemiProject.git
 	<div class="container" >
 	  <div class = "mt-1 ml-0 mb-5"style="width: 80%; margin: 80% auto; ">
 		<!-- div 태그의 margin 80% 을 0 으로 바꾸고, 여기에 원하는 내용을 작성하세요! -->
@@ -110,7 +120,7 @@ function goPwdFind(){
 						</td>
 					</tr>	
 					
-					<tr>	
+					<tr>
 						<td style = "width:80%;">
 							<input type = "password" name = pwd placeholder="password" class = "login_element" id = "loginPwd"/>
 						</td>
@@ -130,9 +140,16 @@ function goPwdFind(){
 			
 					<tr>
 						<td>
+
 							<a class = "login_element" id = "btnRegister" onclick = "goIdFind()">아이디 찾기</a>
+
+							<a class = "login_element" id = "btnRegister" href = "<%= ctxPath%>/login/idFind.an">아이디 찾기</a>
+
 							<span> | </span>
+
 							<a class = "login_element" id = "btnRegister" onclick = "goPwdFind()">비밀번호 찾기</a>
+
+							<a class = "login_element" id = "btnRegister" href = "<%= ctxPath%>/login/pwdFind.an">비밀번호 찾기</a>
 						</td>
 					</tr>
 					

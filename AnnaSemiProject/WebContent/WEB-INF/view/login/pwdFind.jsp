@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<<<<<<< HEAD
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
@@ -141,6 +142,13 @@ function goCheckCode(){
 
 
 
+=======
+<%
+	String cntPath = request.getContextPath();
+%>
+
+<jsp:include page="../common/header_login.jsp"></jsp:include>
+>>>>>>> branch 'member_branch' of https://github.com/Helenhyerim/AnnaSemiProject.git
 
 
 
