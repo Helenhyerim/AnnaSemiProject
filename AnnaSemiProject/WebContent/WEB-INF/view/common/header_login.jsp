@@ -145,9 +145,7 @@
 		
 		<div class="collapse navbar-collapse row-vh justify-content-end" >
 		  <ul class="navbar-nav">
-		     <li class="nav-item">
-		        <a class="nav-link h6" href="<%= ctxPath %>/index.an">Mypage</a>
-		     </li>
+		     
 		     <c:if test="${empty sessionScope.loginuser}">
 			     <li class="nav-item">
 			     	<a class="nav-link h6" href="<%= ctxPath %>/login/login.an">Login</a>
@@ -157,8 +155,11 @@
 				 </li>
 			 </c:if>
 			 <c:if test="${not empty sessionScope.loginuser}">
+				 <li class="nav-item">
+			        <a class="nav-link h6" href="<%= ctxPath %>/index.an">Mypage</a>
+			     </li>
 			 	<li class="nav-item">
-				    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Logout</a>
+				    <a class="nav-link h6" href="<%= ctxPath %>/login/logout.an">Logout</a>
 				 </li>
 			 </c:if>
 			 <li class="nav-item">
@@ -253,8 +254,14 @@
 	    <a href="#">Ring</a>
 	    <a href="#">Bracelets</a>
 	    <a href="#">Sale</a>
-	    <a href="<%= ctxPath %>/login/login.an">Login</a>
-	    <a href="<%= ctxPath %>/member/memberRegister.an">Join</a>
+	    <c:if test="${empty sessionScope.loginuser}">
+		    <a href="<%= ctxPath %>/login/login.an">Login</a>
+		    <a href="<%= ctxPath %>/member/memberRegister.an">Join</a>
+	    </c:if>
+	     <c:if test="${empty sessionScope.loginuser}">
+		    <a href="<%= ctxPath %>/login/logout.an">Logout</a>
+		    <a href="<%= ctxPath %>/member/myPage.an">mypage</a>
+	    </c:if>
 	    <a href="#">Event</a>
 	    <a href="#">Review</a>
 	    <a href="#">Cart</a>
