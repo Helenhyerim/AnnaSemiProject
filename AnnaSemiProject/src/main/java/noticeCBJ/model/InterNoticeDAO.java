@@ -13,13 +13,8 @@ public interface InterNoticeDAO {
 
 	int updateCnt(int noticeNo) throws SQLException;
 
-//	int update(int noticeNo) throws SQLException;
-
-	int update(int noticeNo, String noticeTitle, String noticeContents) throws SQLException;
-
 	int delete(int noticeNo) throws SQLException;
 
-//	int update(NoticeVO vo)  throws SQLException;
+	int update(NoticeVO vo) throws SQLException;
 
-//	int update(int noticeNo, String noticeTitle, String noticeContents) throws SQLException;
 }

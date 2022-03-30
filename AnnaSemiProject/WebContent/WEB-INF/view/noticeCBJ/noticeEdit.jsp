@@ -5,13 +5,13 @@
 
 <% request.setCharacterEncoding("utf-8"); %>
 
+<jsp:useBean id="vo" class="noticeCBJ.model.NoticeVO"/>
+<jsp:useBean id="dao" class="noticeCBJ.model.NoticeDAO"/>
+<jsp:setProperty name="vo" property="*"/>
+
 <%
-	int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
-	NoticeVO vo = new NoticeDAO().selectOne(noticeNo);
-	NoticeDAO dao = new NoticeDAO();
-	int result = dao.update(noticeNo, request.getParameter("noticeTitle"), request.getParameter("noticeContents"));
-//	pageContext.setAttribute("vo",vo);
-	if(result >=0 ){	
+	dao.update(vo);
+	pageContext.setAttribute("vo",vo);
 	response.sendRedirect(request.getContextPath() + "/notice.an"); //아래 코드와 같은 기능이다.
-	}
+
 %>

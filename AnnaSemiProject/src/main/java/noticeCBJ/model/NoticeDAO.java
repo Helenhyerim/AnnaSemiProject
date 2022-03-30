@@ -64,6 +64,29 @@ public class NoticeDAO implements InterNoticeDAO {
 		return result;
 	}
 	
+	@Override
+	public int update(NoticeVO vo) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_notice set noticetitle = ?, noticecontents = ? where noticeno = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getNoticeTitle());
+			pstmt.setString(2, vo.getNoticeContents());
+			pstmt.setInt(3, vo.getNoticeNo());
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
+	
 	// 조회(R)
 	@Override
 	public ArrayList<NoticeVO> selectAll() throws SQLException {
@@ -94,75 +117,6 @@ public class NoticeDAO implements InterNoticeDAO {
 			close();
 		}
 		return noticeList;
-	}
-	/*
-	// 수정(U)
-	@Override
-	public int update(NoticeVO vo) {
-		
-		int ret = -1; // 예외 발생시 리턴값
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " update tbl_notice set noticetitle=?, noticecontents=? where noticeno=? ";
-		
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, vo.getNoticeTitle());
-			pstmt.setString(2, vo.getNoticeContents());	
-			pstmt.setInt(3, vo.getNoticeNo());
-			
-			ret = pstmt.executeUpdate(); // 잘 들어가면 숫자가 바뀔 것이다
-		} catch(SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return ret;
-	}*/
-	
-	/*
-	public int update(int noticeNo, String noticeTitle, String noticeContents) {
-		
-		String sql = " update tbl_notice set noticetitle=?, noticecontents=? where noticeno=? ";
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, noticeTitle);
-			pstmt.setString(2, noticeContents);
-			pstmt.setInt(3, noticeNo);
-			
-			return pstmt.executeUpdate();
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return -1;
-		
-	}
-	*/
-	
-	@Override
-	public int update(int noticeNo, String noticeTitle, String noticeContents) throws SQLException {
-		
-		int result = 0;
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " update tbl_notice set noticetitle=?, noticecontents=? where noticeno=? ";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, noticeTitle);
-			pstmt.setString(2, noticeContents);
-			pstmt.setInt(3, noticeNo);
-			
-			result = pstmt.executeUpdate();
-		} finally {
-			close();
-		}
-		return result;
-		
 	}
 	
 	// 조건 조회(R)
@@ -195,6 +149,8 @@ public class NoticeDAO implements InterNoticeDAO {
 		}
 		return notice;
 	}
+
+	
 	
 	// 삭제(D)
 	@Override
@@ -241,5 +197,7 @@ public class NoticeDAO implements InterNoticeDAO {
 		}
 		return ret;
 	}
+
+	
 	
 }
