@@ -9,6 +9,5 @@
 	NoticeDAO dao = new NoticeDAO();
 	System.out.println(noticeNo);
 	dao.delete(noticeNo);	
-
 	response.sendRedirect(request.getContextPath() + "/noticeDelete.an");
 %>
