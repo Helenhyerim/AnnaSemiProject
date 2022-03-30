@@ -134,7 +134,6 @@
 </head>
 <body>
 
-<<<<<<< HEAD
 	<!-- 상단 네비게이션 시작 -->
 	<nav class="navbar-expand-lg  bg-white navbar-light fixed-top" id = "first-nav" >
 		<!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
@@ -250,8 +249,7 @@
 		          </span>
 		       </div>
      		</form>
-      	</div>
-=======
+
    <!-- 상단 네비게이션 시작 -->
    <nav class="navbar-expand-lg  bg-white navbar-light fixed-top" id = "first-nav" >
       <!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
@@ -368,9 +366,9 @@
              </div>
            </form>
          </div>
->>>>>>> branch 'member_branch' of https://github.com/Helenhyerim/AnnaSemiProject.git
+
     <hr style="background-color: #ccc; height: 1.2px; position: relative; top:10px; margin: 0; margin-bottom: 10px;">
-<<<<<<< HEAD
+
 	</nav>
 	
 		
@@ -404,7 +402,7 @@
 	    <a href="#">Help</a>
 	  </div>
 	</div>
-=======
+
    </nav>
    
       
@@ -438,7 +436,7 @@
        <a href="#">Help</a>
      </div>
    </div>
->>>>>>> branch 'member_branch' of https://github.com/Helenhyerim/AnnaSemiProject.git
+
 
 
    <!-- 상단 네비게이션 끝 -->

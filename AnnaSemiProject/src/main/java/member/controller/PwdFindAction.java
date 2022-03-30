@@ -107,7 +107,7 @@ public class PwdFindAction extends AbstractController {
                sendMailSuccess = false; // 메일 전송이 실패했음을 기록함.
             }
             
-                  request.setAttribute("isUserExist", isUserExist);
+               request.setAttribute("isUserExist", isUserExist);
                request.setAttribute("email", email);
                request.setAttribute("userid", userid);
                request.setAttribute("sendMailSuccess", sendMailSuccess);

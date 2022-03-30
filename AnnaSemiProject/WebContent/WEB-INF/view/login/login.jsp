@@ -71,7 +71,7 @@ function goLogin(){
 	
 }// end of function goLgoin() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-<<<<<<< HEAD
+
 function goIdFind(){
 	location.href="<%= ctxPath%>/login/idFind.an";
 		
@@ -80,8 +80,7 @@ function goPwdFind(){
 	location.href="<%= ctxPath%>/login/pwdFind.an";	
 }
 
-=======
->>>>>>> branch 'member_branch' of https://github.com/Helenhyerim/AnnaSemiProject.git
+
 
 </script>
 
@@ -93,10 +92,6 @@ function goPwdFind(){
 </c:if>
 
 
-
-
-
->>>>>>> branch 'member_branch' of https://github.com/Helenhyerim/AnnaSemiProject.git
 	<div class="container" >
 	  <div class = "mt-1 ml-0 mb-5"style="width: 80%; margin: 80% auto; ">
 		<!-- div 태그의 margin 80% 을 0 으로 바꾸고, 여기에 원하는 내용을 작성하세요! -->
@@ -141,13 +136,13 @@ function goPwdFind(){
 					<tr>
 						<td>
 
-							<a class = "login_element" id = "btnRegister" onclick = "goIdFind()">아이디 찾기</a>
+							
 
 							<a class = "login_element" id = "btnRegister" href = "<%= ctxPath%>/login/idFind.an">아이디 찾기</a>
 
 							<span> | </span>
 
-							<a class = "login_element" id = "btnRegister" onclick = "goPwdFind()">비밀번호 찾기</a>
+							
 
 							<a class = "login_element" id = "btnRegister" href = "<%= ctxPath%>/login/pwdFind.an">비밀번호 찾기</a>
 						</td>

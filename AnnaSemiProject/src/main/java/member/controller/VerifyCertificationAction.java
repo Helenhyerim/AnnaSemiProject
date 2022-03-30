@@ -11,10 +11,14 @@ public class VerifyCertificationAction extends AbstractController {
    @Override
    public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
       
-      String userCertificationCode = request.getParameter("userCertificationCode");
-      //사용자가 보낸 인증키
-      String userid = request.getParameter("userid");
+      String userCertificationCode = request.getParameter("usercertificationCode");
       
+      System.out.println(userCertificationCode);
+      //사용자가 보낸 인증키
+      System.out.println(userCertificationCode);
+      
+      String userid = request.getParameter("userid");
+      System.out.println(userid);
       // 세션불러오기
       HttpSession session = request.getSession();
       
