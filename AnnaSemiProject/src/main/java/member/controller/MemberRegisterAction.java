@@ -1,4 +1,4 @@
-package member.controller.YJ;
+package member.controller;
 
 import java.sql.SQLException;
 
@@ -18,7 +18,7 @@ public class MemberRegisterAction extends AbstractController {
 		
 		if("GET".equalsIgnoreCase(method)) {
 			// super.setRedirect(false);	
-			super.setViewPage("/WEB-INF/member/memberRegister.jsp");
+			super.setViewPage("/WEB-INF/view/member/memberRegister.jsp");
 		}
 		else {
 			// 가입하기 버튼을 클릭했을 경우 

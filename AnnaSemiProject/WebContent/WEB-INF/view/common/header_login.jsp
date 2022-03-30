@@ -147,14 +147,14 @@
 		<div class="collapse navbar-collapse row-vh justify-content-end mx-2" >
 		  <ul class="navbar-nav">
 		     <li class="nav-item">
-		        <a class="nav-link h6" href="<%= ctxPath %>/index.jsp">Mypage</a>
+		        <a class="nav-link h6" href="<%= ctxPath %>/index.an">Mypage</a>
 		     </li>
 		     <c:if test="${member == null}">
 			     <li class="nav-item">
-			     	<a class="nav-link h6" href="<%= ctxPath %>/member/memberform.jsp">Login</a>
+			     	<a class="nav-link h6" href="<%= ctxPath %>/login/login.an">Login</a>
 			     </li>
 				 <li class="nav-item">
-				    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Join</a>
+				    <a class="nav-link h6" href="<%= ctxPath %>/member/memberRegister.an">Join</a>
 				 </li>
 			 </c:if>
 			 <c:if test="${member != null}">
