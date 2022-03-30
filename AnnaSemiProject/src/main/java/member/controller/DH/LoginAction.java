@@ -20,35 +20,13 @@ public class LoginAction extends AbstractController {
 		 String method = request.getMethod();	
 		   
 		   if("GET".equalsIgnoreCase(method)) {
-			// super.setRedirect(false);
+			   super.setRedirect(false); // logoutAction 에서 true를 사용했기 때문에 다시 false로 바꿔줌 
+			   							 // 안바꿔주니 한번 로그아웃 하면 404 에러가 뜸
 			   super.setViewPage("/WEB-INF/view/login/login.jsp");
 		   }
 		   else {
 				String userid = request.getParameter("userid");
 				String pwd = request.getParameter("pwd");
-				
-				if(userid.trim() == "") {
-					String message = "아이디 항목은 필수입력값입니다.";
-					String loc = "javascript:history.back()";
-						
-					request.setAttribute("message", message);
-					request.setAttribute("loc", loc);
-						
-					super.setViewPage("/WEB-INF/msg.jsp");
-					return;
-					
-				}
-				if(pwd.trim() == "") {
-					String message = "비밀번호 항목은 필수입력값입니다.";
-					String loc = "javascript:history.back()";
-						
-					request.setAttribute("message", message);
-					request.setAttribute("loc", loc);
-						
-					super.setViewPage("/WEB-INF/msg.jsp");
-					return;
-					
-				}
 				
 				// ===> 클라이언트의 IP 주소를 알아오는 것 <=== //
 				String clientip = request.getRemoteAddr();
