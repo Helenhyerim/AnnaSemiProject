@@ -5,12 +5,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import common.controller.AbstractController;
 
-public class myPageAction extends AbstractController {
+public class MyAdminAction extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
-		super.setViewPage("/WEB-INF/view/member/myPage.jsp");
+		
+		super.setViewPage("/WEB-INF/view/member/myAdmin.jsp");
 	}
-	
+
 }
