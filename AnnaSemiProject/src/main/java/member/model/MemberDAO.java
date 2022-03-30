@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.naming.Context;
@@ -252,4 +254,267 @@ public class MemberDAO implements InterMemberDAO {
 		
 	
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 페이징 처리가 되어진 모든 회원 또는 검색한 회원 목록 보여주기
+		@Override
+		public List<MemberVO> selectPagingMember(Map<String, String> paraMap) throws SQLException {
+			
+			List<MemberVO> memberList = new ArrayList<>();
+			
+			try {
+				conn = ds.getConnection();
+				
+				String sql = " select userid, name, email, mobile "
+						+ " from "
+						+ " ( "
+						+ "    select rownum AS rno, userid, name, email, mobile "
+						+ "    from "
+						+ "    ( "
+						+ "        select userid, name, email, mobile "
+						+ "        from tbl_member "
+						+ "        where userid != 'admin' "
+						+ "        order by registerday desc "
+						+ "    ) V "
+						+ " ) T "
+						+ " where rno between ? and ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			 	int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
+				/*
+			 	 >>> where rno between A and B 
+		             A 와 B 를 구하는 공식 <<< 
+		      
+			         currentShowPageNo 은 보고자 하는 페이지 번호이다. 즉, 1페이지, 2페이지, 3페이지... 를 말한다.
+			         sizePerPage 는 한페이지당 보여줄 행의 개수를 말한다. 즉, 3개, 5개, 10개를 보여줄때의 개수를 말한다.
+			      
+			         A 는 (currentShowPageNo * sizePerPage) - (sizePerPage - 1) 이다. 
+			         B 는 (currentShowPageNo * sizePerPage) 이다.
+			    */	
+				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage));
+				
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					
+					MemberVO mvo = new MemberVO();
+					mvo.setUserid(rs.getString(1));
+					mvo.setName(rs.getString(2));
+					mvo.setEmail(aes.decrypt(rs.getString(3))); // 복호화 
+					mvo.setMobile(aes.decrypt(rs.getString(4))); // 복호화
+					
+					memberList.add(mvo);
+				}// end of while--------------------------------
+			
+			} catch(GeneralSecurityException | UnsupportedEncodingException e) { 
+			    e.printStackTrace();	
+			} finally {
+				close();
+			}
+			
+			return memberList;
+		}
+
+
+		// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 전체회원에 대한 총 페이지 알아오기 
+		@Override
+		public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+			
+			int totalPage = 0;
+			
+			try {
+				conn = ds.getConnection();
+				
+				String sql = " select ceil(count(*)/?) "
+							+ " from tbl_member "
+							+ " where userid != 'admin' ";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, paraMap.get("sizePerPage"));
+				
+				rs = pstmt.executeQuery();
+				
+				rs.next();
+				
+				totalPage = rs.getInt(1);
+				
+			} finally {
+				close();
+			}
+			
+			return totalPage;
+		}
+		
+		
 }
