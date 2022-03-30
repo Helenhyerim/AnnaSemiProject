@@ -163,17 +163,17 @@ public class MemberDAO implements InterMemberDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " SELECT userid, name, email, mobile, postcode, address, detailaddress, gender "+
+			String sql = " SELECT userid, name, email, mobile, postcode, address, detailaddress "+
 					"        , birthyyyy, birthmm, birthdd, point, registerday, pwdchangegap, "+
 					"        nvl(lastlogingap, trunc(months_between(sysdate,registerday) ) ) "+
 					" FROM  "+
 					" ( "+
-					" select userid, name, email, mobile, postcode, address, detailaddress, extraaddress, gender"+
+					" select userid, name, email, mobile, postcode, address, detailaddress,"+
 					"        , substr(birthday, 1, 4) AS birthyyyy, substr(birthday, 6, 2) AS birthmm, substr(birthday, 9) AS birthdd "+
 					"        , point, to_char(registerday, 'yyyy-mm-dd') AS registerday "+
 					"        , trunc(months_between(sysdate, lastpwdchangedate)) AS pwdchangegap "+	
 					"from tbl_member "+
-					"where status = 1 and userid = ? and pwd= ? "+
+					"where register_status = 1 and userid = ? and pwd= ? "+
 					") M "+
 					"CROSS JOIN "+
 					"( "+
