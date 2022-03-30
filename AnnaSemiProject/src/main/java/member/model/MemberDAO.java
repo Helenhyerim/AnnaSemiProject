@@ -57,7 +57,62 @@ public class MemberDAO implements InterMemberDAO {
 			}
 		}// end of private void close()------------------------------------
 			
-	
+
+		// ID 중복검사 (tbl_member 테이블에서 userid 가 존재하면 true를 리턴해주고, userid 가 존재하지 않으면 false를 리턴한다)
+		@Override
+		public boolean idDuplicateCheck(String userid) throws SQLException {
+			boolean isExist = false;
+			
+			try {
+				conn = ds.getConnection();
+				
+				String sql = " select * "
+						 		+ " from tbl_member "
+								+ " where userid = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, userid);
+				
+				rs= pstmt.executeQuery();
+				
+				isExist = rs.next(); // 행이 있으면(중복된 userid) true, 
+							           // 행이 없으면(사용가능한 userid) false
+			} finally {
+				close();
+			}
+			
+			return isExist;
+		}
+
+		
+		// 이메일 중복검사 (tbl_member 테이블에서 email 가 존재하면 true를 리턴해주고, email 가 존재하지 않으면 false를 리턴한다)
+		@Override
+		public boolean emailDuplicateCheck(String email) throws SQLException {
+			boolean isExist = false;
+			
+			try {
+				conn = ds.getConnection();
+				
+				String sql = " select * "
+						 		+ " from tbl_member "
+								+ " where email = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, aes.encrypt(email));
+				
+				rs= pstmt.executeQuery();
+				
+				isExist = rs.next(); // 행이 있으면(중복된 userid) true, 
+							           // 행이 없으면(사용가능한 userid) false
+			} catch(GeneralSecurityException | UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} finally {
+				close();
+			}
+			
+			return isExist;
+		}
+
 	
 	// 회원가입을 해주는 메소드 (tbl_member 테이블에 insert)
 	@Override
@@ -97,160 +152,172 @@ public class MemberDAO implements InterMemberDAO {
 	}
 
 	
-	// ID 중복검사 (tbl_member 테이블에서 userid 가 존재하면 true를 리턴해주고, userid 가 존재하지 않으면 false를 리턴한다)
-	@Override
-	public boolean idDuplicateCheck(String userid) throws SQLException {
-		boolean isExist = false;
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " select * "
-					 		+ " from tbl_member "
-							+ " where userid = ? ";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userid);
-			
-			rs= pstmt.executeQuery();
-			
-			isExist = rs.next(); // 행이 있으면(중복된 userid) true, 
-						           // 행이 없으면(사용가능한 userid) false
-		} finally {
-			close();
-		}
-		
-		return isExist;
-	}
 
-	
-	// 이메일 중복검사 (tbl_member 테이블에서 email 가 존재하면 true를 리턴해주고, email 가 존재하지 않으면 false를 리턴한다)
-	@Override
-	public boolean emailDuplicateCheck(String email) throws SQLException {
-		boolean isExist = false;
-		
-		try {
-			conn = ds.getConnection();
+	// 로그인된 회원의 정보를 뽑아오는 메소드 입니다.
+		@Override
+		public MemberVO selectOneMember(Map<String, String> paraMap) throws SQLException {
 			
-			String sql = " select * "
-					 		+ " from tbl_member "
-							+ " where email = ? ";
+			MemberVO member = null;
 			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, aes.encrypt(email));
-			
-			rs= pstmt.executeQuery();
-			
-			isExist = rs.next(); // 행이 있으면(중복된 userid) true, 
-						           // 행이 없으면(사용가능한 userid) false
-		} catch(GeneralSecurityException | UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		
-		return isExist;
-	}
-
-
-	// 입력 받은 paraMap으로 한명의 회원정보를 리턴시켜주는 메소드 (로그인 처리) 
-	@Override
-	public MemberVO selectOneMember(Map<String, String> paraMap) throws SQLException {
-		// TODO Auto-generated method stub
-		
-		MemberVO member = null;
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " SELECT userid, name, email, mobile, postcode, address, detailaddress, gender "+
-					"        , birthyyyy, birthmm, birthdd, point, registerday, pwdchangegap, "+
-					"        nvl(lastlogingap, trunc(months_between(sysdate,registerday) ) ) "+
-					" FROM  "+
-					" ( "+
-					" select userid, name, email, mobile, postcode, address, detailaddress, extraaddress, gender"+
-					"        , substr(birthday, 1, 4) AS birthyyyy, substr(birthday, 6, 2) AS birthmm, substr(birthday, 9) AS birthdd "+
-					"        , point, to_char(registerday, 'yyyy-mm-dd') AS registerday "+
-					"        , trunc(months_between(sysdate, lastpwdchangedate)) AS pwdchangegap "+	
-					"from tbl_member "+
-					"where status = 1 and userid = ? and pwd= ? "+
-					") M "+
-					"CROSS JOIN "+
-					"( "+
-					"select trunc(months_between(sysdate, max(logindate))) AS lastlogingap "+
-					"from tbl_loginhistory "+
-					"where fk_userid = ? "+
-					") H ";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, paraMap.get("userid"));
-			pstmt.setString(2, Sha256.encrypt(paraMap.get("pwd"))); // pwd는 qwer1234$ 이므로 암호화해서 넣어야 함..
-			pstmt.setString(3, paraMap.get("userid"));
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) { // select되어진 게 있느냐, 있다면, 
-				member = new MemberVO();
+			try {
 				
-				member.setUserid(rs.getString(1));
-				member.setName(rs.getString(2));
-				member.setEmail( aes.decrypt(rs.getString(3)) ); // 복호화함.
-				member.setMobile(rs.getString(4));
-				member.setPostcode(rs.getString(5));
-	            member.setAddress(rs.getString(6));
-	            member.setDetailaddress(rs.getString(7));
-	            member.setGender(rs.getString(8));
-	            member.setBirthday(rs.getString(9) + rs.getString(10) + rs.getString(11));
-	            member.setPoint(rs.getInt(12));
-	            member.setRegisterday(rs.getString(13));
-	            
-	            if ( rs.getInt(14) >= 3) {
-	            	// 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지났으면 true
-		            // 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지나지 않았으면 false
-	            	member.setRequirePwdChange(true); // 로그인시 암호를 변경하라는 alert 띄울 것.
-	            }
-	            
-	            if ( rs.getInt(15) >= 12 ) {
-	            	// 마지막으로 로그인한 날짜 시간이 현재시각으로부터 1년이 지났으면 휴면 처리
-	            	member.setRegister_status(1);
-	            	
-	            	// === tbl_member 테이블의 idle 컬럼의 값을 1로 변경하기
-	            	sql = " update tbl_member set register_status = 1 "
-	            			+ " where userid = ? " ;
-	            	
-	            	pstmt = conn.prepareStatement(sql);
-	    			
-	    			pstmt.setString(1, paraMap.get("userid"));
-	    			
-	    			pstmt.executeUpdate();
-	            	
-	            }
-	            
-	            // == tbl_loginhistory(로그인기록) 테이블에 insert 하기 == //
-	            if(member.getRegister_status() != 1) {
-	            	sql = " insert into tbl_loginhistory(fk_userid, clientip) "
-	            			+ " values(?, ?) ";
-	            	
-	            	pstmt = conn.prepareStatement(sql);
-	    			
-	            	pstmt.setString(1, paraMap.get("userid"));
-	            	pstmt.setString(2, paraMap.get("clientip"));
-	    			
-	            	pstmt.executeUpdate();
-	            	
-	            }
-	            	
+				conn = ds.getConnection();
+				
+				String sql = "SELECT userid, name, email, mobile, postcode, address, detailaddress \n"+
+						"     , birthyyyy, birthmm, birthdd, point, registerday, sms_status, email_status, pwdchangegap \n"+
+						"     , nvl(lastlogingap, trunc(months_between(sysdate,registerday) ) ) AS lastlogingap\n"+
+						"FROM       \n"+
+						"(      \n"+
+						"select userid, name, email, mobile, postcode, address, detailaddress\n"+
+						"     , substr(birthday,1,4) AS birthyyyy, substr(birthday,6,2) AS birthmm, substr(birthday,9) AS birthdd\n"+
+						"     , point, to_char(registerday, 'yyyy-mm-dd') AS registerday,  trunc( months_between(sysdate, lastpwdchangedate) ) AS pwdchangegap\n"+
+						"     , sms_status, email_status\n"+
+						"from tbl_member\n"+
+						"where register_status = 1 and userid = ? and pwd = ?\n"+
+						")M\n"+
+						"CROSS JOIN\n"+
+						"(\n"+
+						"select trunc( months_between(sysdate, max(logindate)) ) AS lastlogingap \n"+
+						"from tbl_loginhistory \n"+
+						"where fk_userid = ?\n"+
+						")H";
+				
+				
+				
+				 pstmt = conn.prepareStatement(sql);
+				 
+				 pstmt.setString(1, paraMap.get("userid"));
+				 pstmt.setString(2, Sha256.encrypt(paraMap.get("pwd")) ); 
+				 pstmt.setString(3, paraMap.get("userid"));
+				 
+				 rs = pstmt.executeQuery();
+				 
+				 if(rs.next()) {
+					 member = new MemberVO();
+					 
+					 member.setUserid(rs.getString(1));
+					 member.setName(rs.getString(2));
+					 member.setEmail(aes.decrypt(rs.getString(3))); // 이메일 복호화 해줌
+					 member.setMobile(aes.decrypt(rs.getString(4)));// 휴대전화 복호화 해줌
+					 member.setPostcode(rs.getString(5));
+					 member.setAddress(rs.getString(6));
+					 member.setDetailaddress(rs.getString(7));
+					 
+					 member.setBirthday(rs.getString(8) + rs.getString(9) + rs.getString(10));
+					 member.setPoint(rs.getInt(11));
+					 member.setRegisterday(rs.getString(12));
+					 member.setSms_status(rs.getInt(13));
+					 member.setEmail_status(rs.getInt(14));
+					 
+					 if(rs.getInt(15) >= 6) {
+						 // 암호변경 6개월 이 지나면 true 아니면 false
+						 
+						 member.setRequirePwdChange(true);
+					 }
+					 if(rs.getInt(16) >= 12) {
+						 member.setInactive_status(1);
+						 
+						// === tbl_member 테이블의 inactive_status 컬럼의 값을 1로 변경하기 === //
+						 sql = " update tbl_member set inactive_status = 1 "
+						 	 + " where userid = ? ";
+						 
+						 pstmt = conn.prepareStatement(sql);
+						 pstmt.setString(1, paraMap.get("userid")); 
+						 
+						 pstmt.executeUpdate();
+						 
+						
+					 }
+					 // === tbl_loginhistory(로그인기록) 테이블에 insert 하기 === //
+					 if(member.getInactive_status() != 1) {
+						 sql = " insert into tbl_loginhistory(fk_userid, clientip) "
+						 	 + " values(?, ?) ";
+						 
+						 pstmt = conn.prepareStatement(sql);
+						 pstmt.setString(1, paraMap.get("userid")); 
+						 pstmt.setString(2, paraMap.get("clientip"));
+						 
+						 pstmt.executeUpdate();
+					 }
+					 
+				 }
+				 
+			} catch(GeneralSecurityException | UnsupportedEncodingException e) { 
+			    e.printStackTrace();	 
+			} finally {
+				close();
 			}
 			
-		} catch(GeneralSecurityException | UnsupportedEncodingException e) {
-				e.printStackTrace();
-		} finally {
-			close();
-		}
 		
-		return member;
-	}
+			return member;
+		}
+
+		// 아이디 찾기(성명, 이메일을 입력받아서 해당 사용자의 아이디를 알려준다)
+		@Override
+		public String findUserid(Map<String, String> paraMap) throws SQLException {
+			
+			String userid = null;
+			
+			try {
+				conn = ds.getConnection();
+				
+				String sql = " select userid "
+						   + " from tbl_member"
+						   + " where register_status = 1 and name = ? and email = ? ";
+				
+				 pstmt = conn.prepareStatement(sql);
+				 pstmt.setString(1, paraMap.get("name"));
+				 pstmt.setString(2, aes.encrypt(paraMap.get("email")));
+				 
+				 rs = pstmt.executeQuery();
+				 
+				 if(rs.next()) {
+					 userid = rs.getString(1);
+				 }
+				
+			} catch(GeneralSecurityException | UnsupportedEncodingException e) { 
+			    e.printStackTrace();	 
+			} finally {
+				close();
+			}
+			
+			return userid;
+		}
+
+
+		// 비밀번호를 찾기 위해서 성명, 이메일 유저 아이디를 입력받아서 해당 사용자의 존재여부를 알려준다.
+		@Override
+		public boolean isUserExist(Map<String, String> paraMap) throws SQLException {
+			
+			boolean isUserExist = false;
+			
+			
+			try {
+				conn = ds.getConnection();
+				
+				String sql = " select userid "
+						   + " from tbl_member"
+						   + " where register_status = 1 and userid = ? and name = ? and email = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paraMap.get("userid"));
+				pstmt.setString(2, paraMap.get("name"));
+				pstmt.setString(3, aes.encrypt(paraMap.get("email")));
+				 
+				rs = pstmt.executeQuery();
+				 
+				
+				isUserExist = rs.next();
+				 
+				
+			} catch(GeneralSecurityException | UnsupportedEncodingException e) { 
+			    e.printStackTrace();	 
+			} finally {
+				close();
+			}
+			
+			return isUserExist;
+		}
 		
 	
 

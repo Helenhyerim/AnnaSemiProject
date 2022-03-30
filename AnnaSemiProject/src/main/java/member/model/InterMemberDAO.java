@@ -16,9 +16,14 @@ public interface InterMemberDAO {
 		// 회원가입을 해주는 메소드 (tbl_member 테이블에 insert)
 		int registerMember(MemberVO member) throws SQLException;
 
-		// 입력 받은 paraMap으로 한명의 회원정보를 리턴시켜주는 메소드 (로그인 처리) 
+		// 입력받은 paraMap 을 가지고 한명의 회원정보를 리턴시켜주는 메소드(로그인 처리)
 		MemberVO selectOneMember(Map<String, String> paraMap) throws SQLException;
+
+		// 아이디 찾기 성명, 이메일을 입력받아서 해당 사용자의 아이디를 알려준다)
+		String findUserid(Map<String, String> paraMap)throws SQLException;
 		
+		// 비밀번호를 찾기 위해서 성명, 이메일 유저 아이디를 입력받아서 해당 사용자의 존재여부를 알려준다.
+		boolean isUserExist(Map<String, String> paraMap)throws SQLException;
 		
 		
 		
