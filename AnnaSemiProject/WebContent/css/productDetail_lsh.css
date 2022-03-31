@@ -130,6 +130,15 @@ table#tbl_option tr {height: 40px;}
 
 table#tbl_option th {width: 100px;}
 
+span.spanbtn {
+	display: inline-block;
+	border: solid 1px gray;
+	background-color: lightgray;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+}
+
 div#bottom_content {width: 90%;}
 
 div#productInfo {

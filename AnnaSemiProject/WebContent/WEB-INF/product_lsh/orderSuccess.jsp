@@ -14,15 +14,22 @@
         border-collapse: collapse;
         width: 100%;
     }
-    /*
-    table tr:first-child td:last-child {
-    	vertical-align: bottom;
-    }
-    */
+    
     table tr:last-child td {
     	vertical-align: top;
     }
 </style>
+
+<script type="text/javascript">
+
+	// 주문 상세보기 페이지로 이동
+	function goOrderDetail() {
+		
+		location.href = "<%= request.getContextPath() %>/product_lsh/orderDetail.an";
+		
+	}
+
+</script>
 
 <div id="container">
 	<div style="text-align: center;">
@@ -32,7 +39,7 @@
 	<div class="my-5">
 		<%-- 주문번호, 상세보기 링크(미정) --%>
 		<div>
-			<p>주문번호 : 220324-1523<span class="mx-3">&#124;</span><a>상세보기&nbsp;&raquo;</a></p>
+			<p>주문번호 : 220324-1523<span class="mx-3">&#124;</span><a onclick='goOrderDetail()'>상세보기&nbsp;&raquo;</a></p>
 		</div>
 		<div id="order_list">
 			<table>
