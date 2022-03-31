@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -260,3 +264,8 @@
 
 
 	<!-- 상단 네비게이션 끝 -->
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
