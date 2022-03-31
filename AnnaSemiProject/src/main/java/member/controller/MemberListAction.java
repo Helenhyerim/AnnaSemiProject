@@ -17,6 +17,27 @@ public class MemberListAction extends AbstractController {
 		
 		// 일단 관리자가 아니더라도 페이지 접근하게 만듦.. 관리자 페이지가 뜨게 만들고 만들겠음. 
 		
+		// == 관리자(일단 지금은 hongkd)로 로그인 했을 때만 조회가능하게 하기 == //
+		HttpSession session = request.getSession();
+		
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		if( loginuser == null || !"hongkd".equals(loginuser.getUserid()) ) {
+			// 로그인을 안한 경우 또는 일반사용자로 로그인 한 경우
+			String message = "관리자만 접근이 가능합니다.";
+			String loc = "javascript:history.back()";
+			
+			request.setAttribute("message", message);
+			request.setAttribute("loc", loc);
+			
+		//	super.setRedirect(false);
+			super.setViewPage("/WEB-INF/msg.jsp");
+		}
+		else {
+		
+		// 관리자(일단 지금은 hongkd)로 로그인 했을 경우 
+		// == 페이징 처리가 되어진 모든 회원 또는 검색한 회원 목록 보여주기 == //
+						
 		InterMemberDAO mdao = new MemberDAO();
 		
 		Map<String, String> paraMap = new HashMap<>();
@@ -119,4 +140,4 @@ public class MemberListAction extends AbstractController {
 		
 	}
 
-
+}
