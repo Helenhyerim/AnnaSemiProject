@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -235,13 +236,10 @@
      		</form>
       	</ul>
   		</div>		
-<<<<<<< HEAD
+
 	  	
 		<hr style="background-color: #ccc; height: 1.2px; position: relative; top:10px; margin: 0; margin-bottom: 10px;">
-=======
 
-		<hr style="background-color: #ccc; height: 1.2px; position: relative; top: 10px; margin: 0; margin-bottom: 10px;">
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 
 	</nav>
 	
@@ -266,6 +264,3 @@
 
 
 	<!-- 상단 네비게이션 끝 -->
-
-
-	  
