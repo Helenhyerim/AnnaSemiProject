@@ -131,7 +131,11 @@
 <body>
 
 	<!-- 상단 네비게이션 시작 -->
+<<<<<<< HEAD
 	<nav class="navbar-expand-lg bg-white navbar-light fixed-top" id="first-nav">
+=======
+	<nav class="navbar-expand-lg bg-white navbar-light fixed-top" id = "first-nav">
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 		<!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
 		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img class = "mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
 		
@@ -231,8 +235,13 @@
      		</form>
       	</ul>
   		</div>		
+<<<<<<< HEAD
 	  	
 		<hr style="background-color: #ccc; height: 1.2px; position: relative; top:10px; margin: 0; margin-bottom: 10px;">
+=======
+
+		<hr style="background-color: #ccc; height: 1.2px; position: relative; top: 10px; margin: 0; margin-bottom: 10px;">
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 
 	</nav>
 	

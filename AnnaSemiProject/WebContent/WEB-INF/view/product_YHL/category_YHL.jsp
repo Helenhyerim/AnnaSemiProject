@@ -1,11 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%
     String ctxPath = request.getContextPath();
     //    /AnnaSemiProject
 %>
 <jsp:include page="/WEB-INF/view/common/header_login.jsp"></jsp:include>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/category_YHL.css" />
+<style>
+
+</style>
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+	});
+	
+	// Function Declaration
+	
+	function getproductnum() {
+		
+	}
+	
+
+</script>
 
 	<div class="container" style="">
 		<div class="mb-5">
@@ -98,16 +116,19 @@
 			 	
 			 	<div id="image-container" class="col-md-10 ">
 				 	<div class="row">
+				 	
+				 	<c:forEach var="productvo" items="${requestScope.imgList}">
 					  <div class="col-4" style="margin-bottom: 100px;" >
-						  <a href="">
-						    <img src="<%=ctxPath %>/images/necklaces/목걸이이미지1.png" class="card-img-top" alt="..." >
+						  <a href="<%=ctxPath %>/product_lsh/productDetail.an" onclick="">
+						    <img src="<%=ctxPath %>/images/${productvo.productimage1}" class="card-img-top" alt="..." >
 						  </a>
 					      <span id="product_detail">
 						      <a href="" style="">14K NECKLACE / ANS0395DRL</a>
 						      <a href="" style="">270,000원</a>
 					      </span>
 					  </div>
-					  
+					</c:forEach> 
+					 
 					  <a class="col-4" href=""  >
 					    <img src="<%=ctxPath %>/images/necklaces/목걸이이미지1.png" class="card-img-top" alt="...">
 					      <span id="product_detail">

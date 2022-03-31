@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 show user;
 -- USER?��(�?) "SEMIORAUSER2"?��?��?��.
 
@@ -27,100 +28,77 @@ CREATE TABLE tbl_product (
 	productcontent VARCHAR2(4000), /* ?��?��?���? */
 	point NUMBER(8) DEFAULT 0, /* ?��립금 */
 	productinputdate DATE DEFAULT sysdate /* ?��?��?��고일?�� */
+=======
+create table anna_test
+(seq          number
+,name         varchar2(20) not null 
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 );
+rollback
+show user
 
-CREATE UNIQUE INDEX PK_tbl_product
-	ON tbl_product (
-		productnum ASC
-	);
+select * from anna_test
 
-ALTER TABLE tbl_product
-	ADD
-		CONSTRAINT PK_tbl_product
-		PRIMARY KEY (
-			productnum
-		);
+INSERT into anna_test (seq, name)  values (1, 'choi');
 
+<<<<<<< HEAD
 /* ?��?��추�??��미�? */
 CREATE TABLE tbl_product_imagefile (
 	imagefilenum NUMBER NOT NULL, /* ?��미�?번호 */
 	fk_productnum NUMBER(8) NOT NULL, /* ?��?��번호 */
 	imagefilename VARCHAR2(100) NOT NULL /* ?��미�??��?���? */
 );
+=======
+select table tbl_notice
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 
-CREATE UNIQUE INDEX PK_tbl_product_imagefile
-	ON tbl_product_imagefile (
-		imagefilenum ASC
-	);
+drop table anna_test
 
-ALTER TABLE tbl_product_imagefile
-	ADD
-		CONSTRAINT PK_tbl_product_imagefile
-		PRIMARY KEY (
-			imagefilenum
-		);
+select * from tbl_notice
 
+<<<<<<< HEAD
 /* 카테고리 */
 CREATE TABLE tbl_category (
 	categorynum NUMBER(8) NOT NULL, /* 카테고리??분류번호 */
 	code VARCHAR2(20) NOT NULL, /* 카테고리코드 */
 	categoryname VARCHAR2(100) NOT NULL /* 카테고리�? */
 );
+=======
+SELECT * FROM COLS WHERE TABLE_NAME = 'tbl_notice'
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 
-CREATE UNIQUE INDEX PK_tbl_category
-	ON tbl_category (
-		categorynum ASC
-	);
+insert into tbl_notice (noticeno, fk_userid, noticedate, noticetitle, noticecontents) 
+values (seq_noticeno.nextval, 'admin', sysdate, '1월 카드사 무이자 할부 혜택안내', '내용');
 
-CREATE UNIQUE INDEX UIX_tbl_category
-	ON tbl_category (
-		code ASC
-	);
+insert into tbl_notice (noticeno, fk_userid, noticedate, noticetitle, noticecontents) 
+values (seq_noticeno.nextval, 'admin', sysdate, 'CJ 대한통운 택배 파업에 따른 배송안내', '내용');
 
-ALTER TABLE tbl_category
-	ADD
-		CONSTRAINT PK_tbl_category
-		PRIMARY KEY (
-			categorynum
-		);
+insert into tbl_notice (noticeno, fk_userid, noticedate, noticetitle, noticecontents) 
+values (seq_noticeno.nextval, 'admin', sysdate, '2021 추석연휴 배송안내', '내용');
 
-ALTER TABLE tbl_category
-	ADD
-		CONSTRAINT UK_tbl_category
-		UNIQUE (
-			code
-		);
+insert into tbl_notice (noticeno, fk_userid, noticedate, noticetitle, noticecontents) 
+values (seq_noticeno.nextval, 'admin', sysdate, '2021 여름 휴가 배송안내', '내용');
 
+<<<<<<< HEAD
 /* ?��?��?��?�� */
 CREATE TABLE tbl_spec (
 	specnum NUMBER(8) NOT NULL, /* ?��?��번호 */
 	specname VARCHAR2(100) NOT NULL /* ?��?���? */
 );
+=======
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 
-CREATE UNIQUE INDEX PK_tbl_spec
-	ON tbl_spec (
-		specnum ASC
-	);
+select * from user_sequences
 
-CREATE UNIQUE INDEX UIX_tbl_spec
-	ON tbl_spec (
-		specname ASC
-	);
+insert into tbl_member(userid, pwd, name, email, sms_status, email_status)
+values ('admin', 'qwer1234$', 'admin', 'admin@gmail.com', 1, 1)
 
-ALTER TABLE tbl_spec
-	ADD
-		CONSTRAINT PK_tbl_spec
-		PRIMARY KEY (
-			specnum
-		);
+commit
 
-ALTER TABLE tbl_spec
-	ADD
-		CONSTRAINT UK_tbl_spec
-		UNIQUE (
-			specname
-		);
+select * from tbl_member
+select * from tbl_notice
 
+<<<<<<< HEAD
 /* ?��바구?�� */
 CREATE TABLE tbl_cart (
 	cartno NUMBER NOT NULL, /* ?��바구?��번호 */
@@ -129,12 +107,25 @@ CREATE TABLE tbl_cart (
 	orderqty NUMBER(4) DEFAULT 0, /* 주문?�� */
 	registerday DATE DEFAULT sysdate /* ?��?��?��?�� */
 );
+=======
+create or replace procedure pcd_notice_insert
+(p_noticetitle   IN  varchar2
+,p_noticecontents     IN  varchar2
+)
+is
+begin
+    for i in 1..100 loop
+        insert into tbl_notice(noticeno, fk_userid, noticedate, noticetitle, noticecontents)
+        values(seq_noticeno.nextval, 'admin', sysdate, p_noticetitle||i, p_noticecontents);
+    end loop;
+end pcd_notice_insert;
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 
-CREATE UNIQUE INDEX PK_tbl_cart
-	ON tbl_cart (
-		cartno ASC
-	);
+exec pcd_notice_insert('2021 여름 휴가 배송안내','여름 휴가 배송안내 여름 휴가 배송안내여름 휴가 배송안내여름 휴가 배송안내여름 휴가 배송안내여름 휴가 배송안내');
+-- PL/SQL 프로시저가 성공적으로 완료되었습니다.
+exec pcd_notice_insert('CJ 대한통운 택배 파업에 따른 배송안내','CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내');
 
+<<<<<<< HEAD
 ALTER TABLE tbl_cart
 	ADD
 		CONSTRAINT PK_tbl_cart
@@ -649,3 +640,6 @@ create sequence seq_cartno
 
 select *
   from user_sequences;
+=======
+commit
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
