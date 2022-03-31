@@ -4,11 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
 
 public class ProductDAO implements InterProductDAO {
 
@@ -41,4 +44,38 @@ public class ProductDAO implements InterProductDAO {
 				e.printStackTrace();
 			}
 		}
+
+
+
+	// 카테고리 클릭시 카테고리 전체상품 보여주기_유혜림
+	@Override
+	public List<ProductVO> productSelectAll() throws SQLException {
+		List<ProductVO> imgList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select productimage1 " + 
+					"from tbl_product " + 
+					"order by productnum ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				ProductVO pvo = new ProductVO();
+				pvo.setProductimage1(rs.getString(1));
+				
+				imgList.add(pvo);
+			
+			}// end of while(rs.next()) -------
+			
+			System.out.println("~~ 확인용 imgList =>" + imgList);
+		} finally {
+			close();
+		}
+		
+		return imgList;
+	}// end of public List<ProductDAO> productSelectAll()----------
 }
