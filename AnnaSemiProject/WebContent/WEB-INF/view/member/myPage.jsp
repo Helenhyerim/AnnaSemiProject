@@ -179,8 +179,8 @@
             </li>
             <li class="shopMain" id="board">
                 <h3><a href=""><i class="far fa-file-alt fa-xs"></i><strong>BOARD</strong></a></h3>
-                <p><a href=""><i class="far fa-edit"></i>고객님께서 작성하신 리뷰를 관리하는 공간입니다.</a></p>
-                <p><a href=""><i class="fas fa-question"></i>고객님께서 작성하신 Q&A를 관리하는 공간입니다.</a></p>
+                <p><a href=""><i class="far fa-edit"></i>&nbsp;고객님께서 작성하신 리뷰를 관리하는 공간입니다.</a></p>
+                <p><a href=""><i class="fas fa-question"></i>&nbsp;고객님께서 작성하신 Q&A를 관리하는 공간입니다.</a></p>
             </li>
             <li class="shopMain" id="wishlist">
                 <h3><a href=""><i class="far fa-heart fa-xs"></i><strong>WISHLIST</strong></a></h3>
