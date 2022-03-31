@@ -151,7 +151,7 @@
 		     
 
 		     <li class="nav-item">
-		        <a class="nav-link h6" href="<%= ctxPath %>/index.an">Mypage</a>
+		        <a class="nav-link h6" href="<%= ctxPath %>/member/myPage.an">Mypage</a>
 		     </li>
 		     <c:if test="${empty sessionScope.loginuser}">
 			     <li class="nav-item">
@@ -163,7 +163,7 @@
 			 </c:if>
 
 				 <li class="nav-item">
-			        <a class="nav-link h6" href="<%= ctxPath %>/index.an">Mypage</a>
+			        <a class="nav-link h6" href="<%= ctxPath %>/member/myPage.an">Mypage</a>
 			     </li>
 			<c:if test="${not empty sessionScope.loginuser}">
 			 	<li class="nav-item">
