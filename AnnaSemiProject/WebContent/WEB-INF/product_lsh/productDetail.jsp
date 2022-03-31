@@ -17,30 +17,18 @@
 		
 		const isExistLoginUser = false;
 		
-	//	if(${empty sessionScope.loginuser}) { isExistLoginUser = true; }
+	//	if(${not empty sessionScope.loginuser}) { isExistLoginUser = true; }
 		
 		// 대표이미지 변경하기(hover)
 		
 		// 옵션 선택하면 옵션 보이기
-		// 필수 옵션
+		// 필수 옵션(인덱스)
 		$("#reqOption").change(function() {
 			
 			let reqOption_value = $("select#reqOption").val();
 			
 			if(reqOption_value != "") {
 				let productName = $("select#reqOption option:selected").text();
-				
-				let html = "<tr>"
-						 + "	<th>" + productName + "</th>"
-						 + "	<td>"
-						 + "		<input type='text' min='1' max='99' value='1' readonly style='width: 30px;'/>
-						 + "		<span class='plus'>+</span>
-						 + "		<span class='minus'>-</span>
-						 + "		<span class='delProduct'>x</span>
-					     + "	</td>
-				         + "</tr>";
-				
-				$("tr#selOptionShow").before(html);
 			}
 		});
 		
@@ -194,7 +182,7 @@
 						</td>
 					</tr>
 					<tr>
-						<th>선택 옵션</th>
+						<th>선택 옵션</th>						
 						<td>
 							<select id="selOption">
 								<option value="">[선택] 옵션을 선택해주세요</option>
