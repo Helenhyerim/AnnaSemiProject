@@ -39,3 +39,21 @@ commit
 
 select * from tbl_member
 select * from tbl_notice
+
+create or replace procedure pcd_notice_insert
+(p_noticetitle   IN  varchar2
+,p_noticecontents     IN  varchar2
+)
+is
+begin
+    for i in 1..100 loop
+        insert into tbl_notice(noticeno, fk_userid, noticedate, noticetitle, noticecontents)
+        values(seq_noticeno.nextval, 'admin', sysdate, p_noticetitle||i, p_noticecontents);
+    end loop;
+end pcd_notice_insert;
+
+exec pcd_notice_insert('2021 여름 휴가 배송안내','여름 휴가 배송안내 여름 휴가 배송안내여름 휴가 배송안내여름 휴가 배송안내여름 휴가 배송안내여름 휴가 배송안내');
+-- PL/SQL 프로시저가 성공적으로 완료되었습니다.
+exec pcd_notice_insert('CJ 대한통운 택배 파업에 따른 배송안내','CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내CJ 대한통운 택배 파업에 따른 배송안내');
+
+commit

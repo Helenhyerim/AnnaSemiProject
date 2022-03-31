@@ -2,6 +2,8 @@ package noticeCBJ.model;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public interface InterNoticeDAO {
 
@@ -16,5 +18,9 @@ public interface InterNoticeDAO {
 	int delete(int noticeNo) throws SQLException;
 
 	int update(NoticeVO vo) throws SQLException;
+
+	int noticeGetTotalPage(Map<String, String> paraMap) throws SQLException;
+
+	List<NoticeVO> noticeSelectPagingMember(Map<String, String> paraMap) throws SQLException;
 
 }

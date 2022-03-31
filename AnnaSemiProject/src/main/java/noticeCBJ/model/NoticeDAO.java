@@ -1,10 +1,14 @@
 package noticeCBJ.model;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -72,7 +76,7 @@ public class NoticeDAO implements InterNoticeDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " update tbl_notice set noticetitle = ?, noticecontents = ? where noticeno = ?";
+			String sql = " update tbl_notice set noticetitle = ?, noticecontents = ? where noticeno = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getNoticeTitle());
@@ -196,6 +200,84 @@ public class NoticeDAO implements InterNoticeDAO {
 			close();
 		}
 		return ret;
+	}
+
+	@Override
+	public List<NoticeVO> noticeSelectPagingMember(Map<String, String> paraMap) throws SQLException {
+		
+		List<NoticeVO> noticeList = new ArrayList<>();
+
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select noticeno, noticedate, noticetitle, cnt "
+					+ " from "
+					+ " ("
+					+ " select rownum AS rno, noticeno, noticedate, noticetitle, cnt "
+					+ " from "
+					+ " ( "
+					+ " select noticeno, noticedate, noticetitle, cnt "
+					+ " from tbl_notice "
+					+ " where fk_userid = 'admin' "
+					+ " order by noticedate desc "
+					+ " ) V "
+					+ " ) T "
+					+ " where rno between ? and ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int noticeCurrentShowPageNo = Integer.parseInt(paraMap.get("noticeCurrentShowPageNo"));
+			int noticeSizePerPage = Integer.parseInt(paraMap.get("noticeSizePerPage"));
+			
+			pstmt.setInt(1, (noticeCurrentShowPageNo * noticeSizePerPage) -(noticeSizePerPage - 1));
+			pstmt.setInt(2, (noticeCurrentShowPageNo * noticeSizePerPage));
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				NoticeVO nvo = new NoticeVO();
+				nvo.setNoticeNo(rs.getInt(1));
+				nvo.setNoticeDate(rs.getString(2));
+				nvo.setNoticeTitle(rs.getString(3));
+				nvo.setCnt(rs.getInt(4));
+				
+				noticeList.add(nvo);
+			}// end of while -----------------------------------------------------
+			
+		} finally {
+			close();
+		}
+		
+		return noticeList;
+	}
+
+	@Override
+	public int noticeGetTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int totalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select ceil( count(*)/? ) "
+					   + " from tbl_notice "
+					   + " where fk_userid = 'admin' ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("noticeSizePerPage"));
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalPage = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;
 	}
 
 	
