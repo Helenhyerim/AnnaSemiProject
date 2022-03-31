@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
     
-<jsp:include page="header_login.jsp"></jsp:include>
+<jsp:include page="header_login.jsp"/>
 
 	<div class="container">
 	  <div style="width: 80%; margin: 80%; auto;">
@@ -10,6 +10,4 @@
 	  </div>		
 	</div>
 
-
-
-<jsp:include page="footer.jsp"></jsp:include>
+<jsp:include page="footer.jsp"/>
