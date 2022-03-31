@@ -1,0 +1,78 @@
+@charset "UTF-8";
+
+
+#orderItems {
+	color: black;
+}
+
+#imgcontainer {
+	margin-bottom: 100px;
+}
+
+#itemdetail {
+	display: inline-block;
+	padding: 40px 0 ;
+}
+
+#itemdetail > a,strong {
+	
+	display: block;
+}
+#itemcheck {
+	margin: 80px -70px;
+	width: 20px;
+	height: 20px;
+}
+#orderItems img {
+	width: 130px; 
+	height: 170px;
+}
+
+#itemName {
+	font-weight: bold;
+}
+
+#itemqnt {
+	display: inline; 
+	margin: 40px 0; 
+	padding-top: 30px; 
+}
+#itemqnt > input{
+	text-align: center;
+}
+#itemprice {
+	display: inline-block;  
+	margin: 70px auto; 
+	padding-left: 40px; 
+	float: right;
+}
+
+#itemprice button {
+	display:block; 
+	width: 100px;
+}
+
+#itemtotalprice {
+	
+	width: 100%; 
+	height: 80px; 
+	background-color: #bfbfbf; 
+	color: black; 
+	font-size: 16pt; 
+	text-align: center; 
+	padding-top: 20px;
+}
+
+form[name='orderinfo'] th {
+	text-align: center; 
+	font-size: 14pt;
+	vertical-align: middle;
+}
+
+label.form-check-label {
+	margin-left: 10px; 
+	font-weight: bold; 
+	vertical-align: middle;
+}
+
+

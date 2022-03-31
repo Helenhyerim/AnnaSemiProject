@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebFilter;
  */
 
 /*
+<<<<<<< HEAD
     필터란 Servlet 2.3 버전에 추가된 것으로,
 	클라이언트의 요청을 서블릿이 받기 전에 가로채어 필터에 작성된 내용을 수행하는 것을 말한다. 
 	따라서 필터를 사용하면 클라이언트의 요청을 가로채서 서버 컴포넌트의 추가적인 다른 기능을 수행시킬 수 있다.
@@ -52,7 +53,7 @@ public class EncodeFilter implements Filter {
 		//     먼저 해주어야 한다.
 		request.setCharacterEncoding("UTF-8");
 		
-		// pass the request along the filter chain
+
 		chain.doFilter(request, response);
 	}
 
