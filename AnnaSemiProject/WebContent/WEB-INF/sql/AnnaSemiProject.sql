@@ -1,4 +1,54 @@
-<<<<<<< HEAD
+show user;
+-- USER이(가) "SEMIORAUSER2"입니다.
+
+grant connect, resource, create view, unlimited tablespace to SEMIORAUSER2;
+
+
+
+select * 
+from tab;
+
+select * 
+from TBL_PRODUCT;
+
+desc tbl_product;
+
+select * 
+from TBL_CATEGORY;
+
+desc TBL_CATEGORY;
+
+select * 
+from TBL_spec;
+
+desc TBL_spec;
+
+insert into TBL_CATEGORY(CATEGORYNUM,CODE,CATEGORYNAME) values (1, 'code-01','목걸이');
+insert into TBL_CATEGORY(CATEGORYNUM,CODE,CATEGORYNAME) values (2, 'code-02','귀걸이');
+insert into TBL_CATEGORY(CATEGORYNUM,CODE,CATEGORYNAME) values (3, 'code-03','반지');
+insert into TBL_CATEGORY(CATEGORYNUM,CODE,CATEGORYNAME) values (4, 'code-04','팔찌');
+commit;
+
+insert into tbl_spec(SPECNUM,SPECNAME) values(1, '일반상품');
+commit;
+-----tbl_product 에 넣을 제품들 프로시저 생성-------------------------
+
+insert into tbl_product(PRODUCTNUM,CATEGORYNUM,PRODUCTNAME,PRODUCTIMAGE1,PRODUCTIMAGE2,PRODUCTQTY,PRODUCTPRICE,SALEPRICE,FK_SPECNUM,PRODUCTINPUTDATE)
+values(1, 3, '반지1', 'p1.png', 'p2.png', 20, 345000, 334650, 1, sysdate);
+
+insert into tbl_product(PRODUCTNUM,CATEGORYNUM,PRODUCTNAME,PRODUCTIMAGE1,PRODUCTIMAGE2,PRODUCTQTY,PRODUCTPRICE,SALEPRICE,FK_SPECNUM,PRODUCTINPUTDATE)
+values(2, 3, '반지2', 'p1.png', 'p2.png', 20, 345000, 334650, 1, sysdate);
+
+insert into tbl_product(PRODUCTNUM,CATEGORYNUM,PRODUCTNAME,PRODUCTIMAGE1,PRODUCTIMAGE2,PRODUCTQTY,PRODUCTPRICE,SALEPRICE,FK_SPECNUM,PRODUCTINPUTDATE)
+values(3, 3, '반지3', 'p1.png', 'p2.png', 20, 345000, 334650, 1, sysdate);
+
+insert into tbl_product(PRODUCTNUM,CATEGORYNUM,PRODUCTNAME,PRODUCTIMAGE1,PRODUCTIMAGE2,PRODUCTQTY,PRODUCTPRICE,SALEPRICE,FK_SPECNUM,PRODUCTINPUTDATE)
+values(4, 3, '반지4', 'p1.png', 'p2.png', 20, 345000, 334650, 1, sysdate);
+
+insert into tbl_product(PRODUCTNUM,CATEGORYNUM,PRODUCTNAME,PRODUCTIMAGE1,PRODUCTIMAGE2,PRODUCTQTY,PRODUCTPRICE,SALEPRICE,FK_SPECNUM,PRODUCTINPUTDATE)
+values(5, 3, '반지5', 'p1.png', 'p2.png', 20, 345000, 334650, 1, sysdate);
+commit;
+------------------------
 
 /* 제품 */
 CREATE TABLE tbl_product (
@@ -581,7 +631,8 @@ ALTER TABLE tbl_order
 		REFERENCES tbl_member (
 			userid
 		);
-
+        
+        
 ------------시퀀스 생성 시작-------
 
 /* FAQ 시퀀스 생성 */
@@ -632,27 +683,7 @@ create sequence seq_cartno
      nocycle         
      nocache;
 
-
-
 ------------시퀀스 생성 끝-------
-
-  
-  
-  
-=======
-show user;
-
-select * from tab;
 
 select *
   from user_sequences;
-  
-select *
-from tbl_member
-order by registerday desc;
-
-delete from tbl_member
-where userid='simyj';
-
-commit;
->>>>>>> branch 'member_branch' of https://github.com/Helenhyerim/AnnaSemiProject.git
