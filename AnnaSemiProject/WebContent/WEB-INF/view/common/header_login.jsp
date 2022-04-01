@@ -123,7 +123,7 @@
 	<!-- 상단 네비게이션 시작 -->
 	<nav class="navbar-expand-lg  bg-white navbar-light fixed-top" id = "first-nav" >
 		<!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
-		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img class="mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
+		<a class="d-flex justify-content-center mr-0" href="<%= ctxPath %>/index.an"" style="margin-right: 10%;"><img class="mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
 		
 		<!-- 아코디언 같은 Navigation Bar 만들기 -->
 	    <button class="navbar-toggler " type="button"onclick="openNav()">
@@ -136,9 +136,7 @@
 		     
 		     
 
-		     <li class="nav-item">
-		        <a class="nav-link h6" href="<%= ctxPath %>/index.an">Mypage</a>
-		     </li>
+		    
 		     <c:if test="${empty sessionScope.loginuser}">
 			     <li class="nav-item">
 			     	<a class="nav-link h6" href="<%= ctxPath %>/login/login.an">Login</a>
@@ -147,14 +145,13 @@
 				    <a class="nav-link h6" href="<%= ctxPath %>/member/memberRegister.an">Join</a>
 				 </li>
 			 </c:if>
-
+			<c:if test="${not empty sessionScope.loginuser}">
+				<li class="nav-item">
+				    <a class="nav-link h6" href="<%= ctxPath %>/login/logout.an">Logout</a>
+				 </li>
 				 <li class="nav-item">
 			        <a class="nav-link h6" href="<%= ctxPath %>/index.an">Mypage</a>
 			     </li>
-			<c:if test="${not empty sessionScope.loginuser}">
-			 	<li class="nav-item">
-				    <a class="nav-link h6" href="<%= ctxPath %>/login/logout.an">Logout</a>
-				 </li>
 			 </c:if>
 			 <li class="nav-item">
 			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Event</a>

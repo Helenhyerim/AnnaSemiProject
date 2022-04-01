@@ -582,6 +582,31 @@ public class MemberDAO implements InterMemberDAO {
          
          return totalPage;
       }
+    // 인증번호를 받아 비밀번호를 변경해주는 메소드  
+	@Override
+	public int pwdUpdate(Map<String, String> paraMap) throws SQLException {
+		int result = 0;
+		
+		try {
+			 conn = ds.getConnection();
+			 
+			 String sql = " update tbl_member set pwd = ? "
+			 		    + "                     , lastpwdchangedate = sysdate "
+			 		    + " where userid = ? ";
+			 
+			 pstmt = conn.prepareStatement(sql);
+			 
+			 pstmt.setString(1, Sha256.encrypt(paraMap.get("pwd")) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
+			 pstmt.setString(2, paraMap.get("userid") );
+			 
+			 result = pstmt.executeUpdate();
+			 
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
       
       
 }
