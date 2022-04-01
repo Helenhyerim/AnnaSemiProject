@@ -2,6 +2,7 @@ package product.model_lsh;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public interface InterProductDAO {
 
@@ -23,7 +24,12 @@ public interface InterProductDAO {
 	
 	// 유혜림
 	
-	// 카테고리 클릭시 카테고리 전체상품 보여주기
-	List<ProductVO> productSelectAll() throws SQLException;
+	
+	
+	// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 전체회원에 대한 총페이지 알아오기
+	int getTotalPage(Map<String, String> paraMap) throws SQLException;
+
+	// 페이징 처리가 되어진 모든 회원 또는 검색한 회원 목록 보여주기
+	List<ProductVO> selectPagingProduct(Map<String, String> paraMap) throws SQLException;
 
 }
