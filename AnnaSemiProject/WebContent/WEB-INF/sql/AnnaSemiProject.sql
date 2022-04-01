@@ -1,11 +1,27 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 show user;
 -- USERì´(ê°€) "SEMIORAUSER2"ì…ë‹ˆë‹¤.
 
 grant connect, resource, create view, unlimited tablespace to SEMIORAUSER2;
 
 
+select ceil(count(*)/10)
+from tbl_product
+
+select rno, productimage1, productname, productprice
+from
+(
+    select rownum as rno, productimage1, productname, productprice
+    from
+    (
+    select productimage1, productname, productprice
+    from tbl_product
+    order by productnum
+    ) V
+) T
+where rno between 1 and 9;
+
+-------------------------------------------
 
 select * 
 from tab;
@@ -1360,7 +1376,7 @@ commit;
 =======
 >>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 show user;
--- USER?´(ê°?) "SEMIORAUSER2"?…?‹ˆ?‹¤.
+-- USER?ï¿½ï¿½(ï¿½?) "SEMIORAUSER2"?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½.
 
 grant connect, resource, create view, unlimited tablespace to SEMIORAUSER2;
 
@@ -1373,21 +1389,21 @@ from tab;
 
 ------------------------
 
-/* ? œ?’ˆ */
+/* ?ï¿½ï¿½?ï¿½ï¿½ */
 CREATE TABLE tbl_product (
-	productnum NUMBER(8) NOT NULL, /* ? œ?’ˆë²ˆí˜¸ */
+	productnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
 	categorynum NUMBER(8) NOT NULL, /* ì¹´í…Œê³ ë¦¬??ë¶„ë¥˜ë²ˆí˜¸ */
-	productname VARCHAR2(100) NOT NULL, /* ? œ?’ˆëª? */
-	productcompany VARCHAR2(50), /* ? œì¡°íšŒ?‚¬ëª? */
-	productimage1 VARCHAR2(100), /* ???‘œ? œ?’ˆ?´ë¯¸ì?1 */
-	productimage2 VARCHAR2(100), /* ???‘œ? œ?’ˆ?´ë¯¸ì?2 */
-	productqty NUMBER(8) DEFAULT 0, /* ? œ?’ˆ?¬ê³ ëŸ‰ */
-	productprice NUMBER(8) DEFAULT 0, /* ? œ?’ˆ? •ê°? */
-	saleprice NUMBER(8) DEFAULT 0, /* ? œ?’ˆ?Œë§¤ê? */
-	fk_specnum NUMBER(8), /* ?Š¤?™ë²ˆí˜¸ */
-	productcontent VARCHAR2(4000), /* ? œ?’ˆ?„¤ëª? */
-	point NUMBER(8) DEFAULT 0, /* ? ë¦½ê¸ˆ */
-	productinputdate DATE DEFAULT sysdate /* ? œ?’ˆ?…ê³ ì¼? */
+	productname VARCHAR2(100) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	productcompany VARCHAR2(50), /* ?ï¿½ï¿½ì¡°íšŒ?ï¿½ï¿½ï¿½? */
+	productimage1 VARCHAR2(100), /* ???ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ë¯¸ï¿½?1 */
+	productimage2 VARCHAR2(100), /* ???ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ë¯¸ï¿½?2 */
+	productqty NUMBER(8) DEFAULT 0, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ê³ ëŸ‰ */
+	productprice NUMBER(8) DEFAULT 0, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	saleprice NUMBER(8) DEFAULT 0, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ë§¤ï¿½? */
+	fk_specnum NUMBER(8), /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	productcontent VARCHAR2(4000), /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	point NUMBER(8) DEFAULT 0, /* ?ï¿½ï¿½ë¦½ê¸ˆ */
+	productinputdate DATE DEFAULT sysdate /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ê³ ì¼?ï¿½ï¿½ */
 =======
 create table anna_test
 (seq          number
@@ -1402,11 +1418,11 @@ select * from anna_test
 INSERT into anna_test (seq, name)  values (1, 'choi');
 
 <<<<<<< HEAD
-/* ? œ?’ˆì¶”ê??´ë¯¸ì? */
+/* ?ï¿½ï¿½?ï¿½ï¿½ì¶”ï¿½??ï¿½ï¿½ë¯¸ï¿½? */
 CREATE TABLE tbl_product_imagefile (
-	imagefilenum NUMBER NOT NULL, /* ?´ë¯¸ì?ë²ˆí˜¸ */
-	fk_productnum NUMBER(8) NOT NULL, /* ? œ?’ˆë²ˆí˜¸ */
-	imagefilename VARCHAR2(100) NOT NULL /* ?´ë¯¸ì??ŒŒ?¼ëª? */
+	imagefilenum NUMBER NOT NULL, /* ?ï¿½ï¿½ë¯¸ï¿½?ë²ˆí˜¸ */
+	fk_productnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	imagefilename VARCHAR2(100) NOT NULL /* ?ï¿½ï¿½ë¯¸ï¿½??ï¿½ï¿½?ï¿½ï¿½ï¿½? */
 );
 =======
 select table tbl_notice
@@ -1421,7 +1437,7 @@ select * from tbl_notice
 CREATE TABLE tbl_category (
 	categorynum NUMBER(8) NOT NULL, /* ì¹´í…Œê³ ë¦¬??ë¶„ë¥˜ë²ˆí˜¸ */
 	code VARCHAR2(20) NOT NULL, /* ì¹´í…Œê³ ë¦¬ì½”ë“œ */
-	categoryname VARCHAR2(100) NOT NULL /* ì¹´í…Œê³ ë¦¬ëª? */
+	categoryname VARCHAR2(100) NOT NULL /* ì¹´í…Œê³ ë¦¬ï¿½? */
 );
 =======
 SELECT * FROM COLS WHERE TABLE_NAME = 'tbl_notice'
@@ -1440,10 +1456,10 @@ insert into tbl_notice (noticeno, fk_userid, noticedate, noticetitle, noticecont
 values (seq_noticeno.nextval, 'admin', sysdate, '2021 ì—¬ë¦„ íœ´ê°€ ë°°ì†¡ì•ˆë‚´', 'ë‚´ìš©');
 
 <<<<<<< HEAD
-/* ? œ?’ˆ?Š¤?™ */
+/* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 CREATE TABLE tbl_spec (
-	specnum NUMBER(8) NOT NULL, /* ?Š¤?™ë²ˆí˜¸ */
-	specname VARCHAR2(100) NOT NULL /* ?Š¤?™ëª? */
+	specnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	specname VARCHAR2(100) NOT NULL /* ?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
 );
 =======
 >>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
@@ -1459,13 +1475,13 @@ select * from tbl_member
 select * from tbl_notice
 
 <<<<<<< HEAD
-/* ?¥ë°”êµ¬?‹ˆ */
+/* ?ï¿½ï¿½ë°”êµ¬?ï¿½ï¿½ */
 CREATE TABLE tbl_cart (
-	cartno NUMBER NOT NULL, /* ?¥ë°”êµ¬?‹ˆë²ˆí˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
-	fk_productnum NUMBER(8) NOT NULL, /* ? œ?’ˆë²ˆí˜¸ */
-	orderqty NUMBER(4) DEFAULT 0, /* ì£¼ë¬¸?Ÿ‰ */
-	registerday DATE DEFAULT sysdate /* ?…? ¥?¼? */
+	cartno NUMBER NOT NULL, /* ?ï¿½ï¿½ë°”êµ¬?ï¿½ï¿½ë²ˆí˜¸ */
+	fk_userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	fk_productnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	orderqty NUMBER(4) DEFAULT 0, /* ì£¼ë¬¸?ï¿½ï¿½ */
+	registerday DATE DEFAULT sysdate /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 );
 =======
 create or replace procedure pcd_notice_insert
@@ -1493,19 +1509,19 @@ ALTER TABLE tbl_cart
 			cartno
 		);
 
-/* ì°œí•˜ê¸? */
+/* ì°œí•˜ï¿½? */
 CREATE TABLE tbl_dibs (
-	fk_productnum NUMBER(8) NOT NULL, /* ? œ?’ˆë²ˆí˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL /* ?šŒ?›?•„?´?”” */
+	fk_productnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	fk_userid VARCHAR2(20) NOT NULL /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 );
 
-/* ê³µì??‚¬?•­ */
+/* ê³µï¿½??ï¿½ï¿½?ï¿½ï¿½ */
 CREATE TABLE tbl_notice (
-	noticeno NUMBER NOT NULL, /* ê³µì??‚¬?•­ë²ˆí˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
-	noticedate DATE DEFAULT sysdate NOT NULL, /* ?‘?„±?¼? */
-	noticetitle VARCHAR2(100) NOT NULL, /* ê¸?? œëª? */
-	noticecontents VARCHAR2(4000) NOT NULL /* ê¸??‚´?š© */
+	noticeno NUMBER NOT NULL, /* ê³µï¿½??ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	fk_userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	noticedate DATE DEFAULT sysdate NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	noticetitle VARCHAR2(100) NOT NULL, /* ï¿½??ï¿½ï¿½ï¿½? */
+	noticecontents VARCHAR2(4000) NOT NULL /* ï¿½??ï¿½ï¿½?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_notice
@@ -1520,16 +1536,16 @@ ALTER TABLE tbl_notice
 			noticeno
 		);
 
-/* ?´ë²¤íŠ¸ */
+/* ?ï¿½ï¿½ë²¤íŠ¸ */
 CREATE TABLE tbl_event (
-	eventno NUMBER NOT NULL, /* ?´ë²¤íŠ¸ë²ˆí˜¸ */
-	userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
-	eventdate DATE DEFAULT sysdate NOT NULL, /* ?‘?„±?¼? */
-	eventtitle VARCHAR2(100) NOT NULL, /* ê¸?? œëª? */
-	eventcontents VARCHAR2(4000) NOT NULL, /* ê¸??‚´?š© */
-	imagefilename VARCHAR2(100), /* ?´ë¯¸ì? */
-	eventstartdate DATE NOT NULL, /* ?´ë²¤íŠ¸?‹œ?‘?¼ */
-	eventenddate DATE /* ?´ë²¤íŠ¸ì¢…ë£Œ?¼ */
+	eventno NUMBER NOT NULL, /* ?ï¿½ï¿½ë²¤íŠ¸ë²ˆí˜¸ */
+	userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	eventdate DATE DEFAULT sysdate NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	eventtitle VARCHAR2(100) NOT NULL, /* ï¿½??ï¿½ï¿½ï¿½? */
+	eventcontents VARCHAR2(4000) NOT NULL, /* ï¿½??ï¿½ï¿½?ï¿½ï¿½ */
+	imagefilename VARCHAR2(100), /* ?ï¿½ï¿½ë¯¸ï¿½? */
+	eventstartdate DATE NOT NULL, /* ?ï¿½ï¿½ë²¤íŠ¸?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	eventenddate DATE /* ?ï¿½ï¿½ë²¤íŠ¸ì¢…ë£Œ?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_event
@@ -1544,13 +1560,13 @@ ALTER TABLE tbl_event
 			eventno
 		);
 
-/* ? œ?’ˆêµ¬ë§¤?›„ê¸°ë¦¬ë·? */
+/* ?ï¿½ï¿½?ï¿½ï¿½êµ¬ë§¤?ï¿½ï¿½ê¸°ë¦¬ï¿½? */
 CREATE TABLE tbl_purchase_reviews (
-	review_no NUMBER NOT NULL, /* ?‘?„±ë²ˆí˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
-	fk_productnum NUMBER(8) NOT NULL, /* ? œ?’ˆë²ˆí˜¸ */
-	reviewcontents VARCHAR2(4000) NOT NULL, /* ë¦¬ë·°?‚´?š© */
-	reviewdate DATE DEFAULT sysdate /* ?‘?„±?¼? */
+	review_no NUMBER NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	fk_userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	fk_productnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	reviewcontents VARCHAR2(4000) NOT NULL, /* ë¦¬ë·°?ï¿½ï¿½?ï¿½ï¿½ */
+	reviewdate DATE DEFAULT sysdate /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_purchase_reviews
@@ -1568,10 +1584,10 @@ ALTER TABLE tbl_purchase_reviews
 /* FAQ */
 CREATE TABLE tbl_faq (
 	faqno NUMBER NOT NULL, /* FAQë²ˆí˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
+	fk_userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 	faqrequesttype VARCHAR2(20) NOT NULL, /* ë¬¸ì˜ë¶„ë¥˜ */
-	faqtitle VARCHAR2(100) NOT NULL, /* ê¸?? œëª? */
-	faqcontents VARCHAR2(4000) NOT NULL /* ê¸??‚´?š© */
+	faqtitle VARCHAR2(100) NOT NULL, /* ï¿½??ï¿½ï¿½ï¿½? */
+	faqcontents VARCHAR2(4000) NOT NULL /* ï¿½??ï¿½ï¿½?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_faq
@@ -1589,13 +1605,13 @@ ALTER TABLE tbl_faq
 /* QnA */
 CREATE TABLE tbl_qna (
 	qnano NUMBER NOT NULL, /* QnAë²ˆí˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
-	questiontitle VARCHAR2(100) NOT NULL, /* ì§ˆë¬¸? œëª? */
-	questioncontents VARCHAR2(4000) NOT NULL, /* ì§ˆë¬¸?‚´?š© */
-	questiondate DATE DEFAULT sysdate NOT NULL, /* ì§ˆë¬¸?‘?„±?¼? */
-	answertitle VARCHAR2(100), /* ?‹µë³?? œëª? */
-	answercontents VARCHAR2(4000), /* ?‹µë³??‚´?š© */
-	answerdate DATE DEFAULT sysdate /* ?‹µë³??‘?„±?¼? */
+	fk_userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	questiontitle VARCHAR2(100) NOT NULL, /* ì§ˆë¬¸?ï¿½ï¿½ï¿½? */
+	questioncontents VARCHAR2(4000) NOT NULL, /* ì§ˆë¬¸?ï¿½ï¿½?ï¿½ï¿½ */
+	questiondate DATE DEFAULT sysdate NOT NULL, /* ì§ˆë¬¸?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	answertitle VARCHAR2(100), /* ?ï¿½ï¿½ï¿½??ï¿½ï¿½ï¿½? */
+	answercontents VARCHAR2(4000), /* ?ï¿½ï¿½ï¿½??ï¿½ï¿½?ï¿½ï¿½ */
+	answerdate DATE DEFAULT sysdate /* ?ï¿½ï¿½ï¿½??ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_qna
@@ -1610,32 +1626,32 @@ ALTER TABLE tbl_qna
 			qnano
 		);
 
-/* ë¡œê·¸?¸ê¸°ë¡ */
+/* ë¡œê·¸?ï¿½ï¿½ê¸°ë¡ */
 CREATE TABLE tbl_loginhistory (
-	fk_userid VARCHAR2(20), /* ?šŒ?›?•„?´?”” */
-	logindate DATE DEFAULT sysdate NOT NULL, /* ë¡œê·¸?¸?‚ ì§œì‹œê°? */
-	clientip VARCHAR2(20) /* ? ‘?†IPì£¼ì†Œ */
+	fk_userid VARCHAR2(20), /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	logindate DATE DEFAULT sysdate NOT NULL, /* ë¡œê·¸?ï¿½ï¿½?ï¿½ï¿½ì§œì‹œï¿½? */
+	clientip VARCHAR2(20) /* ?ï¿½ï¿½?ï¿½ï¿½IPì£¼ì†Œ */
 );
 
-/* ?šŒ?› */
+/* ?ï¿½ï¿½?ï¿½ï¿½ */
 CREATE TABLE tbl_member (
-	userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
-	pwd VARCHAR2(200) NOT NULL, /* ?šŒ?›ë¹„ë?ë²ˆí˜¸ */
-	name VARCHAR2(30) NOT NULL, /* ?šŒ?›ëª? */
-	email VARCHAR2(200) NOT NULL, /* ?´ë©”ì¼ */
-	mobile VARCHAR2(200), /* ?œ´???°ë²ˆí˜¸ */
-	postcode VARCHAR2(10), /* ?š°?¸ë²ˆí˜¸ */
+	userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	pwd VARCHAR2(200) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë¹„ï¿½?ë²ˆí˜¸ */
+	name VARCHAR2(30) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	email VARCHAR2(200) NOT NULL, /* ?ï¿½ï¿½ë©”ì¼ */
+	mobile VARCHAR2(200), /* ?ï¿½ï¿½???ï¿½ï¿½ë²ˆí˜¸ */
+	postcode VARCHAR2(10), /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
 	address VARCHAR2(200), /* ì£¼ì†Œ */
-	detailaddress VARCHAR2(200), /* ?ƒ?„¸ì£¼ì†Œ */
-	gender VARCHAR2(1), /* ?„±ë³? */
-	birthday VARCHAR2(10), /* ?ƒ?…„?›”?¼ */
-	point NUMBER DEFAULT 0, /* ? ë¦½ê¸ˆ */
-	registerday DATE DEFAULT sysdate, /* ê°??…?¼? */
-	lastpwdchangedate DATE DEFAULT sysdate, /* ë§ˆì?ë§‰ì•”?˜¸ë³?ê²½ë‚ ì§œì‹œê°? */
-	register_status NUMBER(1) DEFAULT 1 NOT NULL, /* ?šŒ?›?ƒˆ?‡´?—¬ë¶? */
-	inactive_status NUMBER(1) DEFAULT 0 NOT NULL, /* ?œ´ë©´ì—¬ë¶? */
-	sms_status NUMBER(1) NOT NULL, /* SMS?ˆ˜?‹ ?™?˜?—¬ë¶? */
-	email_status NUMBER(1) NOT NULL /* ?´ë©”ì¼?ˆ˜?‹ ?™?˜?—¬ë¶? */
+	detailaddress VARCHAR2(200), /* ?ï¿½ï¿½?ï¿½ï¿½ì£¼ì†Œ */
+	gender VARCHAR2(1), /* ?ï¿½ï¿½ï¿½? */
+	birthday VARCHAR2(10), /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	point NUMBER DEFAULT 0, /* ?ï¿½ï¿½ë¦½ê¸ˆ */
+	registerday DATE DEFAULT sysdate, /* ï¿½??ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	lastpwdchangedate DATE DEFAULT sysdate, /* ë§ˆï¿½?ë§‰ì•”?ï¿½ï¿½ï¿½?ê²½ë‚ ì§œì‹œï¿½? */
+	register_status NUMBER(1) DEFAULT 1 NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	inactive_status NUMBER(1) DEFAULT 0 NOT NULL, /* ?ï¿½ï¿½ë©´ì—¬ï¿½? */
+	sms_status NUMBER(1) NOT NULL, /* SMS?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	email_status NUMBER(1) NOT NULL /* ?ï¿½ï¿½ë©”ì¼?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
 );
 
 CREATE UNIQUE INDEX PK_tbl_member
@@ -1687,10 +1703,10 @@ ALTER TABLE tbl_member
 		CONSTRAINT CK_tbl_member_email_status
 		CHECK (email_status in(0,1));
 
-/* ?›„ê¸°ì¢‹?•„?š” */
+/* ?ï¿½ï¿½ê¸°ì¢‹?ï¿½ï¿½?ï¿½ï¿½ */
 CREATE TABLE tbl_review_like (
-	fk_review_no NUMBER NOT NULL, /* ?›„ê¸°ë²ˆ?˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL /* ?šŒ?›?•„?´?”” */
+	fk_review_no NUMBER NOT NULL, /* ?ï¿½ï¿½ê¸°ë²ˆ?ï¿½ï¿½ */
+	fk_userid VARCHAR2(20) NOT NULL /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_review_like
@@ -1707,15 +1723,15 @@ ALTER TABLE tbl_review_like
 			fk_userid
 		);
 
-/* ì£¼ë¬¸?ƒ?„¸ */
+/* ì£¼ë¬¸?ï¿½ï¿½?ï¿½ï¿½ */
 CREATE TABLE tbl_orderdetail (
-	orderseqnum NUMBER NOT NULL, /* ì£¼ë¬¸?ƒ?„¸?¼? ¨ë²ˆí˜¸ */
-	fk_productnum NUMBER(8) NOT NULL, /* ? œ?’ˆë²ˆí˜¸ */
+	orderseqnum NUMBER NOT NULL, /* ì£¼ë¬¸?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	fk_productnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
 	ordernum VARCHAR2(20) NOT NULL, /* ì£¼ë¬¸ì½”ë“œ */
-	orderqty NUMBER NOT NULL, /* ì£¼ë¬¸?Ÿ‰ */
-	orderprice NUMBER NOT NULL, /* ì£¼ë¬¸ê°?ê²? */
-	deliverstatus NUMBER(1) DEFAULT 1 NOT NULL, /* ë°°ì†¡?ƒ?ƒœ */
-	deliverdate DATE /* ë°°ì†¡?™„ë£Œì¼? */
+	orderqty NUMBER NOT NULL, /* ì£¼ë¬¸?ï¿½ï¿½ */
+	orderprice NUMBER NOT NULL, /* ì£¼ë¬¸ï¿½?ï¿½? */
+	deliverstatus NUMBER(1) DEFAULT 1 NOT NULL, /* ë°°ì†¡?ï¿½ï¿½?ï¿½ï¿½ */
+	deliverdate DATE /* ë°°ì†¡?ï¿½ï¿½ë£Œì¼?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_orderdetail
@@ -1733,14 +1749,14 @@ ALTER TABLE tbl_orderdetail
 /* ì£¼ë¬¸ */
 CREATE TABLE tbl_order (
 	ordernum VARCHAR2(20) NOT NULL, /* ì£¼ë¬¸ì½”ë“œ */
-	fk_userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?””(ì£¼ë¬¸?•˜?‹œ?Š”ë¶?) */
+	fk_userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½(ì£¼ë¬¸?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½?) */
 	ordertotalprice NUMBER NOT NULL, /* ì£¼ë¬¸ì´ì•¡ */
-	ordertotalpoint NUMBER(8) NOT NULL, /* ì£¼ë¬¸ì´í¬?¸?Š¸ */
-	orderdate DATE DEFAULT sysdate NOT NULL, /* ì£¼ë¬¸?¼? */
-	paymethod NUMBER(1), /* ê²°ì œ?ˆ˜?‹¨ */
-	name_receiver VARCHAR2(30), /* ë°›ìœ¼?‹œ?Š”ë¶? */
-	zipcode VARCHAR2(100), /* ?š°?¸ë²ˆí˜¸ */
-	address VARCHAR2(200) /* ë°°ì†¡ì§?ì£¼ì†Œ */
+	ordertotalpoint NUMBER(8) NOT NULL, /* ì£¼ë¬¸ì´í¬?ï¿½ï¿½?ï¿½ï¿½ */
+	orderdate DATE DEFAULT sysdate NOT NULL, /* ì£¼ë¬¸?ï¿½ï¿½?ï¿½ï¿½ */
+	paymethod NUMBER(1), /* ê²°ì œ?ï¿½ï¿½?ï¿½ï¿½ */
+	name_receiver VARCHAR2(30), /* ë°›ìœ¼?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	zipcode VARCHAR2(100), /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	address VARCHAR2(200) /* ë°°ì†¡ï¿½?ì£¼ì†Œ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_order
@@ -1946,9 +1962,9 @@ ALTER TABLE tbl_order
 		);
         
         
-------------?‹œ???Š¤ ?ƒ?„± ?‹œ?‘-------
+------------?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½-------
 
-/* FAQ ?‹œ???Š¤ ?ƒ?„± */
+/* FAQ ?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ */
      create sequence seq_faqno   
      start with 1    
      increment by 1  
@@ -1956,7 +1972,7 @@ ALTER TABLE tbl_order
      nocycle         
      nocache;
 
-/* ê³µì??‚¬?•­ ?‹œ???Š¤ ?ƒ?„± */
+/* ê³µï¿½??ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ */
 create sequence seq_noticeno   
      start with 1    
      increment by 1  
@@ -1964,7 +1980,7 @@ create sequence seq_noticeno
      nocycle         
      nocache;
 
-/* ?´ë²¤íŠ¸ ?‹œ???Š¤ ?ƒ?„± */
+/* ?ï¿½ï¿½ë²¤íŠ¸ ?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ */
 create sequence seq_eventno    
      start with 1    
      increment by 1  
@@ -1972,7 +1988,7 @@ create sequence seq_eventno
      nocycle         
      nocache;
 
-/* QNA  ?‹œ???Š¤ ?ƒ?„± */
+/* QNA  ?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ */
 create sequence seq_qnano 
      start with 1    
      increment by 1  
@@ -1980,7 +1996,7 @@ create sequence seq_qnano
      nocycle         
      nocache;
 
-/* ? œ?’ˆêµ¬ë§¤?›„ê¸°ë¦¬ë·? ?‹œ???Š¤ ?ƒ?„± */
+/* ?ï¿½ï¿½?ï¿½ï¿½êµ¬ë§¤?ï¿½ï¿½ê¸°ë¦¬ï¿½? ?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ */
 create sequence seq_review_no  
      start with 1    
      increment by 1  
@@ -1988,7 +2004,7 @@ create sequence seq_review_no
      nocycle         
      nocache;
 
-/* ?¥ë°”êµ¬?‹ˆ ?‹œ???Š¤ ?ƒ?„± */
+/* ?ï¿½ï¿½ë°”êµ¬?ï¿½ï¿½ ?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ */
 create sequence seq_cartno  
      start with 1    
      increment by 1  
@@ -1996,7 +2012,7 @@ create sequence seq_cartno
      nocycle         
      nocache;
 
-------------?‹œ???Š¤ ?ƒ?„± ?-------
+------------?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½-------
 
 select *
   from user_sequences;
@@ -2014,7 +2030,7 @@ commit;
 =======
 >>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 show user;
--- USER?´(ê°?) "SEMIORAUSER2"?…?‹ˆ?‹¤.
+-- USER?ï¿½ï¿½(ï¿½?) "SEMIORAUSER2"?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½.
 
 grant connect, resource, create view, unlimited tablespace to SEMIORAUSER2;
 
@@ -2027,21 +2043,21 @@ from tab;
 
 ------------------------
 
-/* ? œ?’ˆ */
+/* ?ï¿½ï¿½?ï¿½ï¿½ */
 CREATE TABLE tbl_product (
-	productnum NUMBER(8) NOT NULL, /* ? œ?’ˆë²ˆí˜¸ */
+	productnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
 	categorynum NUMBER(8) NOT NULL, /* ì¹´í…Œê³ ë¦¬??ë¶„ë¥˜ë²ˆí˜¸ */
-	productname VARCHAR2(100) NOT NULL, /* ? œ?’ˆëª? */
-	productcompany VARCHAR2(50), /* ? œì¡°íšŒ?‚¬ëª? */
-	productimage1 VARCHAR2(100), /* ???‘œ? œ?’ˆ?´ë¯¸ì?1 */
-	productimage2 VARCHAR2(100), /* ???‘œ? œ?’ˆ?´ë¯¸ì?2 */
-	productqty NUMBER(8) DEFAULT 0, /* ? œ?’ˆ?¬ê³ ëŸ‰ */
-	productprice NUMBER(8) DEFAULT 0, /* ? œ?’ˆ? •ê°? */
-	saleprice NUMBER(8) DEFAULT 0, /* ? œ?’ˆ?Œë§¤ê? */
-	fk_specnum NUMBER(8), /* ?Š¤?™ë²ˆí˜¸ */
-	productcontent VARCHAR2(4000), /* ? œ?’ˆ?„¤ëª? */
-	point NUMBER(8) DEFAULT 0, /* ? ë¦½ê¸ˆ */
-	productinputdate DATE DEFAULT sysdate /* ? œ?’ˆ?…ê³ ì¼? */
+	productname VARCHAR2(100) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	productcompany VARCHAR2(50), /* ?ï¿½ï¿½ì¡°íšŒ?ï¿½ï¿½ï¿½? */
+	productimage1 VARCHAR2(100), /* ???ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ë¯¸ï¿½?1 */
+	productimage2 VARCHAR2(100), /* ???ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ë¯¸ï¿½?2 */
+	productqty NUMBER(8) DEFAULT 0, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ê³ ëŸ‰ */
+	productprice NUMBER(8) DEFAULT 0, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	saleprice NUMBER(8) DEFAULT 0, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ë§¤ï¿½? */
+	fk_specnum NUMBER(8), /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	productcontent VARCHAR2(4000), /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	point NUMBER(8) DEFAULT 0, /* ?ï¿½ï¿½ë¦½ê¸ˆ */
+	productinputdate DATE DEFAULT sysdate /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ê³ ì¼?ï¿½ï¿½ */
 =======
 create table anna_test
 (seq          number
@@ -2056,11 +2072,11 @@ select * from anna_test
 INSERT into anna_test (seq, name)  values (1, 'choi');
 
 <<<<<<< HEAD
-/* ? œ?’ˆì¶”ê??´ë¯¸ì? */
+/* ?ï¿½ï¿½?ï¿½ï¿½ì¶”ï¿½??ï¿½ï¿½ë¯¸ï¿½? */
 CREATE TABLE tbl_product_imagefile (
-	imagefilenum NUMBER NOT NULL, /* ?´ë¯¸ì?ë²ˆí˜¸ */
-	fk_productnum NUMBER(8) NOT NULL, /* ? œ?’ˆë²ˆí˜¸ */
-	imagefilename VARCHAR2(100) NOT NULL /* ?´ë¯¸ì??ŒŒ?¼ëª? */
+	imagefilenum NUMBER NOT NULL, /* ?ï¿½ï¿½ë¯¸ï¿½?ë²ˆí˜¸ */
+	fk_productnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	imagefilename VARCHAR2(100) NOT NULL /* ?ï¿½ï¿½ë¯¸ï¿½??ï¿½ï¿½?ï¿½ï¿½ï¿½? */
 );
 =======
 select table tbl_notice
@@ -2075,7 +2091,7 @@ select * from tbl_notice
 CREATE TABLE tbl_category (
 	categorynum NUMBER(8) NOT NULL, /* ì¹´í…Œê³ ë¦¬??ë¶„ë¥˜ë²ˆí˜¸ */
 	code VARCHAR2(20) NOT NULL, /* ì¹´í…Œê³ ë¦¬ì½”ë“œ */
-	categoryname VARCHAR2(100) NOT NULL /* ì¹´í…Œê³ ë¦¬ëª? */
+	categoryname VARCHAR2(100) NOT NULL /* ì¹´í…Œê³ ë¦¬ï¿½? */
 );
 =======
 SELECT * FROM COLS WHERE TABLE_NAME = 'tbl_notice'
@@ -2094,10 +2110,10 @@ insert into tbl_notice (noticeno, fk_userid, noticedate, noticetitle, noticecont
 values (seq_noticeno.nextval, 'admin', sysdate, '2021 ì—¬ë¦„ íœ´ê°€ ë°°ì†¡ì•ˆë‚´', 'ë‚´ìš©');
 
 <<<<<<< HEAD
-/* ? œ?’ˆ?Š¤?™ */
+/* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 CREATE TABLE tbl_spec (
-	specnum NUMBER(8) NOT NULL, /* ?Š¤?™ë²ˆí˜¸ */
-	specname VARCHAR2(100) NOT NULL /* ?Š¤?™ëª? */
+	specnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	specname VARCHAR2(100) NOT NULL /* ?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
 );
 =======
 >>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
@@ -2113,13 +2129,13 @@ select * from tbl_member
 select * from tbl_notice
 
 <<<<<<< HEAD
-/* ?¥ë°”êµ¬?‹ˆ */
+/* ?ï¿½ï¿½ë°”êµ¬?ï¿½ï¿½ */
 CREATE TABLE tbl_cart (
-	cartno NUMBER NOT NULL, /* ?¥ë°”êµ¬?‹ˆë²ˆí˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
-	fk_productnum NUMBER(8) NOT NULL, /* ? œ?’ˆë²ˆí˜¸ */
-	orderqty NUMBER(4) DEFAULT 0, /* ì£¼ë¬¸?Ÿ‰ */
-	registerday DATE DEFAULT sysdate /* ?…? ¥?¼? */
+	cartno NUMBER NOT NULL, /* ?ï¿½ï¿½ë°”êµ¬?ï¿½ï¿½ë²ˆí˜¸ */
+	fk_userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	fk_productnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	orderqty NUMBER(4) DEFAULT 0, /* ì£¼ë¬¸?ï¿½ï¿½ */
+	registerday DATE DEFAULT sysdate /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 );
 =======
 create or replace procedure pcd_notice_insert
@@ -2147,19 +2163,19 @@ ALTER TABLE tbl_cart
 			cartno
 		);
 
-/* ì°œí•˜ê¸? */
+/* ì°œí•˜ï¿½? */
 CREATE TABLE tbl_dibs (
-	fk_productnum NUMBER(8) NOT NULL, /* ? œ?’ˆë²ˆí˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL /* ?šŒ?›?•„?´?”” */
+	fk_productnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	fk_userid VARCHAR2(20) NOT NULL /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 );
 
-/* ê³µì??‚¬?•­ */
+/* ê³µï¿½??ï¿½ï¿½?ï¿½ï¿½ */
 CREATE TABLE tbl_notice (
-	noticeno NUMBER NOT NULL, /* ê³µì??‚¬?•­ë²ˆí˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
-	noticedate DATE DEFAULT sysdate NOT NULL, /* ?‘?„±?¼? */
-	noticetitle VARCHAR2(100) NOT NULL, /* ê¸?? œëª? */
-	noticecontents VARCHAR2(4000) NOT NULL /* ê¸??‚´?š© */
+	noticeno NUMBER NOT NULL, /* ê³µï¿½??ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	fk_userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	noticedate DATE DEFAULT sysdate NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	noticetitle VARCHAR2(100) NOT NULL, /* ï¿½??ï¿½ï¿½ï¿½? */
+	noticecontents VARCHAR2(4000) NOT NULL /* ï¿½??ï¿½ï¿½?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_notice
@@ -2174,16 +2190,16 @@ ALTER TABLE tbl_notice
 			noticeno
 		);
 
-/* ?´ë²¤íŠ¸ */
+/* ?ï¿½ï¿½ë²¤íŠ¸ */
 CREATE TABLE tbl_event (
-	eventno NUMBER NOT NULL, /* ?´ë²¤íŠ¸ë²ˆí˜¸ */
-	userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
-	eventdate DATE DEFAULT sysdate NOT NULL, /* ?‘?„±?¼? */
-	eventtitle VARCHAR2(100) NOT NULL, /* ê¸?? œëª? */
-	eventcontents VARCHAR2(4000) NOT NULL, /* ê¸??‚´?š© */
-	imagefilename VARCHAR2(100), /* ?´ë¯¸ì? */
-	eventstartdate DATE NOT NULL, /* ?´ë²¤íŠ¸?‹œ?‘?¼ */
-	eventenddate DATE /* ?´ë²¤íŠ¸ì¢…ë£Œ?¼ */
+	eventno NUMBER NOT NULL, /* ?ï¿½ï¿½ë²¤íŠ¸ë²ˆí˜¸ */
+	userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	eventdate DATE DEFAULT sysdate NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	eventtitle VARCHAR2(100) NOT NULL, /* ï¿½??ï¿½ï¿½ï¿½? */
+	eventcontents VARCHAR2(4000) NOT NULL, /* ï¿½??ï¿½ï¿½?ï¿½ï¿½ */
+	imagefilename VARCHAR2(100), /* ?ï¿½ï¿½ë¯¸ï¿½? */
+	eventstartdate DATE NOT NULL, /* ?ï¿½ï¿½ë²¤íŠ¸?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	eventenddate DATE /* ?ï¿½ï¿½ë²¤íŠ¸ì¢…ë£Œ?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_event
@@ -2198,13 +2214,13 @@ ALTER TABLE tbl_event
 			eventno
 		);
 
-/* ? œ?’ˆêµ¬ë§¤?›„ê¸°ë¦¬ë·? */
+/* ?ï¿½ï¿½?ï¿½ï¿½êµ¬ë§¤?ï¿½ï¿½ê¸°ë¦¬ï¿½? */
 CREATE TABLE tbl_purchase_reviews (
-	review_no NUMBER NOT NULL, /* ?‘?„±ë²ˆí˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
-	fk_productnum NUMBER(8) NOT NULL, /* ? œ?’ˆë²ˆí˜¸ */
-	reviewcontents VARCHAR2(4000) NOT NULL, /* ë¦¬ë·°?‚´?š© */
-	reviewdate DATE DEFAULT sysdate /* ?‘?„±?¼? */
+	review_no NUMBER NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	fk_userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	fk_productnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	reviewcontents VARCHAR2(4000) NOT NULL, /* ë¦¬ë·°?ï¿½ï¿½?ï¿½ï¿½ */
+	reviewdate DATE DEFAULT sysdate /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_purchase_reviews
@@ -2222,10 +2238,10 @@ ALTER TABLE tbl_purchase_reviews
 /* FAQ */
 CREATE TABLE tbl_faq (
 	faqno NUMBER NOT NULL, /* FAQë²ˆí˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
+	fk_userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 	faqrequesttype VARCHAR2(20) NOT NULL, /* ë¬¸ì˜ë¶„ë¥˜ */
-	faqtitle VARCHAR2(100) NOT NULL, /* ê¸?? œëª? */
-	faqcontents VARCHAR2(4000) NOT NULL /* ê¸??‚´?š© */
+	faqtitle VARCHAR2(100) NOT NULL, /* ï¿½??ï¿½ï¿½ï¿½? */
+	faqcontents VARCHAR2(4000) NOT NULL /* ï¿½??ï¿½ï¿½?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_faq
@@ -2243,13 +2259,13 @@ ALTER TABLE tbl_faq
 /* QnA */
 CREATE TABLE tbl_qna (
 	qnano NUMBER NOT NULL, /* QnAë²ˆí˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
-	questiontitle VARCHAR2(100) NOT NULL, /* ì§ˆë¬¸? œëª? */
-	questioncontents VARCHAR2(4000) NOT NULL, /* ì§ˆë¬¸?‚´?š© */
-	questiondate DATE DEFAULT sysdate NOT NULL, /* ì§ˆë¬¸?‘?„±?¼? */
-	answertitle VARCHAR2(100), /* ?‹µë³?? œëª? */
-	answercontents VARCHAR2(4000), /* ?‹µë³??‚´?š© */
-	answerdate DATE DEFAULT sysdate /* ?‹µë³??‘?„±?¼? */
+	fk_userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	questiontitle VARCHAR2(100) NOT NULL, /* ì§ˆë¬¸?ï¿½ï¿½ï¿½? */
+	questioncontents VARCHAR2(4000) NOT NULL, /* ì§ˆë¬¸?ï¿½ï¿½?ï¿½ï¿½ */
+	questiondate DATE DEFAULT sysdate NOT NULL, /* ì§ˆë¬¸?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	answertitle VARCHAR2(100), /* ?ï¿½ï¿½ï¿½??ï¿½ï¿½ï¿½? */
+	answercontents VARCHAR2(4000), /* ?ï¿½ï¿½ï¿½??ï¿½ï¿½?ï¿½ï¿½ */
+	answerdate DATE DEFAULT sysdate /* ?ï¿½ï¿½ï¿½??ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_qna
@@ -2264,32 +2280,32 @@ ALTER TABLE tbl_qna
 			qnano
 		);
 
-/* ë¡œê·¸?¸ê¸°ë¡ */
+/* ë¡œê·¸?ï¿½ï¿½ê¸°ë¡ */
 CREATE TABLE tbl_loginhistory (
-	fk_userid VARCHAR2(20), /* ?šŒ?›?•„?´?”” */
-	logindate DATE DEFAULT sysdate NOT NULL, /* ë¡œê·¸?¸?‚ ì§œì‹œê°? */
-	clientip VARCHAR2(20) /* ? ‘?†IPì£¼ì†Œ */
+	fk_userid VARCHAR2(20), /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	logindate DATE DEFAULT sysdate NOT NULL, /* ë¡œê·¸?ï¿½ï¿½?ï¿½ï¿½ì§œì‹œï¿½? */
+	clientip VARCHAR2(20) /* ?ï¿½ï¿½?ï¿½ï¿½IPì£¼ì†Œ */
 );
 
-/* ?šŒ?› */
+/* ?ï¿½ï¿½?ï¿½ï¿½ */
 CREATE TABLE tbl_member (
-	userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?”” */
-	pwd VARCHAR2(200) NOT NULL, /* ?šŒ?›ë¹„ë?ë²ˆí˜¸ */
-	name VARCHAR2(30) NOT NULL, /* ?šŒ?›ëª? */
-	email VARCHAR2(200) NOT NULL, /* ?´ë©”ì¼ */
-	mobile VARCHAR2(200), /* ?œ´???°ë²ˆí˜¸ */
-	postcode VARCHAR2(10), /* ?š°?¸ë²ˆí˜¸ */
+	userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	pwd VARCHAR2(200) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë¹„ï¿½?ë²ˆí˜¸ */
+	name VARCHAR2(30) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	email VARCHAR2(200) NOT NULL, /* ?ï¿½ï¿½ë©”ì¼ */
+	mobile VARCHAR2(200), /* ?ï¿½ï¿½???ï¿½ï¿½ë²ˆí˜¸ */
+	postcode VARCHAR2(10), /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
 	address VARCHAR2(200), /* ì£¼ì†Œ */
-	detailaddress VARCHAR2(200), /* ?ƒ?„¸ì£¼ì†Œ */
-	gender VARCHAR2(1), /* ?„±ë³? */
-	birthday VARCHAR2(10), /* ?ƒ?…„?›”?¼ */
-	point NUMBER DEFAULT 0, /* ? ë¦½ê¸ˆ */
-	registerday DATE DEFAULT sysdate, /* ê°??…?¼? */
-	lastpwdchangedate DATE DEFAULT sysdate, /* ë§ˆì?ë§‰ì•”?˜¸ë³?ê²½ë‚ ì§œì‹œê°? */
-	register_status NUMBER(1) DEFAULT 1 NOT NULL, /* ?šŒ?›?ƒˆ?‡´?—¬ë¶? */
-	inactive_status NUMBER(1) DEFAULT 0 NOT NULL, /* ?œ´ë©´ì—¬ë¶? */
-	sms_status NUMBER(1) NOT NULL, /* SMS?ˆ˜?‹ ?™?˜?—¬ë¶? */
-	email_status NUMBER(1) NOT NULL /* ?´ë©”ì¼?ˆ˜?‹ ?™?˜?—¬ë¶? */
+	detailaddress VARCHAR2(200), /* ?ï¿½ï¿½?ï¿½ï¿½ì£¼ì†Œ */
+	gender VARCHAR2(1), /* ?ï¿½ï¿½ï¿½? */
+	birthday VARCHAR2(10), /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	point NUMBER DEFAULT 0, /* ?ï¿½ï¿½ë¦½ê¸ˆ */
+	registerday DATE DEFAULT sysdate, /* ï¿½??ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
+	lastpwdchangedate DATE DEFAULT sysdate, /* ë§ˆï¿½?ë§‰ì•”?ï¿½ï¿½ï¿½?ê²½ë‚ ì§œì‹œï¿½? */
+	register_status NUMBER(1) DEFAULT 1 NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	inactive_status NUMBER(1) DEFAULT 0 NOT NULL, /* ?ï¿½ï¿½ë©´ì—¬ï¿½? */
+	sms_status NUMBER(1) NOT NULL, /* SMS?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	email_status NUMBER(1) NOT NULL /* ?ï¿½ï¿½ë©”ì¼?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
 );
 
 CREATE UNIQUE INDEX PK_tbl_member
@@ -2341,10 +2357,10 @@ ALTER TABLE tbl_member
 		CONSTRAINT CK_tbl_member_email_status
 		CHECK (email_status in(0,1));
 
-/* ?›„ê¸°ì¢‹?•„?š” */
+/* ?ï¿½ï¿½ê¸°ì¢‹?ï¿½ï¿½?ï¿½ï¿½ */
 CREATE TABLE tbl_review_like (
-	fk_review_no NUMBER NOT NULL, /* ?›„ê¸°ë²ˆ?˜¸ */
-	fk_userid VARCHAR2(20) NOT NULL /* ?šŒ?›?•„?´?”” */
+	fk_review_no NUMBER NOT NULL, /* ?ï¿½ï¿½ê¸°ë²ˆ?ï¿½ï¿½ */
+	fk_userid VARCHAR2(20) NOT NULL /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_review_like
@@ -2361,15 +2377,15 @@ ALTER TABLE tbl_review_like
 			fk_userid
 		);
 
-/* ì£¼ë¬¸?ƒ?„¸ */
+/* ì£¼ë¬¸?ï¿½ï¿½?ï¿½ï¿½ */
 CREATE TABLE tbl_orderdetail (
-	orderseqnum NUMBER NOT NULL, /* ì£¼ë¬¸?ƒ?„¸?¼? ¨ë²ˆí˜¸ */
-	fk_productnum NUMBER(8) NOT NULL, /* ? œ?’ˆë²ˆí˜¸ */
+	orderseqnum NUMBER NOT NULL, /* ì£¼ë¬¸?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	fk_productnum NUMBER(8) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
 	ordernum VARCHAR2(20) NOT NULL, /* ì£¼ë¬¸ì½”ë“œ */
-	orderqty NUMBER NOT NULL, /* ì£¼ë¬¸?Ÿ‰ */
-	orderprice NUMBER NOT NULL, /* ì£¼ë¬¸ê°?ê²? */
-	deliverstatus NUMBER(1) DEFAULT 1 NOT NULL, /* ë°°ì†¡?ƒ?ƒœ */
-	deliverdate DATE /* ë°°ì†¡?™„ë£Œì¼? */
+	orderqty NUMBER NOT NULL, /* ì£¼ë¬¸?ï¿½ï¿½ */
+	orderprice NUMBER NOT NULL, /* ì£¼ë¬¸ï¿½?ï¿½? */
+	deliverstatus NUMBER(1) DEFAULT 1 NOT NULL, /* ë°°ì†¡?ï¿½ï¿½?ï¿½ï¿½ */
+	deliverdate DATE /* ë°°ì†¡?ï¿½ï¿½ë£Œì¼?ï¿½ï¿½ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_orderdetail
@@ -2387,14 +2403,14 @@ ALTER TABLE tbl_orderdetail
 /* ì£¼ë¬¸ */
 CREATE TABLE tbl_order (
 	ordernum VARCHAR2(20) NOT NULL, /* ì£¼ë¬¸ì½”ë“œ */
-	fk_userid VARCHAR2(20) NOT NULL, /* ?šŒ?›?•„?´?””(ì£¼ë¬¸?•˜?‹œ?Š”ë¶?) */
+	fk_userid VARCHAR2(20) NOT NULL, /* ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½(ì£¼ë¬¸?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½?) */
 	ordertotalprice NUMBER NOT NULL, /* ì£¼ë¬¸ì´ì•¡ */
-	ordertotalpoint NUMBER(8) NOT NULL, /* ì£¼ë¬¸ì´í¬?¸?Š¸ */
-	orderdate DATE DEFAULT sysdate NOT NULL, /* ì£¼ë¬¸?¼? */
-	paymethod NUMBER(1), /* ê²°ì œ?ˆ˜?‹¨ */
-	name_receiver VARCHAR2(30), /* ë°›ìœ¼?‹œ?Š”ë¶? */
-	zipcode VARCHAR2(100), /* ?š°?¸ë²ˆí˜¸ */
-	address VARCHAR2(200) /* ë°°ì†¡ì§?ì£¼ì†Œ */
+	ordertotalpoint NUMBER(8) NOT NULL, /* ì£¼ë¬¸ì´í¬?ï¿½ï¿½?ï¿½ï¿½ */
+	orderdate DATE DEFAULT sysdate NOT NULL, /* ì£¼ë¬¸?ï¿½ï¿½?ï¿½ï¿½ */
+	paymethod NUMBER(1), /* ê²°ì œ?ï¿½ï¿½?ï¿½ï¿½ */
+	name_receiver VARCHAR2(30), /* ë°›ìœ¼?ï¿½ï¿½?ï¿½ï¿½ï¿½? */
+	zipcode VARCHAR2(100), /* ?ï¿½ï¿½?ï¿½ï¿½ë²ˆí˜¸ */
+	address VARCHAR2(200) /* ë°°ì†¡ï¿½?ì£¼ì†Œ */
 );
 
 CREATE UNIQUE INDEX PK_tbl_order
@@ -2600,9 +2616,9 @@ ALTER TABLE tbl_order
 		);
         
         
-------------?‹œ???Š¤ ?ƒ?„± ?‹œ?‘-------
+------------?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½-------
 
-/* FAQ ?‹œ???Š¤ ?ƒ?„± */
+/* FAQ ?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ */
      create sequence seq_faqno   
      start with 1    
      increment by 1  
@@ -2610,7 +2626,7 @@ ALTER TABLE tbl_order
      nocycle         
      nocache;
 
-/* ê³µì??‚¬?•­ ?‹œ???Š¤ ?ƒ?„± */
+/* ê³µï¿½??ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ */
 create sequence seq_noticeno   
      start with 1    
      increment by 1  
@@ -2618,7 +2634,7 @@ create sequence seq_noticeno
      nocycle         
      nocache;
 
-/* ?´ë²¤íŠ¸ ?‹œ???Š¤ ?ƒ?„± */
+/* ?ï¿½ï¿½ë²¤íŠ¸ ?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ */
 create sequence seq_eventno    
      start with 1    
      increment by 1  
@@ -2626,7 +2642,7 @@ create sequence seq_eventno
      nocycle         
      nocache;
 
-/* QNA  ?‹œ???Š¤ ?ƒ?„± */
+/* QNA  ?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ */
 create sequence seq_qnano 
      start with 1    
      increment by 1  
@@ -2634,7 +2650,7 @@ create sequence seq_qnano
      nocycle         
      nocache;
 
-/* ? œ?’ˆêµ¬ë§¤?›„ê¸°ë¦¬ë·? ?‹œ???Š¤ ?ƒ?„± */
+/* ?ï¿½ï¿½?ï¿½ï¿½êµ¬ë§¤?ï¿½ï¿½ê¸°ë¦¬ï¿½? ?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ */
 create sequence seq_review_no  
      start with 1    
      increment by 1  
@@ -2642,7 +2658,7 @@ create sequence seq_review_no
      nocycle         
      nocache;
 
-/* ?¥ë°”êµ¬?‹ˆ ?‹œ???Š¤ ?ƒ?„± */
+/* ?ï¿½ï¿½ë°”êµ¬?ï¿½ï¿½ ?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ */
 create sequence seq_cartno  
      start with 1    
      increment by 1  
@@ -2650,14 +2666,11 @@ create sequence seq_cartno
      nocycle         
      nocache;
 
-------------?‹œ???Š¤ ?ƒ?„± ?-------
+------------?ï¿½ï¿½???ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½-------
 
 select *
   from user_sequences;
-<<<<<<< HEAD
-=======
-=======
+
+
 commit
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
+
