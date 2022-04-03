@@ -26,13 +26,15 @@
 		
 		$("select#sizePerPage").val("${requestScope.sizePerPage}");
 		
+		
+		
+			
+		});
 	});
 	
 	// Function Declaration
 	
-	function getproductnum() {
-		
-	}
+	
 	
 </script>
 
@@ -137,19 +139,19 @@
 			 	
 			 	<div id="image-container" class="col-md-10 ">
 				 	<div class="row">
-				 	
-				 	<c:forEach var="productvo" items="${requestScope.productList}">
-					  <div class="col-4" style="margin-bottom: 100px;" >
-						  <a href="<%=ctxPath %>/product_lsh/productDetail.an" onclick="">
-						    <img src="<%=ctxPath %>/images/${productvo.productimage1}" class="card-img-top" alt="..." >
-						  </a>
-					      <span id="product_detail">
-						      <a href="" style="">${productvo.productname}</a>
-						      <a href="" style="">${productvo.productprice}원</a>
-					      </span>
-					  </div>
-					</c:forEach> 
-					 
+				 	<c:if test="${not empty requestScope.productList}">
+					 	<c:forEach var="productvo" items="${requestScope.productList}">
+						  <div class="col-4" style="margin-bottom: 100px;" class="clickProduct">
+							  <a href="<%=ctxPath %>/product_lsh/productDetail.an?productnum=${productvo.productnum}" class="productDetail">
+							    <img src="<%=ctxPath %>/images/${productvo.productimage1}" class="card-img-top" alt="..." >
+							  </a>
+						      <span id="product_detail">
+							      <a href="" style="" class="productDetail">${productvo.productname}</a>
+							      <a href="" style="" class="productDetail">${productvo.productprice}원</a>
+						      </span>
+						  </div>
+						</c:forEach> 
+					</c:if> 
 					</div>
 					
 			 	</div>

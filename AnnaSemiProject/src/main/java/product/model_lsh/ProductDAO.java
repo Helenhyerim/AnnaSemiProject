@@ -94,13 +94,13 @@ public class ProductDAO implements InterProductDAO {
 			conn = ds.getConnection();
 			
 			// rno 는 빼고 한다.
-			String sql = "select productimage1, productname, productprice "+
+			String sql = "select productimage1, productname, productprice, productnum "+
 					"from "+
 					"( "+
-					"    select rownum as rno, productimage1, productname, productprice "+
+					"    select rownum as rno, productimage1, productname, productprice, productnum "+
 					"    from "+
 					"    ( "+
-					"    select productimage1, productname, productprice "+
+					"    select productimage1, productname, productprice, productnum "+
 					"    from tbl_product "+
 					"    order by productnum "+
 					"    ) V "+
@@ -126,6 +126,7 @@ public class ProductDAO implements InterProductDAO {
 				pvo.setProductimage1(rs.getString(1));
 				pvo.setProductname(rs.getString(2));
 				pvo.setProductprice(rs.getInt(3));
+				pvo.setProductnum(rs.getInt(4));
 				
 				productList.add(pvo);
 			}// end of while()----------
@@ -136,4 +137,25 @@ public class ProductDAO implements InterProductDAO {
 		
 		return productList;
 	}// end of public List<ProductVO> selectPagingProduct(Map<String, String> paraMap) 
+
+
+	// 한 상품 클릭시 productnum 을 받아서 해당 상품 디테일을 보여주기
+	public ProductVO getProductDetail(String productnum) throws SQLException {
+		
+		ProductVO pvo = new ProductVO();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =" select * "
+					  + " from tbl_product ";
+			
+			
+		} finally {
+			close();
+		}
+		
+		
+		return pvo;
+	}
 }

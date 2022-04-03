@@ -32,4 +32,7 @@ public interface InterProductDAO {
 	// 페이징 처리가 되어진 모든 회원 또는 검색한 회원 목록 보여주기
 	List<ProductVO> selectPagingProduct(Map<String, String> paraMap) throws SQLException;
 
+	// 한 상품 클릭시 productnum 을 받아서 해당 상품 디테일을 보여주기
+	ProductVO getProductDetail(String productnum) throws SQLException;
+
 }

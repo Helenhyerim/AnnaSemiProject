@@ -72,7 +72,7 @@ public class CategoryClickAction extends AbstractController {
 
 		List<ProductVO> productList = pdao.selectPagingProduct(paraMap);
 
-		request.setAttribute("productList", productList);
+		
 		request.setAttribute("sizePerPage", sizePerPage); // jsp 단에서 선택한 페이지수를 유지해주기위해 넘겨준다
 
 
