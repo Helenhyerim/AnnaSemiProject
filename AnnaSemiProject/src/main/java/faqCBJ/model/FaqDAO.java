@@ -52,7 +52,7 @@ public class FaqDAO implements InterFaqDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = "select faqno, fk_userid, faqrequesttype, faqtitle, faqcontents from tbl_faq order by faqno desc ";
+			String sql = "select faqno, fk_userid, faqrequesttype, faqtitle, faqcontents from tbl_faq order by faqno ";
 			
 			pstmt = conn.prepareStatement(sql);			
 			

@@ -11,33 +11,29 @@
 <jsp:include page="../common/header_login.jsp"></jsp:include>
 
 <style type="text/css">
- 
-/* table {
-	font-size : 14px;
-} 
 
-td, th {
-	border-left:none;
-	border-right:none;
-	border-top: solid 1px gray;
-	border-bottom: solid 1px gray;
-	padding-right: 30px;
-	padding-top: 20px;
-	padding-bottom: 20px;
-	color: gray;
-}
+	td {
+		border-left:none;
+		border-right:none;
+		border-top: solid 1px #E0E0E0;
+		border-bottom: solid 1px #E0E0E0;
+		
+		color: gray;
+		text-align:center;
+		height:50px;
+	}
 
-div#regist {
-	padding-top: 10px;
-	float: right;
-
-}
-
-div#searchForm {
-	padding-top: 10px;
-}
-
-button {
+	tr.noticeInfo:hover {
+		background-color: gray;
+		cursor: pointer;
+	}
+	
+	th {
+		text-align:center;
+		color: black;
+	}
+	
+	button {
 	background-color: black;
 	color: white;
 	border-line: solid 1px black;
@@ -45,14 +41,6 @@ button {
 	width: 100px;
 
 }
-button:hover {
-	opacity: 0.7;
-} */
-
-	tr.noticeInfo:hover {
-		background-color: gray;
-		cursor: pointer;
-	}
 </style>
 
 <script type="text/javascript">
@@ -118,8 +106,42 @@ button:hover {
 <div class="container">
 <div style="margin: 20% auto;">
  
-<h2 style="margin: 20px;">Notice</h2>
+<h2 style="margin: 20px auto;">Notice</h2>
 
+	
+	<table>
+		<thead>
+		   <tr>
+		      <th style="width: 60px; ">번호</th>
+		      <th style="width: 1000px;">제목</th>
+		      <th style="width: 130px;">등록일</th>
+		      <th style="width: 100px;">조회수</th>
+		   </tr>
+		</thead>
+
+		<tbody>
+			<c:if test="${not empty requestScope.noticeList}">
+				<c:forEach var="nvo" items="${requestScope.noticeList}">
+					<tr class="noticeInfo" style="font-size: 14px; ">
+						<td class="noticeno" style="color:black; font-weight: bold; ">${nvo.noticeNo}</td>
+						<td style="text-align:left; "><a href="<%= ctxPath%>/noticeDetail.an?noticeNo=${nvo.noticeNo}">${nvo.noticeTitle}</a></td>
+						<td>${ fn:substring(nvo.noticeDate, 0, 10)}</td>
+						<td>${nvo.cnt}</td>				
+					</tr>
+				</c:forEach>
+			</c:if>
+			<c:if test="${empty requestScope.noticeList}">
+	           	<tr>
+	           		<td colspan="4" style="text-align: center;">검색된 데이터가 존재하지 않습니다.</td>
+	           	</tr>
+	        </c:if>
+		</tbody>
+	</table>
+	
+	<div id="regist" style="display:inline-block; float:right;">
+		<a href="<%= ctxPath%>/noticeRegistForm.an"/><button>글등록</button></a>
+	</div>
+	
 	<form name="noticeFrm" action="notice.an" method="get">
 		<select id="searchType" name="searchType">
 			<option value="">검색대상</option>
@@ -138,42 +160,21 @@ button:hover {
 		   <option value="5">5</option>
 		   <option value="3">3</option>
 		</select>
-	</form>
-	<table id="noticeTbl" class="table table-bordered" style="width: 90%; margin-top: 20px;">
-		<thead>
-		   <tr>
-		      <th>번호</th>
-		      <th>제목</th>
-		      <th>등록일</th>
-		      <th>조회수</th>
-		   </tr>
-		</thead>
 		
-		<tbody>
-			<c:if test="${not empty requestScope.noticeList}">
-				<c:forEach var="nvo" items="${requestScope.noticeList}">
-					<tr class="noticeInfo">
-					
-						<td class="noticeno">${nvo.noticeNo}</td>
-						<td><a href="<%= ctxPath%>/noticeDetail.an?noticeNo=${nvo.noticeNo}">${nvo.noticeTitle}</a></td>
-						<td>${nvo.noticeDate}</td>
-						<td>${nvo.cnt}</td>				
-					</tr>
-				</c:forEach>
-			</c:if>
-			<c:if test="${empty requestScope.noticeList}">
-	           	<tr>
-	           		<td colspan="4" style="text-align: center;">검색된 데이터가 존재하지 않습니다.</td>
-	           	</tr>
-	        </c:if>
-		</tbody>
-	</table>
+		
+	</form>
+	
+	
 	
 	<nav class="my-5">
 		<div style="display: flex; width: 80%;">
 			<ul class="pagination" style='margin:auto;'>${requestScope.pageBar}</ul>
 		</div>
+		
+		
 	</nav>
+	
+	
 		
 </div>		
 </div>
