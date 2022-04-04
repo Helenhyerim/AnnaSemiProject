@@ -126,9 +126,13 @@ div#img_list > img:hover {
 
 div#product_option {padding: 10px;}
 
-table#tbl_option tr {height: 40px;}
+table#tbl_option, table#tbl_optionResult {width: 100%;}
+
+table#tbl_option tr, table#tbl_optionResult tr {height: 40px;}
 
 table#tbl_option th {width: 100px;}
+
+table#tbl_optionResult th {width: 200px};
 
 span.spanbtn {
 	display: inline-block;
@@ -144,6 +148,12 @@ div#bottom_content {width: 90%;}
 div#productInfo {
 	margin-top: 50px;
 	margin-bottom: 100px;
+}
+
+div#productInfo > ul {
+	list-style: none;
+	line-height: 25px;
+	padding: 5px 0;
 }
 
 div#productDetailImg {
