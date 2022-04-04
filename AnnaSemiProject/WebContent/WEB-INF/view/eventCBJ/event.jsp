@@ -39,7 +39,7 @@
 
 <div class="container">
 	<div style=" margin: 20% auto;">
-	<h4>이벤트</h4>	  
+	<h2 style="margin: 20px auto; font-weight: bold; color: black;">Event</h2>	
 		<!-- 썸네일 시작(이미지에 보더가 생기는 것임) -->
 	     <div class="row" >
 			<c:forEach var="event" items="${ls}">	     

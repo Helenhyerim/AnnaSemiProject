@@ -17,13 +17,14 @@
 %>
   
 <style type="text/css">
-	div.card {
+	div.topbar {
+		border: solid 1px #ccc;
 		border-right: none;
 		border-left: none;
-		padding-top: 15px;
-		padding-bottom: 15px;
+		padding-top: 10px;
+		padding-bottom: 10px;
 		display: inline-block;
-		width: 100%;
+		width: 100%;		
 	}
 	
 	div#eventinfo {
@@ -39,9 +40,9 @@
 <jsp:include page="../common/header_login.jsp"></jsp:include>
 
 	<div class="container">
-	  <div style="margin: 20% auto;">
-	  <h4 style="text-align: center; color: black;">이벤트</h4>	
-	  	<div class="card">  
+	  <div style="margin: 25% auto;">
+	  <h2 style="margin: 20px auto; text-align: center; font-weight: bold; color: black;">Event</h2>	
+	  	<div class="topbar">  
 			<div id="eventinfo" style="color: black;">
 				${vo.eventTitle} 
 			</div>

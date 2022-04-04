@@ -16,15 +16,14 @@
 		border-left:none;
 		border-right:none;
 		border-top: solid 1px #E0E0E0;
-		border-bottom: solid 1px #E0E0E0;
-		
+		border-bottom: solid 1px #E0E0E0;		
 		color: gray;
 		text-align:center;
 		height:50px;
 	}
 
 	tr.noticeInfo:hover {
-		background-color: gray;
+		background-color: #ddd;
 		cursor: pointer;
 	}
 	
@@ -34,13 +33,13 @@
 	}
 	
 	button {
-	background-color: black;
-	color: white;
-	border-line: solid 1px black;
-	font-size: 14px;
-	width: 100px;
-
-}
+		background-color: black;
+		color: white;
+		border-line: solid 1px black;
+		font-size: 14px;
+		width: 100px;
+	
+	}
 </style>
 
 <script type="text/javascript">
