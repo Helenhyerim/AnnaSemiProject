@@ -149,11 +149,14 @@
            
            
 			<c:choose>
-				<c:when test="${requestScope.mvo.userid eq 'hongkd'}">
+				<c:when test="${sessionScope.loginuser.userid eq 'hongkd'}">
+					<li class="nav-item">
+		              <a class="nav-link h6" href="<%= ctxPath %>/member/myAdmin.an">MyAdmin</a>
+		           </li>
 				</c:when>
 				<c:otherwise>
 		           <li class="nav-item">
-		              <a class="nav-link h6" href="<%= ctxPath %>/member/myPage.an">MyAdmin</a>
+		              <a class="nav-link h6" href="<%= ctxPath %>/member/myPage.an">MyPage</a>
 		           </li>
 	           </c:otherwise>
            </c:choose>
