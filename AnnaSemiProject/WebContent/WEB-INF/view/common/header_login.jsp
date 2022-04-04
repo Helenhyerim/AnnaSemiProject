@@ -148,10 +148,15 @@
 
            
            
-
-           <li class="nav-item">
-              <a class="nav-link h6" href="<%= ctxPath %>/member/myPage.an">Mypage</a>
-           </li>
+			<c:choose>
+				<c:when test="${requestScope.mvo.userid eq 'hongkd'}">
+				</c:when>
+				<c:otherwise>
+		           <li class="nav-item">
+		              <a class="nav-link h6" href="<%= ctxPath %>/member/myPage.an">MyAdmin</a>
+		           </li>
+	           </c:otherwise>
+           </c:choose>
            <c:if test="${empty sessionScope.loginuser}">
               <li class="nav-item">
                  <a class="nav-link h6" href="<%= ctxPath %>/login/login.an">Login</a>
@@ -161,9 +166,6 @@
              </li>
           </c:if>
 
-             <li class="nav-item">
-                 <a class="nav-link h6" href="<%= ctxPath %>/member/myPage.an">Mypage</a>
-              </li>
          <c:if test="${not empty sessionScope.loginuser}">
              <li class="nav-item">
                 <a class="nav-link h6" href="<%= ctxPath %>/login/logout.an">Logout</a>
