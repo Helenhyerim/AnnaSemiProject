@@ -1,3 +1,4 @@
+
 # Created by https://www.toptal.com/developers/gitignore/api/java,eclipse
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,eclipse
 
@@ -61,7 +62,7 @@ local.properties
 
 # Uncomment this line if you wish to ignore the project description file.
 # Typically, this file would be tracked if it contains build/dependency configurations:
-.project
+#.project
 
 ### Eclipse Patch ###
 # Spring Boot Tooling
@@ -94,9 +95,3 @@ hs_err_pid*
 replay_pid*
 
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse
-
-##### commit 제외파일 #####
-.classpath
-.gitignore
-/AnnaSemiProject/WebContent/WEB-INF/sql/AnnaSemiProject.sql
-/AnnaSemiProject/WebContent/WEB-INF/web.xml

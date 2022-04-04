@@ -6,10 +6,13 @@ import java.util.Map;
 
 public interface InterProductDAO {
 
+	// 임성희
+
+	// 상품 찜하기 전에 이미 찜한 상품인지 중복 체크하기
+	boolean wishDuplicateCheck(Map<String, String> paraMap) throws SQLException;
 	
-	
-	
-	
+	// 상품 찜하기
+	int addWishProduct(Map<String, String> paraMap) throws SQLException;
 	
 	
 	
@@ -34,5 +37,7 @@ public interface InterProductDAO {
 
 	// 한 상품 클릭시 productnum 을 받아서 해당 상품 디테일을 보여주기
 	ProductVO getProductDetail(String productnum) throws SQLException;
+
+	
 
 }
