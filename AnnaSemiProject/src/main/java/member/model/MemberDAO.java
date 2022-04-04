@@ -607,6 +607,51 @@ public class MemberDAO implements InterMemberDAO {
 		
 		return result;
 	}
+	
+	
+	// 회원정보를 수정해주는 메소드
+	@Override
+	public int updateMember(MemberVO member) throws SQLException {
+int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_member set name = ? "
+					   + "                     , pwd = ? "
+					   + "                     , email = ? "
+					   + "                     , mobile = ? "
+					   + "                     , postcode = ? "
+					   + "                     , address = ? "
+					   + "                     , detailaddress = ? "
+					   + "                     , lastpwdchangedate = sysdate "
+					   + "					   , sms_status = ? "
+					   + "					   , email_status = ? "
+					   + " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1,  member.getName());
+			pstmt.setString(2,  Sha256.encrypt(member.getPwd()));  // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.   
+			pstmt.setString(3,  aes.encrypt(member.getEmail()));   // 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다. 
+			pstmt.setString(4,  aes.encrypt(member.getMobile()));  // 휴대폰번호를 AES256 알고리즘으로 양방향 암호화 시킨다.     
+			pstmt.setString(5,  member.getPostcode());  
+			pstmt.setString(6,  member.getAddress());
+			pstmt.setString(7,  member.getDetailaddress());
+			pstmt.setInt(8, member.getSms_status());
+			pstmt.setInt(9, member.getEmail_status());
+			pstmt.setString(10,  member.getUserid());
+						
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
       
       
 }

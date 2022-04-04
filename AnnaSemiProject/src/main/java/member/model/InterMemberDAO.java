@@ -28,8 +28,8 @@ public interface InterMemberDAO {
       // 인증번호를 받아 비밀번호를 변경해주는 메소드
       int pwdUpdate(Map<String, String> paraMap)throws SQLException;
       
-      
-      
+      // 회원정보를 수정해주는 메소드
+      int updateMember(MemberVO member)throws SQLException;
       
       
       
@@ -42,6 +42,8 @@ public interface InterMemberDAO {
 
       // 페이징 처리를 위한 검색이 있는 또는 검색이 없는 전체회원에 대한 총 페이지 알아오기 
       int getTotalPage(Map<String, String> paraMap) throws SQLException;
+
+	
 
 	   
 }
