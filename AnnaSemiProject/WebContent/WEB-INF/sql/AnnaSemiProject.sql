@@ -1,10 +1,27 @@
-show user;
--- USER¿Ã(∞°) "SEMIORAUSER2"¿‘¥œ¥Ÿ.
 
-<<<<<<< HEAD
+show user;
+-- USERÏù¥(Í∞Ä) "SEMIORAUSER2"ÏûÖÎãàÎã§.
+
 grant connect, resource, create view, unlimited tablespace to SEMIORAUSER2;
 
 
+select ceil(count(*)/10)
+from tbl_product
+
+select rno, productimage1, productname, productprice
+from
+(
+    select rownum as rno, productimage1, productname, productprice
+    from
+    (
+    select productimage1, productname, productprice
+    from tbl_product
+    order by productnum
+    ) V
+) T
+where rno between 1 and 9;
+
+-------------------------------------------
 
 select * 
 from tab;
@@ -2653,13 +2670,7 @@ create sequence seq_cartno
 
 select *
   from user_sequences;
-<<<<<<< HEAD
-=======
-=======
+
+
 commit
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
-=======
-select * from anna_test;
->>>>>>> branch 'product_branch4' of https://github.com/Helenhyerim/AnnaSemiProject.git
+
