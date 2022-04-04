@@ -7,8 +7,6 @@
 	
 	int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
 	NoticeDAO dao = new NoticeDAO();
-	System.out.println(noticeNo);
 	dao.delete(noticeNo);	
-
-	response.sendRedirect(request.getContextPath() + "/noticeDelete.an");
+	response.sendRedirect(request.getContextPath() + "/notice.an");
 %>

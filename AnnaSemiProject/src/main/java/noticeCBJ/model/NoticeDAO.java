@@ -1,10 +1,14 @@
 package noticeCBJ.model;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -64,29 +68,6 @@ public class NoticeDAO implements InterNoticeDAO {
 		return result;
 	}
 	
-	@Override
-	public int update(NoticeVO vo) throws SQLException {
-		
-		int result = 0;
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " update tbl_notice set noticetitle = ?, noticecontents = ? where noticeno = ?";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, vo.getNoticeTitle());
-			pstmt.setString(2, vo.getNoticeContents());
-			pstmt.setInt(3, vo.getNoticeNo());
-			result = pstmt.executeUpdate();
-			
-		} finally {
-			close();
-		}
-		
-		return result;
-	}
-	
 	// 조회(R)
 	@Override
 	public ArrayList<NoticeVO> selectAll() throws SQLException {
@@ -118,6 +99,31 @@ public class NoticeDAO implements InterNoticeDAO {
 		}
 		return noticeList;
 	}
+
+	// 수정(U)
+	@Override
+	public int update(NoticeVO vo) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_notice set noticetitle = ?, noticecontents = ? where noticeno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getNoticeTitle());
+			pstmt.setString(2, vo.getNoticeContents());
+			pstmt.setInt(3, vo.getNoticeNo());
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
+	
 	
 	// 조건 조회(R)
 	@Override
@@ -196,6 +202,121 @@ public class NoticeDAO implements InterNoticeDAO {
 			close();
 		}
 		return ret;
+	}
+
+	@Override
+	public List<NoticeVO> noticeSelectPagingMember(Map<String, String> paraMap) throws SQLException {
+		
+		List<NoticeVO> noticeList = new ArrayList<>();
+
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select noticeno, noticedate, noticetitle, cnt "
+					+ " from "
+					+ " ("
+					+ " 	select rownum AS rno, noticeno, noticedate, noticetitle, cnt "
+					+ " 	from "
+					+ " 	( "
+					+ " 		select noticeno, noticedate, noticetitle, cnt "
+					+ " 		from tbl_notice "
+					+ " 		where fk_userid = 'admin' ";
+					
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+				sql += " and "+colname+" like '%'|| ? ||'%' ";
+			/*  
+			    위치홀더(?) 에 들어오는 값은 데이터값만 들어올 수 있는 것이지
+			    위치홀더(?) 에 컬럼명이나 테이블명이 들어오면 오류가 발생한다.
+			    그러므로 컬럼명이나 테이블명이 변수로 사용할때는 위치홀더(?)가 아닌 변수로 처리해야 한다.  	
+			*/
+			}
+			
+			sql += " 		order by noticedate desc "
+				+ " 	) V "
+				+ " ) T "
+				+ " where rno between ? and ? ";
+			
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int noticeCurrentShowPageNo = Integer.parseInt(paraMap.get("noticeCurrentShowPageNo"));
+			int noticeSizePerPage = Integer.parseInt(paraMap.get("noticeSizePerPage"));
+			
+			if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+		 		
+				pstmt.setString(1, searchWord);						
+		 		pstmt.setInt(2, (noticeCurrentShowPageNo * noticeSizePerPage) -(noticeSizePerPage - 1));
+				pstmt.setInt(3, (noticeCurrentShowPageNo * noticeSizePerPage));
+		 	}
+		 	else {
+		 		pstmt.setInt(1, (noticeCurrentShowPageNo * noticeSizePerPage) -(noticeSizePerPage - 1));
+				pstmt.setInt(2, (noticeCurrentShowPageNo * noticeSizePerPage));
+		 	}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				NoticeVO nvo = new NoticeVO();
+				nvo.setNoticeNo(rs.getInt(1));
+				nvo.setNoticeDate(rs.getString(2));
+				nvo.setNoticeTitle(rs.getString(3));
+				nvo.setCnt(rs.getInt(4));
+				
+				noticeList.add(nvo);
+			}// end of while -----------------------------------------------------
+			
+		} finally {
+			close();
+		}
+		
+		return noticeList;
+	}
+
+	@Override
+	public int noticeGetTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int totalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select ceil( count(*)/? ) "
+					   + " from tbl_notice "
+					   + " where fk_userid = 'admin' ";
+			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+				
+				sql += " and "+colname+" like '%'|| ? ||'%' ";
+			
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("noticeSizePerPage"));
+			
+			if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+				
+				pstmt.setString(2, paraMap.get("searchWord")); // 암호화를 안한 것
+				
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalPage = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;
 	}
 
 	
