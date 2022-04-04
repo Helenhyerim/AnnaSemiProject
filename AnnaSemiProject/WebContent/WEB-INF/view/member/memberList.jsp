@@ -11,6 +11,9 @@
 
 <jsp:include page="../common/header_login.jsp" />   
 
+<!-- 직접 만든 CSS -->
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/pagination_syj.css" />
+
 <style type="text/css">
 
 	.titleArea h2 {
@@ -76,15 +79,87 @@
 	.pagination {
 		color: black;
 		background-color: #ddd;
-	
 	}
+	
+	
 </style>
 
 <script type="text/javascript">
 
 	$(document).ready(function(){
+		// **** select 태그에 대한 이벤트는 click 이 아니라 change 이다. **** //
+		$("select#sizePerPage").bind("change", function(){
+			const frm = document.memberFrm;
+			frm.action = "memberList.an";
+			frm.method = "get";
+			frm.submit();
+		});
 		
-	});
+		$("select#sizePerPage").val("${requestScope.sizePerPage}");
+		
+		
+		
+		$("form[name='memberFrm']").submit(function(){
+			if($("select#searchType").val() == "") {
+				alert("검색대상을 올바르게 선택하세요!!");
+				return false; // return false; 는 submit을 하지말라는 것이다.
+			}
+			
+			if($("input#searchWord").val().trim() == "") {
+				alert("검색어는 공백만으로는 되지 않습니다.\n검색어를 올바르게 입력하세요!!");
+				return false; // return false; 는 submit을 하지말라는 것이다.
+			}
+		});
+		
+		
+		$("input#searchWord").bind("keyup", function(event){
+			if(event.keyCode == 13) {
+				// 검색어에서 엔터를 치면 검색하러 가도록 한다.
+				goSearch();
+			}
+		});
+		
+		if("${requestScope.searchType}" != "") { 
+			$("select#searchType").val("${requestScope.searchType}");
+			$("input#searchWord").val("${requestScope.searchWord}");
+	    }
+		
+		 
+		 
+	    // 특정 회원을 클릭하면 그 회원의 상세정보를 보여주도록 한다.
+	    $("tr.memberInfo").click( ()=>{
+	    	
+	    	const $target = $(event.target);
+	    	
+	    //	alert("확인용 => " + $target.parent().html() );
+	        
+	        const userid = $target.parent().children(".userid").text();
+	    //  alert("확인용 => " + userid);
+	    
+	        location.href="<%= ctxPath%>/member/memberOneDetail.an?userid="+userid;
+	    	
+	    });
+	    
+	});// end of $(document).ready(function(){})-----------------------------
+
+	// Function Declaration
+	function goSearch() {
+		
+		if($("select#searchType").val() == "") {
+			alert("검색대상을 선택하세요.");
+			return; // return; 는 goSearch() 함수 종료이다.
+		}
+		
+		if($("input#searchWord").val().trim() == "") {
+			alert("검색어를 입력하세요.");
+			return; // return; 는 goSearch() 함수 종료이다.
+		}
+		
+		const frm = document.memberFrm;
+		frm.action = "memberList.an";
+		frm.method = "get";
+		frm.submit();
+	}
 
 </script>
 
@@ -102,6 +177,7 @@
 	    		<option value="mobile">휴대전화</option>
 	    	</select>
 	    	<input type="text" id="searchWord" name="searchWord">
+	    	<input type="text" style="display: none;" />
 	    	<button type="button" onclick="goSearch();">검색</button>
 	    	
 	    	<span style="margin-right:2px">페이지당 회원명수</span>

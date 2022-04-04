@@ -23,19 +23,7 @@ public interface InterMemberDAO {
       String findUserid(Map<String, String> paraMap)throws SQLException;
       
       // 비밀번호를 찾기 위해서 성명, 이메일 유저 아이디를 입력받아서 해당 사용자의 존재여부를 알려준다.
-      boolean isUserExist(Map<String, String> paraMap)throws SQLException;
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+      boolean isUserExist(Map<String, String> paraMap)throws SQLException;      
       
       // 페이징 처리가 되어진 모든 회원 또는 검색한 회원 목록 보여주기 
       List<MemberVO> selectPagingMember(Map<String, String> paraMap) throws SQLException;

@@ -320,167 +320,6 @@ public class MemberDAO implements InterMemberDAO {
       }
       
    
-
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
    
    
    
@@ -507,7 +346,7 @@ public class MemberDAO implements InterMemberDAO {
                   + "    ( "
                   + "        select userid, name, email, mobile "
                   + "        from tbl_member "
-                  + "        where userid != 'admin' "
+                  + "        where userid != 'hongkd' "
                   + "        order by registerday desc "
                   + "    ) V "
                   + " ) T "
@@ -564,7 +403,7 @@ public class MemberDAO implements InterMemberDAO {
             
             String sql = " select ceil(count(*)/?) "
                      + " from tbl_member "
-                     + " where userid != 'admin' ";
+                     + " where userid != 'hongkd' ";
             
             pstmt = conn.prepareStatement(sql);
             

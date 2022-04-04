@@ -157,8 +157,8 @@
                 <h3><a href="<%= ctxPath%>"><i class="far fa-user fa-xs"></i><strong>PROFILE</strong></a></h3>
                 <p><a href="<%= ctxPath%>">관리자의 개인정보를 관리하는 공간입니다.<br>비밀번호 등의 정보를 수정하실 수 있습니다.</a></p>
             </li>
-			<li class="shopMain" id="mileage">
-                <h3 class="txtTitle16B"><a href="<%= ctxPath%>/member/memberList.an"><i class="fas fa-dollar-sign fa-xs"></i><strong>MILEAGE</strong></a></h3>
+			<li class="shopMain" id="member">
+                <h3 class="txtTitle16B"><a href="<%= ctxPath%>/member/memberList.an"><i class="fas fa-users fa-xs"></i><strong>MEMBER</strong></a></h3>
                 <p class="txtSub11"><a href="<%= ctxPath%>/member/memberList.an">전체 회원의 정보를 관리하는 공간입니다.<br>정보를 조회하거나 수정할 수 있습니다.</a></p>
            </li>
 			
@@ -175,8 +175,8 @@
                 <h3><a href="<%= ctxPath%>"><i class="fas fa-list fa-xs"></i><strong>ORDER</strong></a></h3>
                 <p><a href="<%= ctxPath%>">전체주문내역을 확인하실 수 있습니다.</a></p>
             </li>
-            <li class="shopMain" id="wishlist">
-                <h3><a href="<%= ctxPath%>"><i class="far fa-heart fa-xs"></i><strong>WISHLIST</strong></a></h3>
+            <li class="shopMain" id="product">
+                <h3><a href="<%= ctxPath%>"><i class="fas fa-box fa-xs"></i><strong>PRODUCT</strong></a></h3>
                 <p><a href="<%= ctxPath%>">상품을 등록하고 관리하는 공간입니다.</a></p>
             </li>
         </ul>
