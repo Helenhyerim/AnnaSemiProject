@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -78,4 +79,61 @@ public class ProductDAO implements InterProductDAO {
 		
 		return imgList;
 	}// end of public List<ProductDAO> productSelectAll()----------
+
+
+	// 상품 찜하기 전에 이미 찜한 상품인지 중복 체크하기_임성희
+	@Override
+	public boolean wishDuplicateCheck(Map<String, String> paraMap) throws SQLException {
+
+		boolean isExist = false;
+		int productnum = Integer.parseInt(paraMap.get("productnum"));
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select * "
+					   + "from tbl_dibs "
+					   + "where fk_productnum = ? and fk_userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, productnum);
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			rs = pstmt.executeQuery();
+			
+			isExist = rs.next(); // 행이 있으면 true, 없으면 false
+			
+		} finally {
+			close();
+		}
+		
+		return isExist;
+	}
+
+
+	// 상품 찜하기_임성희
+	@Override
+	public int addWishProduct(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		int productnum = Integer.parseInt(paraMap.get("productnum"));
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "insert into tbl_dibs(fk_productnum, fk_userid) "
+					   + "values(?, ?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, productnum);
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
 }

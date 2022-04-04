@@ -15,28 +15,46 @@
 
 	$(document).ready(function() {
 		
+		$("table#tbl_optionResult").hide();
+		$("tr#selOptionResult").hide();
+		
 		const isExistLoginUser = false;
 		
-	//	if(${not empty sessionScope.loginuser}) { isExistLoginUser = true; }
+		if(${not empty sessionScope.loginuser}) { isExistLoginUser = true; }
 		
 		// 대표이미지 변경하기(hover)
 		
 		// 옵션 선택하면 옵션 보이기
 		// 필수 옵션(인덱스)
-		$("#reqOption").change(function() {
+		$("select#reqOption").change(function() {
 			
-			let reqOption_value = $("select#reqOption").val();
+			const reqOption_value = $("select#reqOption").val();
 			
 			if(reqOption_value != "") {
-				let productName = $("select#reqOption option:selected").text();
+				const productName = $("select#reqOption option:selected").text();
+				
+				let addTrHtml = "";
+				
+				addTrHtml += '<tr>'
+						  +  '    <th>' + productName + '</th>'
+						  +  '    <td>'
+						  +  '        <input type="number" min="1" max="20" value="1"/>'
+						  +  '        <span id="addQty"><i class="fal fa-plus-circle"></i></span>'
+						  +  '        <span id="subQty"><i class="fal fa-minus-circle"></i></span>'
+						  +  '        <span id="delProduct"><i class="fal fa-trash-alt"></i></span>'
+						  +  '    </td>'
+						  +  '</tr>';
+						  
+				$("tr#selOptionResult").before(addTrHtml);
+				$("table#tbl_optionResult").show();
 			}
 		});
 		
 		// 선택 옵션
 		$("select#selOption").change(function() {
 			
-			let reqOption_value = $("select#reqOption").val();
-			let selOption_value = $("select#selOption").val();
+			const reqOption_value = $("select#reqOption").val();
+			const selOption_value = $("select#selOption").val();
 			
 			if(reqOption_value == "") {
 				alert("필수 옵션 선택 후 선택 가능한 옵션입니다.");
@@ -46,6 +64,8 @@
 				let selOption = $("select#selOption option:selected").text();
 				
 				$("th#sel").text(selOption);
+				$("table#tbl_optionResult").show();
+				$("tr#selOptionResult").show();
 			}
 			
 		});
@@ -67,7 +87,10 @@
 		// 장바구니 클릭
 		$("span#addCart").click(function() {
 			if(isExistLoginUser) { // 로그인 한 경우 : 장바구니에 추가했습니다(alert), 장바구니 페이지에 갈 것인지 쇼핑 계속하기로 현재 창에 머무를 것인지 선택
+				// popup
+				const url = "<%= ctxPath %>/product_lsh/addCart.an";
 				
+				window.open(url, "addWish", "left=300, top=300, width=500, height=200");
 			}
 			else { // 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
 				goLoginPage();
@@ -76,11 +99,56 @@
 			
 		// 찜하기 클릭
 		$("span#addWish").click(function() {
-			if(isExistLoginUser) { // 로그인 한 경우 : 찜한 상품으로 등록되었습니다(alert), 현재 창에 자동 머무르기
+			if(isExistLoginUser) { // 로그인 한 경우
 				
+				$.ajax({
+					url:"<%= ctxPath %>/product_lsh/wishDuplicateCheck.an",
+					data:{"productnum":"1", "userid":"simyj"}, <%-- 임시값 --%>
+					type:"post",
+					dataType:"json",
+					async:false,
+					success:function(json) {
+						if(json.isExist) {
+							alert("이미 찜한 상품입니다.");
+						}
+						else {
+							const url = "<%= ctxPath %>/product_lsh/addWish.an?userid=${(sessionScope.loginuser).userid}&productnum=${requestScope.productnum}";
+							
+							window.open(url, "addWish", "left=300, top=300, width=500, height=200");
+						}
+					},
+					error:function(reqeust, status, error) {
+		    			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+		    		}
+				}); // end of $.ajax({})
+			
 			}
-			else { // 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
-				goLoginPage();
+			else { // 로그인 안 한 경우
+			//	goLoginPage();
+			
+			//	아래는 테스트용 로그인 페이지 연동 후 지워야함
+			
+				$.ajax({
+					url:"<%= ctxPath %>/product_lsh/wishDuplicateCheck.an",
+					data:{"productnum":"6", "userid":"hongkd"}, <%-- 임시값 --%>
+					type:"post",
+					dataType:"json",
+					async:false,
+					success:function(json) {
+						if(json.isExist) {
+							alert("이미 찜한 상품입니다.");
+						}
+						else {
+						<%--const url = "<%= ctxPath %>/product_lsh/addWish.an?userid=${(sessionScope.loginuser).userid}&productnum=${requestScope.productnum}";--%>
+							const url = "<%= ctxPath %>/product_lsh/addWish.an?userid=" + json.userid + "&productnum=" + json.productnum;
+						
+							window.open(url, "addWish", "left=300, top=300, width=500, height=200");
+						}
+					},
+					error:function(reqeust, status, error) {
+		    			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+		    		}
+				}); // end of $.ajax({})
 			}
 		});
 		
@@ -90,11 +158,10 @@
 	function goCategoryPage() {
 		// 선택한 카테고리가 무엇인지 알아오기
 		const $target = $(event.target);
+		
 		let category = $target.text();
 		
-		alert(category);
-		
-		// 페이지 이동하기 전 선택한 카테고리 값 넘겨주기 
+		// 페이지 이동하기 전 선택한 카테고리 값 넘겨주기(번호로 넘겨주기?)
 		const frm = document.sendCategoryFrm;
 		frm.category.value = category;
 		
@@ -105,27 +172,30 @@
 	
 	// 구매 페이지로 이동
 	function goOrderPage() {
+		
+		// 제품코드, 수량 넘겨주기
+		
 		location.href="<%= ctxPath %>/product/myOrder.an";
 	}
 	
 	// 로그인 페이지로 이동
 	function goLoginPage() {
 		alert("로그인 후 이용할 수 있습니다.");
-	//	location.href="로그인 페이지 경로";
+		location.href="<%= ctxPath %>/login/login.an";
+		
+		// 로그인 후 다시 원래 페이지로 돌아오기(goBackURL)
 	}
 	
-	/*
-	
-	/*   
-      location.href="javascript:history.go(-2);";  // 이전이전 페이지로 이동 
-       location.href="javascript:history.go(-1);";  // 이전 페이지로 이동
-       location.href="javascript:history.go(0);";   // 현재 페이지로 이동(==새로고침) 캐시에서 읽어옴.
-       location.href="javascript:history.go(1);";   // 다음 페이지로 이동.
-       
-       location.href="javascript:history.back();";       // 이전 페이지로 이동 
-       location.href="javascript:location.reload(true)"; // 현재 페이지로 이동(==새로고침) 서버에 가서 다시 읽어옴. 
-       location.href="javascript:history.forward();";    // 다음 페이지로 이동.
-   */
+	/* 
+      	location.href="javascript:history.go(-2);";  // 이전이전 페이지로 이동 
+       	location.href="javascript:history.go(-1);";  // 이전 페이지로 이동
+       	location.href="javascript:history.go(0);";   // 현재 페이지로 이동(==새로고침) 캐시에서 읽어옴.
+       	location.href="javascript:history.go(1);";   // 다음 페이지로 이동.
+      	 
+       	location.href="javascript:history.back();";       // 이전 페이지로 이동 
+       	location.href="javascript:location.reload(true)"; // 현재 페이지로 이동(==새로고침) 서버에 가서 다시 읽어옴. 
+       	location.href="javascript:history.forward();";    // 다음 페이지로 이동.
+   	*/
 	
 	
 </script>
@@ -191,7 +261,10 @@
 						</td>
 						<td id="card_msg"></td>
 					</tr>
-					<tr id=selOptionShow>
+				</table>
+				
+				<table id="tbl_optionResult" class="mt-4">
+					<tr id=selOptionResult>
 						<th id="sel"></th>
 						<td id="selAdd"></td>
 					</tr>
@@ -216,13 +289,13 @@
 			<div id="productInfo">
 				<h5>상품정보</h5>
 				<hr style="border: solid 1px lightgray; width: 40%; margin: 0;">
-				<p>
-					Material : 14K 18K Gold<br>
-					Stone : X<br>
-					Weight: 약3.02g [±10% 오차있음]<br>
-					Production : 안나캐럿<br>
-					Special Note : 주말 및 공휴일을 제외한 4~6일의 제작기간이 필요한 제품입니다.
-				</p>
+				<ul>
+					<li>Material : 14K 18K Gold</li>
+					<li>Stone : X</li>
+					<li>Weight: 약3.02g [±10% 오차있음]<br></li>
+					<li>Production : 안나캐럿<br></li>
+					<li>Special Note : 주말 및 공휴일을 제외한 4~6일의 제작기간이 필요한 제품입니다.</li>
+				</ul>
 			</div>
 			<div id="productDetailImg">
 				<img alt="pd1" src="../images/pd1.jpg">
@@ -288,7 +361,7 @@
 	</div>
 </div>
 
-<%-- 선택한 카테고리 값 전송하는 form --%>
+<%-- 선택한 카테고리 값 전송하는 form --%> 
 <form name='sendCategoryFrm'>
 	<input type="hidden" name="category"/>
 </form>
