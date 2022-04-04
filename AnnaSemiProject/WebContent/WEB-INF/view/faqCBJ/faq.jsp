@@ -20,18 +20,37 @@
 
 button.accordion {
 	background-color: white;
+	border:none;
+	width: 100%;
+	font-size:14px; 
+	transition: 0.5s;
+	vertical-align: top
 }
+
+button.accordion.active{
+	font-weight:bold;
+	color : #000;
+}
+
 
 div.card-header {
 	background-color : white;
 	height:50px;
 }
 
-button.accordion:hover {
-    background-color: #ccc;
+button.accordion:hover {    
     font-weight: bold;
+    
 }
 
+div#contents {
+	float:left; 
+	text-align: left; 
+	color: black;
+	transition: ease-out;
+
+	
+}
 
 </style>
 
@@ -54,9 +73,9 @@ button.accordion:hover {
 					<div class="card" style="border-left: none; border-right: none; " >
 					  <div class="card-header" id="heading${faq.faqNo}">
 					    <h2 class="accordion-header" >
-					      <button class="accordion" type="button" data-toggle="collapse" data-target="#panel${faq.faqNo}" aria-expanded="true" aria-controls="panel${faq.faqNo}" style="border:none; font-size:14px; vertical-align: top;">
-					        <div style="width: 100px; float:left; text-align: left; color: black; font-weight: bold;">${faq.faqRequestType}</div>
-					        <div style="width: 800px; float:left; text-align: left; color: black;">&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${faq.faqTitle}</div>
+					      <button class="accordion" type="button" data-toggle="collapse" data-target="#panel${faq.faqNo}" aria-expanded="true" aria-controls="panel${faq.faqNo}">
+					        <div id=contents style="width: 100px; font-weight: bold;">${faq.faqRequestType}</div>
+					        <div id=contents style="width: 800px;">&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${faq.faqTitle}</div>
 					      </button>
 					    </h2>
 					</div>

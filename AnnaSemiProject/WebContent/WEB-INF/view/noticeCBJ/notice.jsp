@@ -106,7 +106,7 @@
 <div class="container">
 <div style="margin: 20% auto;">
  
-<h2 style="margin: 20px auto;">Notice</h2>
+<h2 style="margin: 20px auto; font-weight: bold; color: black;">Notice</h2>
 
 	
 	<table>
@@ -150,8 +150,7 @@
 		</select>
 		<input type="text" id="searchWord" name="searchWord">
 		
-		<input type="text" style="display: none;" />
-	<%-- <button type="button" onclick="goSearch();" style="margin-right: 30px">검색</button> --%>
+		<input type="text" style="display: none;" />	
 		
 		<input type="submit" value="검색" style="margin-right: 30px" /> 
 		<span style="color: red; font-weight: bold; font-size: 12pt;">페이지당 공지사항수-</span>
@@ -160,11 +159,7 @@
 		   <option value="5">5</option>
 		   <option value="3">3</option>
 		</select>
-		
-		
 	</form>
-	
-	
 	
 	<nav class="my-5">
 		<div style="display: flex; width: 80%;">
@@ -173,8 +168,6 @@
 		
 		
 	</nav>
-	
-	
 		
 </div>		
 </div>
