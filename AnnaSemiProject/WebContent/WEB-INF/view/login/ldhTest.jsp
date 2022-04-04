@@ -132,8 +132,19 @@ $(document).ready(function(){
 	
 	$("span.error").hide();
 
-
-	
+	if(${sessionScope.loginuser.email_status == 1}){
+		$("input:radio[id='emailAgree']").prop('checked',true);
+	}
+	else{
+		$("input:radio[id='emailDisagree']").prop('checked',true);
+	}	
+ 	
+	if(${sessionScope.loginuser.sms_status == 1}){
+		$("input:radio[id='smsAgree']").prop('checked',true);
+	}
+	else{
+		$("input:radio[id='smsDisagree']").prop('checked',true);
+	}	
 	
 	// 아이디가 pwd인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다. 
 	$("input#pwd").blur( ()=>{
@@ -346,7 +357,41 @@ $(document).ready(function(){
 	});
 	
 	
+
+	$("input#email").blur( ()=>{
+		
+		if("${sessionScope.loginuser.email}" != $("input#email").val()){
+			
+			$.ajax({
+	     	   url: "<%= ctxPath%>/member/emailDuplicateCheck.an",
+	     	   data: {"email":$("input#email").val()}, 
+	     	   type: "post",
+	     	   async: true, 
+	     	   success: function(text){
+	     		   
+	     		   const json = JSON.parse(text);
+	 
+	     			if(json.isExist){
+	     				// 입력한 $("input#email").val() 값이 이미 사용중인 경우 
+	     				$("span#emailCheckResult").html($("input#email").val()+" 은 중복된 이메일이므로 사용불가합니다.").css("color","red");
+	     			}
+	     			else{
+	     				// 입력한 $("input#email").val() 값이 DB tbl_member 테이블에 존재하지 않는 경우 
+	     				$("span#emailCheckResult").html($("input#email").val()+"은 사용가능합니다.").css("color","green");
+	     				b_flagOnlyEmailCheck = true;
+	     			}
+	     	   }, 
+	     	   error:function(request, status, error){
+	     		   alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	     	   }
 	
+	        });
+		}
+		else{
+			$("span#emailCheckResult").html("");
+		}
+		
+	});
 
 });	
 	
@@ -355,7 +400,7 @@ $(document).ready(function(){
 	
 // Function Declaration	
 //가입하기
-function goRegister() {
+function goModify() {
 		
 		// *** 필수입력 사항에 모두 입력이 되었는지 검사한다. ***// 
 		let b_FlagRequiredInfo = false;
@@ -372,44 +417,34 @@ function goRegister() {
 		if(b_FlagRequiredInfo) {
 			return; // 종료 
 		}
-		
-		
-		// *** 이용약관에 동의했는지 검사한다. ***// 
-		const agreeCheckedLength = $("input:checkbox[id='agree']:checked").length;
-	  
-	 	if(agreeCheckedLength == 0) {
-		  	alert("이용약관에 동의하셔야 합니다.");
-		  	return; // 종료
+	
+		if($("input:radio[id='emailAgree']").is(":checked")){
+			$("input:radio[name='email_status']").val("1");
 		}
-		
 
-	   // *** 정보 이용약관에 동의했는지 검사한다. ***// 
-		const privacyAgreeCheckedLength = $("input:checkbox[id='privacyAgree']:checked").length;
+		else{
+			$("input:radio[name='email_status']").val("0");
+		}	
+	 	
+		if($("input:radio[id='smsAgree']").is(":checked")){
+			$("input:radio[name='sms_status']").val("1");
+		}
+
+		else{
+			$("input:radio[name='sms_status']").val("0");
+		}	
+	 	
 	  
-	 	if(privacyAgreeCheckedLength == 0) {
-		  	alert("개인정보 수집 및 이용약관에 동의하셔야 합니다.");
-		  	return; // 종료
-		}
-	 	
-	 	
-	 	// ***아이디가 중복되지 않고 사용가능한 아이디인지 확인한다. ***// 
-		if(!b_flagOnlyIdCheck) {
-			alert("이미 사용중인 아이디이므로 아이디를 변경해주세요.");
-			return;
-		}
 	 
-		// ***이메일이 중복되지 않고 사용가능한 아이디인지 확인한다. ***// 
-		if(!b_flagOnlyEmailCheck) {
-			alert("이미 사용중인 이메일이므로 이메일을 변경해주세요.");
-			return;
-		}
 		
 	 	// *** 넘겨주기 **// 
 		const frm = document.registerFrm;
-		frm.action = "memberRegister.an";
+		frm.action = "<%= request.getContextPath()%>/member/memberRegister.an";
 		frm.method = "post";
 		frm.submit();
 	}
+
+/// === 이메일 중복 검사하기 == ////
 
 
 	
@@ -419,7 +454,7 @@ function goRegister() {
 
 <div class="contents mx-5" style="margin-top:230px;">
 	<div class="titleArea">
-	    <h2 class="w3-left-align mb-5">JOIN</h2>
+	    <h2 class="w3-left-align mb-5">Modify</h2>
 	</div>
    <form name="registerFrm">
    <div class="memberjoin">
@@ -468,17 +503,21 @@ function goRegister() {
 	      
 	      <tr>
 	         <td style="width: 20%;">이메일*</td>
-	         <td style="width: 100%; text-align: left;"><input type="text" name="email" id="email" class="requiredInfo" placeholder="abc@def.com" value = "${sessionScope.loginuser.email }"/> 
+	         <td style="width: 100%; text-align: left;"><input type="text" name="email" id="email" class="requiredInfo" placeholder="abc@def.com" value = "${sessionScope.loginuser.email}"/> 
 	             <span class="error">이메일 형식에 맞지 않습니다.</span>
 	             <span id="emailCheckResult"></span>
-	             <label for="agree" style="margin-right: 10px;">이메일 수신을 동의하십니까?</label>&nbsp;&nbsp;
-		           <input type="checkbox" id="email_status" name="email_status" class="normal" value="1" />&nbsp;&nbsp;
-		  		 <label for="agreeCheck">동의함</label>
 	         </td>
 	      </tr>
-	      
-	      
-
+	      <tr>
+	         <td>
+	      	    <label for="sms_status" style="margin-right: 10px;">이메일 수신을 동의하십니까?</label>&nbsp;&nbsp;
+				   <input type="radio" name="email_status" id = "emailAgree" class="normal"/>&nbsp;&nbsp;
+				<label for="sms_status">동의함</label>&nbsp;&nbsp;
+					<input type="radio" name="email_status" id = "emailDisagree"class="normal"/>&nbsp;&nbsp;
+				<label for="sms_status">동의안함</label>
+	      	 </td>
+		  </tr>
+		  
 		  <c:set var="mobileNo" value="${sessionScope.loginuser.mobile}"/>
 	      <tr>
 	         <td style="width: 20% important!;">휴대전화*</td>
@@ -493,9 +532,9 @@ function goRegister() {
 	      <tr>
 	         <td>
 	      	    <label for="sms_status" style="margin-right: 10px;">SMS 수신을 동의하십니까?</label>&nbsp;&nbsp;
-				   <input type="radio" name="sms_status" class="normal" value="1"/>&nbsp;&nbsp;
+				   <input type="radio" name="sms_status" id="smsAgree" class="normal"/>&nbsp;&nbsp;
 				<label for="sms_status">동의함</label>&nbsp;&nbsp;
-					<input type="radio" name="sms_status" class="normal" value="0"/>&nbsp;&nbsp;
+					<input type="radio" name="sms_status" id="smsDisagree"class="normal"/>&nbsp;&nbsp;
 				<label for="sms_status">동의안함</label>
 	      	 </td>
 		  </tr>         
@@ -542,7 +581,7 @@ function goRegister() {
 		      
 	      
 	      <div style="line-height: 50px; margin: 10px auto; width:96%">
-	          <button type="button" id="btnModify" class="btn btn-dark btn-lg text-center" onClick="goModify();">회원정보 수정</button> 
+	          <button type="button" id="btnModify" class="btn btn-dark btn-lg text-center" onClick="goModify;">회원정보 수정</button> 
 	      </div>
 	      <div style="line-height: 50px; margin: 10px auto; width:96%">
 	          <button type="button" id="btncancel" class="btn btn-light btn-lg text-center" onClick="goCancel();">취소</button> 
