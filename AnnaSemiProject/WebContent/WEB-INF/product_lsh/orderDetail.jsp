@@ -15,7 +15,11 @@
 		width: 100%;
 	}
 	
-	table tr {
+	table > tbody > tr:first-child {
+		border-top: solid 1px lightgray;
+	}
+	
+	table > tbody > tr {
 		border-bottom: solid 1px lightgray;
 	}
 	
@@ -26,19 +30,38 @@
 	
 </style>
 
+<script type="text/javascript">
+
+	// 체크박스 전체 선택/해제
+	$("input[type='checkbox']#checkall").click(function() {
+		alert("전체선택/해제 체크박스를 클릭하셨군요!")
+	});
+
+	// 선택 주문 취소
+	function selOrderCancel() {
+		alert("선택 주문 취소를 클릭하셨군요");
+	}
+	
+	// 전체 주문 취소
+	function allOrderCancel() {
+		alert("전체 주문 취소를 클릭하셨군요");
+	}
+	
+</script>
+
 <div id="container">
 	<div>
-		<table>		<%-- form으로 만들어야할 것 같음 --%>
+		<table>
 			<thead>
 				<tr>
-					<td><input type="checkbox">&nbsp;</td>
+					<td><input type="checkbox" name='checkall' id='checkall'></td>
 					<th colspan="2" style="text-align: center; font-size: 16pt;">상세 주문 내역</th>
 				</tr>
 			</thead>
 			
 			<tbody>
 				<tr>	<%-- 주문 개수만큼 반복(each) --%>
-					<td><input type="checkbox"></td>
+					<td><input type="checkbox" name='product' id='product0' value='상품명1'></td>
 					<td style="width: 20%;"><img alt="p1" src="../images/p1.png" style="width: 100%;"></td>
 					<td>
 						상품명<br>
@@ -47,7 +70,7 @@
 					</td>
 				<tr>
 				<tr>	<%-- 주문 개수만큼 반복(each) --%>
-					<td><input type="checkbox"></td>
+					<td><input type="checkbox" name='product' id='product1' value='상품명2'></td>
 					<td style="width: 20%;"><img alt="p1" src="../images/p1.png" style="width: 100%;"></td>
 					<td>
 						상품명<br>
@@ -56,7 +79,7 @@
 					</td>
 				<tr>
 				<tr>	<%-- 주문 개수만큼 반복(each) --%>
-					<td><input type="checkbox"></td>
+					<td><input type="checkbox" name='product' id='product2' value='상품명3'></td>
 					<td style="width: 20%;"><img alt="p1" src="../images/p1.png" style="width: 100%;"></td>
 					<td>
 						상품명<br>
@@ -70,8 +93,8 @@
 					<td></td>
 					<td></td>
 					<td>
-						<button type="button" class="btn btn-light">선택 주문 취소</button>
-						<button type="button" class="btn btn-secondary">전체 주문 취소</button>
+						<button type="button" class="btn btn-light" onclick='selOrderCancel()'>선택 주문 취소</button>
+						<button type="button" class="btn btn-secondary" onclick='allOrderCancel()'>전체 주문 취소</button>
 					</td>
 				<tr>
 			</tfoot>
@@ -93,7 +116,7 @@
 		</div>
 	</div>
 	<div style="text-align: center; margin-top: 30px;">
-		<button type="button" class="btn btn-secondary" style="width: 300px;">목록으로</button>
+		<button type="button" class="btn btn-secondary" style="width: 300px;" onclick=''>목록으로</button>
 	</div>
 </div>
 

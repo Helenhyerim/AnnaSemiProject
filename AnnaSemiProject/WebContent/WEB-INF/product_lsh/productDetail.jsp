@@ -14,46 +14,130 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
+		
+		const isExistLoginUser = false;
+		
+	//	if(${not empty sessionScope.loginuser}) { isExistLoginUser = true; }
+		
 		// 대표이미지 변경하기(hover)
 		
-		
 		// 옵션 선택하면 옵션 보이기
+		// 필수 옵션(인덱스)
 		$("#reqOption").change(function() {
 			
-			const $target = $(event.target);
+			let reqOption_value = $("select#reqOption").val();
 			
-			let productName = $("#reqOption option:selected").text();
+			if(reqOption_value != "") {
+				let productName = $("select#reqOption option:selected").text();
+			}
+		});
+		
+		// 선택 옵션
+		$("select#selOption").change(function() {
 			
-			$("th#productName").text(productName);
+			let reqOption_value = $("select#reqOption").val();
+			let selOption_value = $("select#selOption").val();
+			
+			if(reqOption_value == "") {
+				alert("필수 옵션 선택 후 선택 가능한 옵션입니다.");
+			}
+			
+			if(selOption_value != "") {
+				let selOption = $("select#selOption option:selected").text();
+				
+				$("th#sel").text(selOption);
+			}
+			
 		});
 		
 		// 옵션 변경하면(수정, 삭제) 변경된 값 보이기
 		
 		
-		// 구매하기 클릭(로그인별 처리)
-			// 로그인 한 경우 : 구매 페이지로 이동
-			// 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
+		// 구매하기 클릭
+		$("button#purchase").click(function() {
+			if(isExistLoginUser) { // 로그인 한 경우 : 구매 페이지로 이동
+				goOrderPage();
+			}
+			else { // 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
+				goLoginPage();
+			}
+		});
 			
+	
+		// 장바구니 클릭
+		$("span#addCart").click(function() {
+			if(isExistLoginUser) { // 로그인 한 경우 : 장바구니에 추가했습니다(alert), 장바구니 페이지에 갈 것인지 쇼핑 계속하기로 현재 창에 머무를 것인지 선택
+				
+			}
+			else { // 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
+				goLoginPage();
+			}
+		});	
+			
+		// 찜하기 클릭
+		$("span#addWish").click(function() {
+			if(isExistLoginUser) { // 로그인 한 경우 : 찜한 상품으로 등록되었습니다(alert), 현재 창에 자동 머무르기
+				
+			}
+			else { // 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
+				goLoginPage();
+			}
+		});
 		
-		// 장바구니 클릭(로그인별 처리)
-			// 로그인 한 경우 : 장바구니에 추가했습니다(alert), 장바구니 페이지에 갈 것인지 쇼핑 계속하기로 현재 창에 머무를 것인지 선택
-			// 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
-			
-			
-		// 찜하기 클릭(로그인별 처리)
-			// 로그인 한 경우 : 찜한 상품으로 등록되었습니다(alert), 현재 창에 자동 머무르기
-			// 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
-	});
+	}); // end of $(document).ready(function() {})
+	
+	// 선택 카테고리 페이지로 이동
+	function goCategoryPage() {
+		// 선택한 카테고리가 무엇인지 알아오기
+		const $target = $(event.target);
+		let category = $target.text();
+		
+		alert(category);
+		
+		// 페이지 이동하기 전 선택한 카테고리 값 넘겨주기 
+		const frm = document.sendCategoryFrm;
+		frm.category.value = category;
+		
+		frm.action = "<%= ctxPath %>/product/categoryClick.an";
+		frm.method = "post";
+		frm.submit();
+	}
+	
+	// 구매 페이지로 이동
+	function goOrderPage() {
+		location.href="<%= ctxPath %>/product/myOrder.an";
+	}
+	
+	// 로그인 페이지로 이동
+	function goLoginPage() {
+		alert("로그인 후 이용할 수 있습니다.");
+	//	location.href="로그인 페이지 경로";
+	}
+	
+	/*
+	
+	/*   
+      location.href="javascript:history.go(-2);";  // 이전이전 페이지로 이동 
+       location.href="javascript:history.go(-1);";  // 이전 페이지로 이동
+       location.href="javascript:history.go(0);";   // 현재 페이지로 이동(==새로고침) 캐시에서 읽어옴.
+       location.href="javascript:history.go(1);";   // 다음 페이지로 이동.
+       
+       location.href="javascript:history.back();";       // 이전 페이지로 이동 
+       location.href="javascript:location.reload(true)"; // 현재 페이지로 이동(==새로고침) 서버에 가서 다시 읽어옴. 
+       location.href="javascript:history.forward();";    // 다음 페이지로 이동.
+   */
+	
+	
 </script>
 
 <div id="contianer">
 	<div id="sidebar">
 		<ul>
-			<li><a href="#">Necklaces</a></li>
-			<li><a href="#">Earrings</a></li>
-			<li><a href="#">Rings</a></li>
-			<li><a href="#">Bracelets</a></li>
-			<li><a href="#">Sale</a></li>
+			<li><a class='category' onclick='goCategoryPage()'>Necklaces</a></li>
+			<li><a class='category' onclick='goCategoryPage()'>Earrings</a></li>
+			<li><a class='category' onclick='goCategoryPage()'>Rings</a></li>
+			<li><a class='category' onclick='goCategoryPage()'>Bracelets</a></li>
+			<li><a class='category' onclick='goCategoryPage()'>Sale</a></li>
 		</ul>
 	</div>
 
@@ -76,39 +160,41 @@
 				
 				<hr style="border: solid 1px lightgray">
 				
-				<table id="tbl_option">
+				<table id="tbl_option"> <%-- table을 form으로 바꿔야할듯 --%>
 					<tr>
 						<th>필수 옵션</th>
 						<td>
 							<select id="reqOption">
 								<option value="">[필수] 옵션을 선택해주세요</option>
-								<option value="14rg5">14K 로즈골드 5호</option>
-								<option value="14rg6">14K 로즈골드 6호</option>
-								<option value="14rg7">14K 로즈골드 7호</option>
-								<option value="14yg5">14K 옐로우골드 5호</option>
-								<option value="14yg6">14K 옐로우골드 6호</option>
-								<option value="14yg7">14K 옐로우골드 7호</option>
-								<option value="18rg5">18K 로즈골드 5호</option>
-								<option value="18rg6">18K 로즈골드 6호</option>
-								<option value="18rg7">18K 로즈골드 7호</option>
-								<option value="18yg5">18K 옐로우골드 5호</option>
-								<option value="18yg6">18K 옐로우골드 6호</option>
-								<option value="18yg7">18K 옐로우골드 7호</option>
+								<option>14K 로즈골드 5호</option>
+								<option>14K 로즈골드 6호</option>
+								<option>14K 로즈골드 7호</option>
+								<option>14K 옐로우골드 5호</option>
+								<option>14K 옐로우골드 6호</option>
+								<option>14K 옐로우골드 7호</option>
+								<option>18K 로즈골드 5호</option>
+								<option>18K 로즈골드 6호</option>
+								<option>18K 로즈골드 7호</option>
+								<option>18K 옐로우골드 5호</option>
+								<option>18K 옐로우골드 6호</option>
+								<option>18K 옐로우골드 7호</option>
 							</select>
 						</td>
 					</tr>
 					<tr>
-						<th>선택 옵션</th>
+						<th>선택 옵션</th>						
 						<td>
-							<select>
-								<option>[선택] 옵션을 선택해주세요</option>
-								<option>선물용 포장 (+3,000원)</option>
-								<option>카드 첨부 (+5,000원)</option>
+							<select id="selOption">
+								<option value="">[선택] 옵션을 선택해주세요</option>
+								<option>선물용 포장</option>
 							</select>
 						</td>
 						<td id="card_msg"></td>
 					</tr>
-					<tr><th id="productName">상품명</th><td  data-toggle="tooltip" title="+-x 버튼 추가(img, script)"><input type="number" min="1" max="100" value="1"></input></td></tr>
+					<tr id=selOptionShow>
+						<th id="sel"></th>
+						<td id="selAdd"></td>
+					</tr>
 				</table>
 				
 				<hr style="border: solid 1px lightgray">
@@ -118,11 +204,11 @@
 				
 				<hr style="border: solid 1px lightgray;">
 				
-				<button type="button" class="btn btn-secondary btn-block">구매</button>
+				<button type="button" class="btn btn-secondary btn-block" id="purchase">구매</button>
 				
 				<p data-toggle="tooltip" title="아이콘 안보임">
-					<span><i class="fal fa-shopping-cart"></i>장바구니</span>
-					<span><i class="fal fa-heart"></i>찜</span>
+					<span id='addCart'><i class="fal fa-shopping-cart"></i>장바구니</span>
+					<span id='addWish'><i class="fal fa-heart"></i>찜</span>
 				</p>
 			</div>
 		</div>
@@ -200,7 +286,11 @@
 			</div>
 		</div>
 	</div>
-	
 </div>
+
+<%-- 선택한 카테고리 값 전송하는 form --%>
+<form name='sendCategoryFrm'>
+	<input type="hidden" name="category"/>
+</form>
 
 <jsp:include page="../view/common/footer.jsp"/>
