@@ -200,8 +200,8 @@
 	
 	// 로그인 페이지로 이동
 	function goLoginPage() {
-		alert("로그인 후 이용할 수 있습니다.");
-		location.href="<%= ctxPath %>/login/login.an";
+		alert("로그인 후 이용할 수 있습니다.${requestScope.goBackURL}");
+	<%--location.href="<%= ctxPath %>/login/login.an?goBackURL=${requestScope.goBackURL}";--%>
 		
 		// 로그인 후 다시 원래 페이지로 돌아오기(goBackURL)
 	}
