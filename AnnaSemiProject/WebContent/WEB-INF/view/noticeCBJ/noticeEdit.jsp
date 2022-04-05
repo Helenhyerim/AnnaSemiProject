@@ -14,4 +14,4 @@
 	pageContext.setAttribute("vo",vo);
 	response.sendRedirect(request.getContextPath() + "/notice.an"); //아래 코드와 같은 기능이다.
 
-%>
+%> 
