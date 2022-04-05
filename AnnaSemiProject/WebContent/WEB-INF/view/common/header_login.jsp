@@ -32,7 +32,7 @@
 
 <script type="text/javascript">
    
-   $(document).ready(function(){
+    $(document).ready(function(){
       
       let side_html = "";
       let content_html = ""; 
@@ -44,8 +44,8 @@
       $("#sidecontent").html(side_html);
       $("#maincontent").html(content_html);
       
-   });
-   
+   });   
+      
    function openNav() {
      document.getElementById("myNav").style.width = "100%";
      $("div#search").hide();
@@ -133,27 +133,36 @@
 </head>
 <body>
 
+	<!-- 상단 네비게이션 시작 -->
+	<nav class="navbar-expand-lg  bg-white navbar-light fixed-top" id = "first-nav" >
+		<!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
+		<a class="d-flex justify-content-center mr-0" href="<%= ctxPath %>/index.an" style="margin-right: 10%;"><img class="mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
+		
+		<!-- 아코디언 같은 Navigation Bar 만들기 -->
+	    <button class="navbar-toggler " type="button"onclick="openNav()">
+	      <span class="navbar-toggler-icon" > </span>
+	    </button>
+		
+		<div class="collapse navbar-collapse row-vh justify-content-end mx-2" >
+		  <ul class="navbar-nav">
+		  
 
-   <!-- 상단 네비게이션 시작 -->
-   <nav class="navbar-expand-lg  bg-white navbar-light fixed-top" id = "first-nav" >
-      <!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
-      <a class="d-flex justify-content-center mr-0" href="<%= ctxPath %>/index.an" style="margin-right: 10%;"><img class="mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
-      
-      <!-- 아코디언 같은 Navigation Bar 만들기 -->
-       <button class="navbar-toggler " type="button"onclick="openNav()">
-         <span class="navbar-toggler-icon" > </span>
-       </button>
-      
-      <div class="collapse navbar-collapse row-vh justify-content-end mx-2" >
-        <ul class="navbar-nav">
-
-           
-           
-
-
-           
+		     
+		     <c:set var="myPageLink" value="/login/login.an"></c:set>
+		     <c:choose>
+				<c:when test="${sessionScope.loginuser.userid eq 'hongkd'}">
+					<li class="nav-item">
+		              <a class="nav-link h6" href="<%= ctxPath %>/member/myAdmin.an">MyAdmin</a>
+		           </li>
+				</c:when>
+				<c:otherwise>
+		           <li class="nav-item">
+		              <a class="nav-link h6" href="<%= ctxPath %>${myPageLink}">Mypage</a>
+		           </li>
+	           </c:otherwise>
+           </c:choose>
            <c:if test="${empty sessionScope.loginuser}">
-           <c:set var="myPageLink" value="/login/login.an"></c:set>
+           	  <c:set var="myPageLink" value="/login/login.an"></c:set>
               <li class="nav-item">
                  <a class="nav-link h6" href="<%= ctxPath %>/login/login.an">Login</a>
               </li>
@@ -161,108 +170,103 @@
                 <a class="nav-link h6" href="<%= ctxPath %>/member/memberRegister.an">Join</a>
              </li>
           </c:if>
-		  <c:if test="${not empty sessionScope.loginuser}">
-         	 <c:set var="myPageLink" value="/member/myPage.an"></c:set>
-             <li class="nav-item">
-                <a class="nav-link h6" href="<%= ctxPath %>/login/logout.an">Logout</a>
-             </li>
-          </c:if>
-           <c:choose>
-				<c:when test="${sessionScope.loginuser.userid eq 'admin'}">
-					<li class="nav-item">
-						<a class="nav-link h6" href="<%= ctxPath %>/member/myAdmin.an">MyAdmin</a>
-					</li>
-				</c:when>
-				<c:otherwise>
-					<li class="nav-item">
-						<a class="nav-link h6" href="<%= ctxPath %>${myPageLink}">Mypage</a>
-					</li>
-				</c:otherwise>
-			</c:choose>
-          <li class="nav-item">
-             <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Event</a>
-          </li>
-          <li class="nav-item">
-             <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Review</a>
-          </li>
-          <li class="nav-item">
-             <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Cart</a>
-          </li>
-           <li class="nav-item dropdown">
-                 <a class="nav-link h6" href="#" id="navbarDropdown"> 
-                               Help                     
-                 </a>
-                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">공지사항</a>
-                    <a class="dropdown-item" href="#">QnA</a>
-                 </div>
-          </li>
           
-        </ul>
-      </div>
-      
-      <div class="collapse navbar-collapse row-vh mx-2"  >
-        <ul class="navbar-nav flex-row mb-2"  style="font-size: 12pt;">
-             <li class="nav-item dropdown">
-                 <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
-                               Necklaces                     
-                 </a>
-                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">gold</a>
-                    <a class="dropdown-item" href="#">silver</a>
-                    <a class="dropdown-item" href="#">diamond</a>
-                 </div>
-          </li>
-           <li class="nav-item dropdown">
-              <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
-                            Earings                    
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                 <a class="dropdown-item" href="#">gold</a>
-                 <a class="dropdown-item" href="#">silver</a>
-                 <a class="dropdown-item" href="#">diamond</a>
-              </div>
-           </li>
-           <li class="nav-item dropdown">
-              <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
-                            Rings                    
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                 <a class="dropdown-item" href="#">gold</a>
-                 <a class="dropdown-item" href="#">silver</a>
-                 <a class="dropdown-item" href="#">diamond</a>
-              </div>
-           </li>
-           <li class="nav-item dropdown">
-              <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
-                            Bracelets                    
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                 <a class="dropdown-item" href="#">gold</a>
-                 <a class="dropdown-item" href="#">silver</a>
-                 <a class="dropdown-item" href="#">diamond</a>
-              </div>
-           </li>
-            <li class="nav-item active">
-              <a class="nav-link menufont_size" href="#" style="color:#00000080;">Sale</a>
-           </li>
-        </ul>
-        </div>      
-        
-        <div class="navbar-nav flex-row mb-2 mx-3" id = "search">
-           <form class="form-inline" >
-              <div class="input-group rounded mb-2">
-                 <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon"/>
-                 <span class="input-group-text border-0" id="search-addon">
-                 <i type="submit" class="fas fa-search"></i>
-                </span>
-             </div>
-           </form>
-         </div>
+			<c:if test="${not empty sessionScope.loginuser}">
+				<c:set var="myPageLink" value="/member/myPage.an"></c:set>
+			 	<li class="nav-item">
+				    <a class="nav-link h6" href="<%= ctxPath %>/login/logout.an">Logout</a>
+				 </li>
+			 </c:if>
+			 <li class="nav-item">
+			    <a class="nav-link h6" href="<%= ctxPath %>/event.an">Event</a>
+			 </li>
+			 <li class="nav-item">
+			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Review</a>
+			 </li>
+			 <li class="nav-item">
+			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Cart</a>
+			 </li>
+			  <li class="nav-item dropdown">
+			        <a class="nav-link h6" href="#" id="navbarDropdown"> 
+			                      Help                     
+			        </a>
+			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			           <a class="dropdown-item" href="<%= ctxPath %>/notice.an">공지사항</a>
+			           <a class="dropdown-item" href="#">QnA</a>
+			           <a class="dropdown-item" href="<%= ctxPath %>/faq.an">FaQ</a>
+			        </div>
+			 </li>
+			 
+		  </ul>
+		</div>
+		
+		<div class="collapse navbar-collapse row-vh mx-2"  >
+		  <ul class="navbar-nav flex-row mb-2"  style="font-size: 12pt;">
+		       <li class="nav-item dropdown">
+			        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
+			                      Necklaces                     
+			        </a>
+			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			           <a class="dropdown-item" href="#">gold</a>
+			           <a class="dropdown-item" href="#">silver</a>
+			           <a class="dropdown-item" href="#">diamond</a>
+			        </div>
+			 </li>
+		     <li class="nav-item dropdown">
+		        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
+		                      Earings                    
+		        </a>
+		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+		           <a class="dropdown-item" href="#">gold</a>
+		           <a class="dropdown-item" href="#">silver</a>
+		           <a class="dropdown-item" href="#">diamond</a>
+		        </div>
+		     </li>
+		     <li class="nav-item dropdown">
+		        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
+		                      Rings                    
+		        </a>
+		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+		           <a class="dropdown-item" href="#">gold</a>
+		           <a class="dropdown-item" href="#">silver</a>
+		           <a class="dropdown-item" href="#">diamond</a>
+		        </div>
+		     </li>
+		     <li class="nav-item dropdown">
+		        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
+		                      Bracelets                    
+		        </a>
+		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+		           <a class="dropdown-item" href="#">gold</a>
+		           <a class="dropdown-item" href="#">silver</a>
+		           <a class="dropdown-item" href="#">diamond</a>
+		        </div>
+		     </li>
+		      <li class="nav-item active">
+		     	<a class="nav-link menufont_size" href="#" style="color:#00000080;">Sale</a>
+		     </li>
+		  </ul>
+  		</div>		
+	  	
+	  	<div class="navbar-nav flex-row mb-2 mx-3" id = "search">
+     		<form class="form-inline" >
+		     	<div class="input-group rounded mb-2">
+		           <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon"/>
+		           <span class="input-group-text border-0" id="search-addon">
+		           <i type="submit" class="fas fa-search"></i>
+		          </span>
+		       </div>
+     		</form>
+		</div>
+ 
+		
     <hr style="background-color: #ccc; height: 1.2px; position: relative; top:10px; margin: 0; margin-bottom: 10px;">
-   </nav>
 
+	</nav>
+	
+		
 
    <!-- 상단 네비게이션 끝 -->
+
 
     <hr style="position: relative; top:10px; margin: 0; margin-bottom: 250px; ">

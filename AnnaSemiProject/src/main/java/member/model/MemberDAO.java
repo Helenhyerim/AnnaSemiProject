@@ -518,6 +518,10 @@ public class MemberDAO implements InterMemberDAO {
 		}
 		
 		return result;
+<<<<<<< HEAD
+=======
+	}
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 
 	}
       
