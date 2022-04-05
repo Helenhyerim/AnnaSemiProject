@@ -89,7 +89,7 @@ public class LoginAction extends AbstractController {
                   
                   
                   
-                  super.setViewPage(request.getContextPath()+"/index.an");
+                  super.setViewPage(request.getContextPath()+"/productdetail.an");
                   
                }
                
