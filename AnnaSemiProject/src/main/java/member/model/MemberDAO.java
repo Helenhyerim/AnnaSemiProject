@@ -339,27 +339,27 @@ public class MemberDAO implements InterMemberDAO {
             conn = ds.getConnection();
             
             String sql = " select userid, name, email, mobile "
-					+ " from "
-					+ " ( "
-					+ "    select rownum AS rno, userid, name, email, mobile "
-					+ "    from "
-					+ "    ( "
-					+ "        select userid, name, email, mobile "
-					+ "        from tbl_member "
-					+ "        where userid != 'hongkd' ";
-			
-			String colname = paraMap.get("searchType");
-			String searchWord = paraMap.get("searchWord");
+               + " from "
+               + " ( "
+               + "    select rownum AS rno, userid, name, email, mobile "
+               + "    from "
+               + "    ( "
+               + "        select userid, name, email, mobile "
+               + "        from tbl_member "
+               + "        where userid != 'admin' ";
+         
+         String colname = paraMap.get("searchType");
+         String searchWord = paraMap.get("searchWord");
             
-			if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
-				sql += " and "+colname+" like '%'|| ? ||'%' ";
-			}
-			
-			sql += "        order by registerday desc "
-					+ "    ) V "
-					+ " ) T "
-					+ " where rno between ? and ? ";	
-				
+         if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+            sql += " and "+colname+" like '%'|| ? ||'%' ";
+         }
+         
+         sql += "        order by registerday desc "
+               + "    ) V "
+               + " ) T "
+               + " where rno between ? and ? ";   
+            
             pstmt = conn.prepareStatement(sql);
             
             int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
@@ -375,21 +375,21 @@ public class MemberDAO implements InterMemberDAO {
                   B 는 (currentShowPageNo * sizePerPage) 이다.
              */   
              if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
- 		 		
- 		 		if("email".equals(colname)) {
- 		 			pstmt.setString(1, aes.encrypt(searchWord));
- 				}
- 				else {
- 					pstmt.setString(1, searchWord);	
- 				}
- 		 		
- 		 		pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
- 				pstmt.setInt(3, (currentShowPageNo * sizePerPage));	
- 		 	}
- 		 	else {
- 		 		pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
- 				pstmt.setInt(2, (currentShowPageNo * sizePerPage));	
- 		 	}
+              
+              if("email".equals(colname)) {
+                 pstmt.setString(1, aes.encrypt(searchWord));
+             }
+             else {
+                pstmt.setString(1, searchWord);   
+             }
+              
+              pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+             pstmt.setInt(3, (currentShowPageNo * sizePerPage));   
+           }
+           else {
+              pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+             pstmt.setInt(2, (currentShowPageNo * sizePerPage));   
+           }
              
             rs = pstmt.executeQuery();
             
@@ -425,7 +425,7 @@ public class MemberDAO implements InterMemberDAO {
             
             String sql = " select ceil(count(*)/?) "
                      + " from tbl_member "
-                     + " where userid != 'hongkd' ";
+                     + " where userid != 'admin' ";
             
             pstmt = conn.prepareStatement(sql);
             
@@ -445,127 +445,127 @@ public class MemberDAO implements InterMemberDAO {
       }
 
     // 인증번호를 받아 비밀번호를 변경해주는 메소드  
-	@Override
-	public int pwdUpdate(Map<String, String> paraMap) throws SQLException {
-		int result = 0;
-		
-		try {
-			 conn = ds.getConnection();
-			 
-			 String sql = " update tbl_member set pwd = ? "
-			 		    + "                     , lastpwdchangedate = sysdate "
-			 		    + " where userid = ? ";
-			 
-			 pstmt = conn.prepareStatement(sql);
-			 
-			 pstmt.setString(1, Sha256.encrypt(paraMap.get("pwd")) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
-			 pstmt.setString(2, paraMap.get("userid") );
-			 
-			 result = pstmt.executeUpdate();
-			 
-		} finally {
-			close();
-		}
-		
-		return result;
-	}
-	
-	
-	// 회원정보를 수정해주는 메소드
-	@Override
-	public int updateMember(MemberVO member) throws SQLException {
-		int result = 0;
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " update tbl_member set name = ? "
-					   + "                     , pwd = ? "
-					   + "                     , email = ? "
-					   + "                     , mobile = ? "
-					   + "                     , postcode = ? "
-					   + "                     , address = ? "
-					   + "                     , detailaddress = ? "
-					   + "                     , lastpwdchangedate = sysdate "
-					   + "					   , sms_status = ? "
-					   + "					   , email_status = ? "
-					   + " where userid = ? ";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1,  member.getName());
-			pstmt.setString(2,  Sha256.encrypt(member.getPwd()));  // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.   
-			pstmt.setString(3,  aes.encrypt(member.getEmail()));   // 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다. 
-			pstmt.setString(4,  aes.encrypt(member.getMobile()));  // 휴대폰번호를 AES256 알고리즘으로 양방향 암호화 시킨다.     
-			pstmt.setString(5,  member.getPostcode());  
-			pstmt.setString(6,  member.getAddress());
-			pstmt.setString(7,  member.getDetailaddress());
-			pstmt.setInt(8, member.getSms_status());
-			pstmt.setInt(9, member.getEmail_status());
-			pstmt.setString(10,  member.getUserid());
-						
-			System.out.println(member.getName() + member.getPwd()+ member.getEmail() + member.getMobile() 
-			+ member.getPostcode() + member.getAddress() + member.getDetailaddress()+ member.getSms_status()
-			+member.getEmail_status()+ member.getUserid());
-			
-			result = pstmt.executeUpdate();
-			
-			System.out.println(result);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		
-		return result;
-	}
+   @Override
+   public int pwdUpdate(Map<String, String> paraMap) throws SQLException {
+      int result = 0;
+      
+      try {
+          conn = ds.getConnection();
+          
+          String sql = " update tbl_member set pwd = ? "
+                    + "                     , lastpwdchangedate = sysdate "
+                    + " where userid = ? ";
+          
+          pstmt = conn.prepareStatement(sql);
+          
+          pstmt.setString(1, Sha256.encrypt(paraMap.get("pwd")) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
+          pstmt.setString(2, paraMap.get("userid") );
+          
+          result = pstmt.executeUpdate();
+          
+      } finally {
+         close();
+      }
+      
+      return result;
+   }
+   
+   
+   // 회원정보를 수정해주는 메소드
+   @Override
+   public int updateMember(MemberVO member) throws SQLException {
+      int result = 0;
+      
+      try {
+         conn = ds.getConnection();
+         
+         String sql = " update tbl_member set name = ? "
+                  + "                     , pwd = ? "
+                  + "                     , email = ? "
+                  + "                     , mobile = ? "
+                  + "                     , postcode = ? "
+                  + "                     , address = ? "
+                  + "                     , detailaddress = ? "
+                  + "                     , lastpwdchangedate = sysdate "
+                  + "                  , sms_status = ? "
+                  + "                  , email_status = ? "
+                  + " where userid = ? ";
+         
+         pstmt = conn.prepareStatement(sql);
+         
+         pstmt.setString(1,  member.getName());
+         pstmt.setString(2,  Sha256.encrypt(member.getPwd()));  // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.   
+         pstmt.setString(3,  aes.encrypt(member.getEmail()));   // 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다. 
+         pstmt.setString(4,  aes.encrypt(member.getMobile()));  // 휴대폰번호를 AES256 알고리즘으로 양방향 암호화 시킨다.     
+         pstmt.setString(5,  member.getPostcode());  
+         pstmt.setString(6,  member.getAddress());
+         pstmt.setString(7,  member.getDetailaddress());
+         pstmt.setInt(8, member.getSms_status());
+         pstmt.setInt(9, member.getEmail_status());
+         pstmt.setString(10,  member.getUserid());
+                  
+         System.out.println(member.getName() + member.getPwd()+ member.getEmail() + member.getMobile() 
+         + member.getPostcode() + member.getAddress() + member.getDetailaddress()+ member.getSms_status()
+         +member.getEmail_status()+ member.getUserid());
+         
+         result = pstmt.executeUpdate();
+         
+         System.out.println(result);
+      } catch (Exception e) {
+         e.printStackTrace();
+      } finally {
+         close();
+      }
+      
+      return result;
+   }
 
       
    // userid 정보를 받아와서 회원에 대한 상세정보 알아오기
-	@Override
-	public MemberVO memberOneDetail(String userid) throws SQLException {
-		MemberVO mvo = null;
-		
-		try {
-			 conn = ds.getConnection();
-			 
-			 String sql = " select userid, name, email, mobile, postcode, address, detailaddress "+
-					      "     , substr(birthday,1,4) AS birthyyyy, substr(birthday,6,2) AS birthmm, substr(birthday,9) AS birthdd "+
-					      "     , point, to_char(registerday, 'yyyy-mm-dd') AS registerday, Sms_status, Email_status "+
-					      " from tbl_member "+
-					      " where userid = ? ";
-			 
-			 pstmt = conn.prepareStatement(sql);
-			 pstmt.setString(1, userid);
-			 			 
-			 rs = pstmt.executeQuery();
-			 
-			 if(rs.next()) {
-				 mvo = new MemberVO();
-				 
-				 mvo.setUserid(rs.getString(1));
-				 mvo.setName(rs.getString(2));
-				 mvo.setEmail( aes.decrypt(rs.getString(3)) );  // 복호화 
-				 mvo.setMobile( aes.decrypt(rs.getString(4)) ); // 복호화 
-				 mvo.setPostcode(rs.getString(5));
-				 mvo.setAddress(rs.getString(6));
-				 mvo.setDetailaddress(rs.getString(7));
-				 mvo.setBirthday(rs.getString(8) + rs.getString(9) + rs.getString(10));
-				 mvo.setPoint(rs.getInt(11));
-				 mvo.setRegisterday(rs.getString(12));
-				 mvo.setSms_status(rs.getInt(13));
-				 mvo.setEmail_status(rs.getInt(14));
-			 }
-		
-		} catch(GeneralSecurityException | UnsupportedEncodingException e) { 
-		    e.printStackTrace();	 
-		} finally {
-			close();
-		}
-		
-		return mvo;
+   @Override
+   public MemberVO memberOneDetail(String userid) throws SQLException {
+      MemberVO mvo = null;
+      
+      try {
+          conn = ds.getConnection();
+          
+          String sql = " select userid, name, email, mobile, postcode, address, detailaddress "+
+                     "     , substr(birthday,1,4) AS birthyyyy, substr(birthday,6,2) AS birthmm, substr(birthday,9) AS birthdd "+
+                     "     , point, to_char(registerday, 'yyyy-mm-dd') AS registerday, Sms_status, Email_status "+
+                     " from tbl_member "+
+                     " where userid = ? ";
+          
+          pstmt = conn.prepareStatement(sql);
+          pstmt.setString(1, userid);
+                    
+          rs = pstmt.executeQuery();
+          
+          if(rs.next()) {
+             mvo = new MemberVO();
+             
+             mvo.setUserid(rs.getString(1));
+             mvo.setName(rs.getString(2));
+             mvo.setEmail( aes.decrypt(rs.getString(3)) );  // 복호화 
+             mvo.setMobile( aes.decrypt(rs.getString(4)) ); // 복호화 
+             mvo.setPostcode(rs.getString(5));
+             mvo.setAddress(rs.getString(6));
+             mvo.setDetailaddress(rs.getString(7));
+             mvo.setBirthday(rs.getString(8) + rs.getString(9) + rs.getString(10));
+             mvo.setPoint(rs.getInt(11));
+             mvo.setRegisterday(rs.getString(12));
+             mvo.setSms_status(rs.getInt(13));
+             mvo.setEmail_status(rs.getInt(14));
+          }
+      
+      } catch(GeneralSecurityException | UnsupportedEncodingException e) { 
+          e.printStackTrace();    
+      } finally {
+         close();
+      }
+      
+      return mvo;
 
-	}
+   }
       
       
 }

@@ -43,7 +43,7 @@ public interface InterMemberDAO {
       MemberVO memberOneDetail(String userid) throws SQLException;
       
 
-   
+      
 
       
 }
