@@ -346,7 +346,7 @@ public class MemberDAO implements InterMemberDAO {
 					+ "    ( "
 					+ "        select userid, name, email, mobile "
 					+ "        from tbl_member "
-					+ "        where userid != 'hongkd' ";
+					+ "        where userid != 'admin' ";
 			
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
@@ -425,7 +425,7 @@ public class MemberDAO implements InterMemberDAO {
             
             String sql = " select ceil(count(*)/?) "
                      + " from tbl_member "
-                     + " where userid != 'hongkd' ";
+                     + " where userid != 'admin' ";
             
             pstmt = conn.prepareStatement(sql);
             
@@ -443,7 +443,7 @@ public class MemberDAO implements InterMemberDAO {
          
          return totalPage;
       }
-<<<<<<< HEAD
+
     // 인증번호를 받아 비밀번호를 변경해주는 메소드  
 	@Override
 	public int pwdUpdate(Map<String, String> paraMap) throws SQLException {
@@ -518,8 +518,8 @@ public class MemberDAO implements InterMemberDAO {
 		}
 		
 		return result;
-=======
 
+	}
       
    // userid 정보를 받아와서 회원에 대한 상세정보 알아오기
 	@Override
@@ -564,7 +564,7 @@ public class MemberDAO implements InterMemberDAO {
 		}
 		
 		return mvo;
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
+
 	}
       
       
