@@ -18,7 +18,7 @@ public class MyAdminAction extends AbstractController {
 				
 				MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 				
-				if( loginuser == null || !"hongkd".equals(loginuser.getUserid()) ) {
+				if( loginuser == null || !"admin".equals(loginuser.getUserid()) ) {
 					// 로그인을 안하고 접근하려는 경우 로그인 페이지로 이동
 					String message = "관리자로 로그인을 해야 들어올 수 있습니다.";
 					String loc = "javascript:history.back()";

@@ -346,7 +346,7 @@ public class MemberDAO implements InterMemberDAO {
 					+ "    ( "
 					+ "        select userid, name, email, mobile "
 					+ "        from tbl_member "
-					+ "        where userid != 'hongkd' ";
+					+ "        where userid != 'admin' ";
 			
 			String colname = paraMap.get("searchType");
 			String searchWord = paraMap.get("searchWord");
@@ -425,7 +425,7 @@ public class MemberDAO implements InterMemberDAO {
             
             String sql = " select ceil(count(*)/?) "
                      + " from tbl_member "
-                     + " where userid != 'hongkd' ";
+                     + " where userid != 'admin' ";
             
             pstmt = conn.prepareStatement(sql);
             
