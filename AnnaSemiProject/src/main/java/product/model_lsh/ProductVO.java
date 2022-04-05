@@ -21,6 +21,10 @@ public class ProductVO {
 	
 	public ProductVO() {}
 
+	public ProductVO(int productnum) {
+		this.productnum = productnum;
+	}
+	
 	public ProductVO(int productnum, int categorynum, String productname, String productcompany, String productimage1,
 					 String productimage2, int productqty, int productprice, int saleprice, int fk_specnum,
 					 String productcontent, int point, String productinputdate) {
