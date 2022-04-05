@@ -133,10 +133,11 @@
 </head>
 <body>
 
+
    <!-- 상단 네비게이션 시작 -->
    <nav class="navbar-expand-lg  bg-white navbar-light fixed-top" id = "first-nav" >
       <!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
-      <a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img class="mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
+      <a class="d-flex justify-content-center mr-0" href="<%= ctxPath %>/index.an" style="margin-right: 10%;"><img class="mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
       
       <!-- 아코디언 같은 Navigation Bar 만들기 -->
        <button class="navbar-toggler " type="button"onclick="openNav()">
@@ -147,18 +148,25 @@
         <ul class="navbar-nav">
 
            
-           
-			<c:choose>
-				<c:when test="${sessionScope.loginuser.userid eq 'admin'}">
-					<li class="nav-item">
-		              <a class="nav-link h6" href="<%= ctxPath %>/member/myAdmin.an">MyAdmin</a>
-		           </li>
-				</c:when>
-				<c:otherwise>
-		           <li class="nav-item">
-		              <a class="nav-link h6" href="<%= ctxPath %>/member/myPage.an">MyPage</a>
-		           </li>
-	           </c:otherwise>
+           <c:if test="${empty sessionScope.loginuser}">
+           <c:set var="myPageLink" value="/login/login.an"/>
+              
+          </c:if>
+          <c:if test="${not empty sessionScope.loginuser}">
+             <c:set var="myPageLink" value="/member/myPage.an"/>
+          </c:if>
+         
+         <c:choose>
+            <c:when test="${sessionScope.loginuser.userid eq 'admin'}">
+               <li class="nav-item">
+                    <a class="nav-link h6" href="<%= ctxPath %>/member/myAdmin.an">MyAdmin</a>
+                 </li>
+            </c:when>
+            <c:otherwise>
+                 <li class="nav-item">
+                    <a class="nav-link h6" href="<%= ctxPath %>${myPageLink}">Mypage</a>
+                 </li>
+              </c:otherwise>
            </c:choose>
            <c:if test="${empty sessionScope.loginuser}">
               <li class="nav-item">
@@ -174,6 +182,7 @@
                 <a class="nav-link h6" href="<%= ctxPath %>/login/logout.an">Logout</a>
              </li>
           </c:if>
+         
           <li class="nav-item">
              <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Event</a>
           </li>
@@ -256,8 +265,41 @@
          </div>
     <hr style="background-color: #ccc; height: 1.2px; position: relative; top:10px; margin: 0; margin-bottom: 10px;">
    </nav>
+   
+      
+   
+      <div id="myNav" class="overlay">
+     <a href="javascript:void(0)" class="closebtn"onclick="closeNav()" >&times;</a>
+     <div class="overlay-content">
+       <a href="#">Necklaces</a>
+       <a href="#">Earring</a>
+       <a href="#">Ring</a>
+       <a href="#">Bracelets</a>
+       <a href="#">Sale</a>
+       <c:if test="${empty sessionScope.loginuser}">
+
+          <a href="<%= ctxPath %>/login/login.an">Login</a>
+          <a href="<%= ctxPath %>/member/memberRegister.an">Join</a>
+       </c:if>
+        <c:if test="${empty sessionScope.loginuser}">
+          <a href="<%= ctxPath %>/login/logout.an">Logout</a>
+          <a href="<%= ctxPath %>/member/myPage.an">mypage</a>
+
+          <a href="<%= ctxPath %>/login/login.an">Login</a>
+          <a href="<%= ctxPath %>/member/memberRegister.an">Join</a>
+       </c:if>
+       <c:if test="">
+          <a href="<%= ctxPath %>/login/logout.an">Login</a>
+       </c:if>
+       <a href="#">Event</a>
+       <a href="#">Review</a>
+       <a href="#">Cart</a>
+       <a href="#">Help</a>
+     </div>
+   </div>
 
 
    <!-- 상단 네비게이션 끝 -->
+
 
     <hr style="position: relative; top:10px; margin: 0; margin-bottom: 250px; ">
