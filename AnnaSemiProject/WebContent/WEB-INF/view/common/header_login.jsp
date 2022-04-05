@@ -157,7 +157,7 @@
 				 </li>
 			 </c:if>
 			 <li class="nav-item">
-			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Event</a>
+			    <a class="nav-link h6" href="<%= ctxPath %>/event.an">Event</a>
 			 </li>
 			 <li class="nav-item">
 			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Review</a>
@@ -170,8 +170,9 @@
 			                      Help                     
 			        </a>
 			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-			           <a class="dropdown-item" href="#">공지사항</a>
+			           <a class="dropdown-item" href="<%= ctxPath %>/notice.an">공지사항</a>
 			           <a class="dropdown-item" href="#">QnA</a>
+			           <a class="dropdown-item" href="<%= ctxPath %>/faq.an">FaQ</a>
 			        </div>
 			 </li>
 			 
