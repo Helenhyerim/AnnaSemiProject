@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -152,6 +150,7 @@
            
            
 
+
            
            <c:if test="${empty sessionScope.loginuser}">
            <c:set var="myPageLink" value="/login/login.an"></c:set>
@@ -168,10 +167,18 @@
                 <a class="nav-link h6" href="<%= ctxPath %>/login/logout.an">Logout</a>
              </li>
           </c:if>
-             <li class="nav-item">
-                 <a class="nav-link h6" href="<%= ctxPath %>${myPageLink}">Mypage</a>
-              </li>
-         
+           <c:choose>
+				<c:when test="${sessionScope.loginuser.userid eq 'admin'}">
+					<li class="nav-item">
+						<a class="nav-link h6" href="<%= ctxPath %>/member/myAdmin.an">MyAdmin</a>
+					</li>
+				</c:when>
+				<c:otherwise>
+					<li class="nav-item">
+						<a class="nav-link h6" href="<%= ctxPath %>${myPageLink}">Mypage</a>
+					</li>
+				</c:otherwise>
+			</c:choose>
           <li class="nav-item">
              <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Event</a>
           </li>
@@ -254,38 +261,6 @@
          </div>
     <hr style="background-color: #ccc; height: 1.2px; position: relative; top:10px; margin: 0; margin-bottom: 10px;">
    </nav>
-   
-      
-   
-      <div id="myNav" class="overlay">
-     <a href="javascript:void(0)" class="closebtn"onclick="closeNav()" >&times;</a>
-     <div class="overlay-content">
-       <a href="#">Necklaces</a>
-       <a href="#">Earring</a>
-       <a href="#">Ring</a>
-       <a href="#">Bracelets</a>
-       <a href="#">Sale</a>
-       <c:if test="${empty sessionScope.loginuser}">
-
-          <a href="<%= ctxPath %>/login/login.an">Login</a>
-          <a href="<%= ctxPath %>/member/memberRegister.an">Join</a>
-       </c:if>
-        <c:if test="${empty sessionScope.loginuser}">
-          <a href="<%= ctxPath %>/login/logout.an">Logout</a>
-          <a href="<%= ctxPath %>/member/myPage.an">mypage</a>
-
-          <a href="<%= ctxPath %>/login/login.an">Login</a>
-          <a href="<%= ctxPath %>/member/memberRegister.an">Join</a>
-       </c:if>
-       <c:if test="">
-          <a href="<%= ctxPath %>/login/logout.an">Login</a>
-       </c:if>
-       <a href="#">Event</a>
-       <a href="#">Review</a>
-       <a href="#">Cart</a>
-       <a href="#">Help</a>
-     </div>
-   </div>
 
 
    <!-- 상단 네비게이션 끝 -->
@@ -557,6 +532,5 @@
 		
 
    <!-- 상단 네비게이션 끝 -->
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 
     <hr style="position: relative; top:10px; margin: 0; margin-bottom: 250px; ">
