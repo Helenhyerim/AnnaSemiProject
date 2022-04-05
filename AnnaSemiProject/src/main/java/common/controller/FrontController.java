@@ -85,6 +85,8 @@ public class FrontController extends HttpServlet {
 						~~~ 확인용 key 값들 =>/main.up
 						~~~ 확인용 key 값들 =>/index.up
 					*/
+					// System.out.println("확인용 " + key);
+				
 					
 					// System.out.println("~~~ 확인용 value 값들 => " + pr.getProperty(key));
 					/*

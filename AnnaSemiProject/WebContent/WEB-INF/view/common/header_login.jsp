@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -259,5 +260,6 @@
 
 
    <!-- 상단 네비게이션 끝 -->
+
 
     <hr style="position: relative; top:10px; margin: 0; margin-bottom: 250px; ">
