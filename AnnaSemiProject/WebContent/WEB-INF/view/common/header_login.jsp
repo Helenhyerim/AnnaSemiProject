@@ -148,12 +148,26 @@
       <div class="collapse navbar-collapse row-vh justify-content-end mx-2" >
         <ul class="navbar-nav">
 
-           
-           
-
-           
+          <c:if test="${empty sessionScope.loginuser}">
+          	<c:set var="myPageLink" value="/login/login.an"/>    
+          </c:if>
+          <c:if test="${not empty sessionScope.loginuser}">
+             <c:set var="myPageLink" value="/member/myPage.an"/>
+          </c:if>
+         
+         <c:choose>
+            <c:when test="${sessionScope.loginuser.userid eq 'admin'}">
+               <li class="nav-item">
+                    <a class="nav-link h6" href="<%= ctxPath %>/member/myAdmin.an">MyAdmin</a>
+                 </li>
+            </c:when>
+            <c:otherwise>
+                 <li class="nav-item">
+                    <a class="nav-link h6" href="<%= ctxPath %>${myPageLink}">Mypage</a>
+                 </li>
+              </c:otherwise>
+           </c:choose>
            <c:if test="${empty sessionScope.loginuser}">
-           <c:set var="myPageLink" value="/login/login.an"></c:set>
               <li class="nav-item">
                  <a class="nav-link h6" href="<%= ctxPath %>/login/login.an">Login</a>
               </li>
@@ -161,15 +175,12 @@
                 <a class="nav-link h6" href="<%= ctxPath %>/member/memberRegister.an">Join</a>
              </li>
           </c:if>
-		  <c:if test="${not empty sessionScope.loginuser}">
-         	 <c:set var="myPageLink" value="/member/myPage.an"></c:set>
+
+         <c:if test="${not empty sessionScope.loginuser}">
              <li class="nav-item">
                 <a class="nav-link h6" href="<%= ctxPath %>/login/logout.an">Logout</a>
              </li>
           </c:if>
-             <li class="nav-item">
-                 <a class="nav-link h6" href="<%= ctxPath %>${myPageLink}">Mypage</a>
-              </li>
          
           <li class="nav-item">
              <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Event</a>
