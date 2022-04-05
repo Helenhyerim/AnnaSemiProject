@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -32,6 +31,20 @@
 <script type="text/javascript" src="<%= ctxPath%>/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js" ></script> 
 
 <script type="text/javascript">
+   
+    $(document).ready(function(){
+      
+      let side_html = "";
+      let content_html = ""; 
+      for(var i=0; i<15; i++) {
+         side_html += (i+1)+".사이드 내용물<br/>";
+         content_html += (i+1)+".content 내용물 입니다<br/>";
+      }
+      
+      $("#sidecontent").html(side_html);
+      $("#maincontent").html(content_html);
+      
+   });   
       
    function openNav() {
      document.getElementById("myNav").style.width = "100%";
@@ -135,22 +148,27 @@
 
 		     
 		     
-
-		     <li class="nav-item">
-		        <a class="nav-link h6" href="<%= ctxPath %>/index.an">Mypage</a>
-		     </li>
-		     <c:if test="${empty sessionScope.loginuser}">
-			     <li class="nav-item">
-			     	<a class="nav-link h6" href="<%= ctxPath %>/login/login.an">Login</a>
-			     </li>
-				 <li class="nav-item">
-				    <a class="nav-link h6" href="<%= ctxPath %>/member/memberRegister.an">Join</a>
-				 </li>
-			 </c:if>
-
-				 <li class="nav-item">
-			        <a class="nav-link h6" href="<%= ctxPath %>/index.an">Mypage</a>
-			     </li>
+		     <c:choose>
+				<c:when test="${sessionScope.loginuser.userid eq 'hongkd'}">
+					<li class="nav-item">
+		              <a class="nav-link h6" href="<%= ctxPath %>/member/myAdmin.an">MyAdmin</a>
+		           </li>
+				</c:when>
+				<c:otherwise>
+		           <li class="nav-item">
+		              <a class="nav-link h6" href="<%= ctxPath %>/member/myPage.an">MyPage</a>
+		           </li>
+	           </c:otherwise>
+           </c:choose>
+           <c:if test="${empty sessionScope.loginuser}">
+              <li class="nav-item">
+                 <a class="nav-link h6" href="<%= ctxPath %>/login/login.an">Login</a>
+              </li>
+             <li class="nav-item">
+                <a class="nav-link h6" href="<%= ctxPath %>/member/memberRegister.an">Join</a>
+             </li>
+          </c:if>
+          
 			<c:if test="${not empty sessionScope.loginuser}">
 			 	<li class="nav-item">
 				    <a class="nav-link h6" href="<%= ctxPath %>/login/logout.an">Logout</a>
