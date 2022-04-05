@@ -23,9 +23,10 @@
 		if(${not empty sessionScope.loginuser}) { isExistLoginUser = true; }
 		
 		// 대표이미지 변경하기(hover)
+		// $("div#img_list").bind("hover", function() {})
 		
-		// 옵션 선택하면 옵션 보이기
-		// 필수 옵션(인덱스)
+		// 옵션 선택
+		// 필수 옵션
 		$("select#reqOption").change(function() {
 			
 			const reqOption_value = $("select#reqOption").val();
@@ -33,20 +34,24 @@
 			if(reqOption_value != "") {
 				const productName = $("select#reqOption option:selected").text();
 				
-				let addTrHtml = "";
+				let addReqOption = "";
 				
-				addTrHtml += '<tr>'
-						  +  '    <th>' + productName + '</th>'
+			//	if(.pname의 text 중에 productName과 중복되는 것이 없거나 reqTr이 존재하지 않는 경우에) {
+				
+				addReqOption += '<tr class="reqTr">'
+						  +  '    <th class="pname">' + productName + '</th>'
 						  +  '    <td>'
-						  +  '        <input type="number" min="1" max="20" value="1"/>'
-						  +  '        <span id="addQty"><i class="fal fa-plus-circle"></i></span>'
-						  +  '        <span id="subQty"><i class="fal fa-minus-circle"></i></span>'
-						  +  '        <span id="delProduct"><i class="fal fa-trash-alt"></i></span>'
+						  +  '        <input type="text" min="1" max="20" value="1" readonly style="width: 50px;"/>'
+						  +  '        <span id="addQty" onclick="addQty()"><i class="fal fa-plus-circle"></i></span>'
+						  +  '        <span id="subQty" onclick="subQty()"><i class="fal fa-minus-circle"></i></span>'
+						  +  '        <span id="delProduct" onclick="delReqOption()"><i class="fal fa-trash-alt"></i></span>'
 						  +  '    </td>'
 						  +  '</tr>';
 						  
-				$("tr#selOptionResult").before(addTrHtml);
+				$("tr#selOptionResult").before(addReqOption);
 				$("table#tbl_optionResult").show();
+				
+			// } else { alert("이미 선택한 옵션입니다."); }
 			}
 		});
 		
@@ -58,19 +63,34 @@
 			
 			if(reqOption_value == "") {
 				alert("필수 옵션 선택 후 선택 가능한 옵션입니다.");
+				return;
 			}
 			
 			if(selOption_value != "") {
-				let selOption = $("select#selOption option:selected").text();
+				const selOptionName = $("select#selOption option:selected").text();
 				
-				$("th#sel").text(selOption);
+				let addSelOption = "";
+				
+				addSelOption = '<span for="delProduct" class="align-right" onclick="delSelOption()">x<i class="fal fa-trash-alt" id="delProduct"></i></span>';
+				
+				$("th#sel").text(selOptionName);
+				$("td#selAdd").html(addSelOption);
 				$("table#tbl_optionResult").show();
 				$("tr#selOptionResult").show();
 			}
-			
-		});
+		}); // end of $("select#selOption").change(function(){})
 		
-		// 옵션 변경하면(수정, 삭제) 변경된 값 보이기
+		
+		// 테이블(tbl_optionResult)이 변경될 때마다 총 가격과 수량을 나타내기
+		$("table#tbl_optionResult").change(function() {
+			// 필수옵션은 어차피 가격이 같으니까 그냥 requestScope로 받아오기
+			// 선택옵션은 value에 가격을 넣어서 가져다쓰기
+			
+			// c:fmt pattern #,###,###
+			// max 수량이 옵션당인지 total인지 물어보기
+			
+			// 변경된 값 반영하기
+		});
 		
 		
 		// 구매하기 클릭
@@ -180,23 +200,60 @@
 	
 	// 로그인 페이지로 이동
 	function goLoginPage() {
-		alert("로그인 후 이용할 수 있습니다.");
-		location.href="<%= ctxPath %>/login/login.an";
+		alert("로그인 후 이용할 수 있습니다.${requestScope.goBackURL}");
+	<%--location.href="<%= ctxPath %>/login/login.an?goBackURL=${requestScope.goBackURL}";--%>
 		
 		// 로그인 후 다시 원래 페이지로 돌아오기(goBackURL)
 	}
 	
-	/* 
-      	location.href="javascript:history.go(-2);";  // 이전이전 페이지로 이동 
-       	location.href="javascript:history.go(-1);";  // 이전 페이지로 이동
-       	location.href="javascript:history.go(0);";   // 현재 페이지로 이동(==새로고침) 캐시에서 읽어옴.
-       	location.href="javascript:history.go(1);";   // 다음 페이지로 이동.
-      	 
-       	location.href="javascript:history.back();";       // 이전 페이지로 이동 
-       	location.href="javascript:location.reload(true)"; // 현재 페이지로 이동(==새로고침) 서버에 가서 다시 읽어옴. 
-       	location.href="javascript:history.forward();";    // 다음 페이지로 이동.
-   	*/
+   	// 상품 수량 변경 및 삭제 함수(addQty, subQty, delProduct)
+   	function addQty() {	
+       	const $target = $(event.target);
+       	
+       	let qty = Number($target.parent().siblings("input").val());
+       	
+       	if(qty < 20) {
+       		$target.parent().siblings("input").val(qty + 1);
+       	}
+       	else {
+       		alert("최대 구매 수량을 초과하였습니다.");
+       	}
+    }
+       	
+	function subQty() {
+		const $target = $(event.target);
+		
+		let qty = Number($target.parent().siblings("input").val());
+		
+		if(qty > 1) {
+			$target.parent().siblings("input").val(qty - 1);
+		}
+		else {
+			alert("최소 구매 수량 미만입니다.");
+		}
+	}
 	
+	function delReqOption() { // target 인덱스와 table의 tr 인덱스가 같은 것을 삭제
+		const $target = $(event.target);
+		const table = $("table#tbl_optionResult");
+		
+		$target.parent().parent().parent().remove();
+		
+		if(table.find("tr.reqTr").length == 0) {
+			table.hide();
+			delSelOption();
+		}
+	}
+	
+	function delSelOption() {
+		const $target = $(event.target);
+		
+		$target.parent().empty();
+		$target.parent().siblings("th#sel").empty();
+		
+		$("tr#selOptionResult").hide();
+	}
+   	
 	
 </script>
 
@@ -272,7 +329,7 @@
 				
 				<hr style="border: solid 1px lightgray">
 				
-				<p>TOTAL <span data-toggle="tooltip" title="옵션 선택 후 보이기(script)">345,000원(1개)</span></p>
+				<p>TOTAL <span id="total" style="margin-left: 170px;">345,000원(1개)</span></p>
 				<p>!할인가가 적용된 최종 결제예정금액은 주문 시 확인할 수 있습니다.</p>
 				
 				<hr style="border: solid 1px lightgray;">

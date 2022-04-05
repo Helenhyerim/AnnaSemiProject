@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 package member.model;
 
 import java.util.Calendar;
@@ -223,6 +226,7 @@ public class MemberVO {
 	
 
 
+<<<<<<< HEAD
 =======
 package member.model;
 
@@ -422,3 +426,5 @@ public class MemberVO {
 
 
 >>>>>>> refs/heads/YuHyeRim
+=======
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
