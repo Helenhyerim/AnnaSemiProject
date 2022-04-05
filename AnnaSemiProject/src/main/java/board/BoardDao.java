@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.JdbcUtil;
+import common.controller.JdbcUtil;
 
 public class BoardDao {
 	private JdbcUtil ds; 
