@@ -95,6 +95,8 @@ replay_pid*
 
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse
 
+##### commit 제외파일 #####
 .classpath
 .gitignore
-/AnnaSemiProject/WebContent/WEB-INF/Command.properties
+/AnnaSemiProject/WebContent/WEB-INF/sql/AnnaSemiProject.sql
+/AnnaSemiProject/WebContent/WEB-INF/web.xml
