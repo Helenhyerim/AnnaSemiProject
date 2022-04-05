@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+div:hover{
+	font-weight: normal;
+}
+
+div.container{
+	width: 90%; 
+	margin: 20% auto 10% auto;
+}
+
+div#middle-container {
+	color: black; 
+	
+}
+span#product_detail{
+	text-align: center;
+	
+}
+
+span#product_detail a{
+	display: block;
+}
+
+a:hover{
+	font-weight: normal;
+}

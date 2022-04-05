@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+
+=======
+
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -131,9 +136,13 @@
 <body>
 
 	<!-- 상단 네비게이션 시작 -->
-	<nav class="navbar-expand-lg  navbar-light mx-5 my-3 fixed-top" id = "first-nav">
+<<<<<<< HEAD
+	<nav class="navbar-expand-lg bg-white navbar-light fixed-top" id="first-nav">
+=======
+	<nav class="navbar-expand-lg bg-white navbar-light fixed-top" id = "first-nav">
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 		<!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
-		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
+		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img class = "mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
 		
 		<!-- 아코디언 같은 Navigation Bar 만들기 -->
 	    <button class="navbar-toggler " type="button"onclick="openNav()">
@@ -231,8 +240,11 @@
      		</form>
       	</ul>
   		</div>		
+
 	  	
-		
+		<hr style="background-color: #ccc; height: 1.2px; position: relative; top:10px; margin: 0; margin-bottom: 10px;">
+
+
 	</nav>
 	
 	
@@ -256,6 +268,8 @@
 
 
 	<!-- 상단 네비게이션 끝 -->
+<<<<<<< HEAD
 
 
-	  
+=======
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git

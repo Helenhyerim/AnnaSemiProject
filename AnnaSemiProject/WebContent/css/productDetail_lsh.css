@@ -1,0 +1,160 @@
+@charset "UTF-8";
+
+/* ##### 기존 적용 스타일 ##### */
+/*표준 글꼴 서식 스타일*/
+body {
+	font-family: 'NanumGothic', 'MalgunGothic' ; 
+	font-size: 12pt;
+}
+
+#sideinfo	{ background-color: #E6E6E6;  
+              min-height: 1024px; }
+                  
+#maininfo	{ background-color: #F5F5F5; 
+              min-height: 1024px; }  
+
+#footer	{ color: #696969;
+		  padding: 30px 0;
+		  font-size: 9pt;
+ 			  /* background-color: transparent; 
+              height: 100px; */ } 
+.btn_footer {
+	border: none;
+	border-radius: 5%;
+	font-size: 8pt; 
+	width: 100px;
+	}
+
+td, th, input, select, textarea, p {
+	padding: 0.5%; /* 안쪽 여백 */
+}
+
+img { border: 0px; }
+
+i:hover {
+	cursor: pointer;
+}
+
+/* 표준 링크 스타일 */
+a {text-decoration: none !important;}
+
+/* unvisited link */
+a:link {color: #696969;	}
+
+/* visited link */
+a:visited {color: #696969;} 
+
+/* mouse over link */
+a:hover { color: black; 
+          font-weight: bold;
+          cursor: pointer;}
+          
+/* selected link */
+a:active { color: navy; }          
+
+.box { border:1px solid navy; }
+
+.box2 { border:1px dotted red; }
+
+table.outline { width: 95%;
+	            border-top: 4px double navy;
+	            border-bottom: 4px double navy; }
+	             
+table.outline th {background-color: #e6e6e6;}	             
+
+.error { color: red; padding-left: 10px; margin-bottom: 5px;}
+
+.bgcol {background-color: LightGray;}
+
+
+
+
+
+/* ##### 직접 작성한 부분 ##### */
+div#contianer {
+	width: 90%;
+	margin: 250px auto;
+}
+
+div#sidebar {
+	position: fixed;
+	top: 250px;
+	left: 50px;
+	width: 15%;
+	height: 500px;
+	overflow: auto;
+	margin:0 auto;
+}
+
+div#sidebar ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+div#sidebar li a {
+	line-height: 60px;
+	font-size: 18pt;
+	color: gray;
+}
+
+div#main_content {
+	margin-left: 200px;
+}
+
+div#product_cover {
+	padding: 0;
+	/* text-align: center; */
+}
+
+div#cover > img {
+	width: 90%;
+}
+
+div#img_list {
+	margin: 10px auto;
+	/* text-align: center; */
+}
+
+div#img_list > img {
+	width: 15%;
+	margin: 0 5px;
+}
+
+div#img_list > img:hover {
+	opacity: 0.8;
+}
+
+div#product_option {padding: 10px;}
+
+table#tbl_option tr {height: 40px;}
+
+table#tbl_option th {width: 100px;}
+
+span.spanbtn {
+	display: inline-block;
+	border: solid 1px gray;
+	background-color: lightgray;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+}
+
+div#bottom_content {width: 90%;}
+
+div#productInfo {
+	margin-top: 50px;
+	margin-bottom: 100px;
+}
+
+div#productDetailImg {
+	text-align: center;
+	margin-bottom: 250px;
+}
+
+div#productDetailImg > img {
+	width: 90%;
+}
+
+div#productDetailImg > img:first-child {margin-bottom: 200px;}
+
+div#review_board, div#QnA_board {margin: 50px auto;}
