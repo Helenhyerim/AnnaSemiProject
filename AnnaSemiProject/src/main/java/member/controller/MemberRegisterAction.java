@@ -48,33 +48,32 @@ public class MemberRegisterAction extends AbstractController {
 	        	  email_status = 1;
 	          }
 			
-			System.out.println(">>>확인용 sms_status =>"+sms_status);
-			System.out.println(">>>확인용 email_status =>"+email_status);
+		//	System.out.println(">>>확인용 sms_status =>"+sms_status);
+		//	System.out.println(">>>확인용 email_status =>"+email_status);
 			
 			MemberVO member = new MemberVO(userid, pwd, name, email, mobile, postcode, address, detailaddress, birthday, sms_status, email_status );    
 			
-			String message = "";
-			String loc = "";
-			
-			
-			
-			try {
-			    InterMemberDAO mdao = new MemberDAO();
-			    int n = mdao.registerMember(member);
-			    
-			    if(n==1) {
-			    	message = "회원가입 성공";
-			    	loc = request.getContextPath()+"/index.an"; // 시작페이지로 이동한다.
-			    			// 			/MyMVC/index.up
-		    }
+			//회원가입이 성공되면 자동으로 로그인되도록 하겠다. // 
+			 // ######## 회원가입이 성공되면 자동으로 로그인 되도록 하겠다. ######## //
+			   try {
+				   InterMemberDAO mdao = new MemberDAO();
+				   int n = mdao.registerMember(member);
+				   
+				   if(n==1) {
+					   request.setAttribute("userid", userid);
+					   request.setAttribute("pwd", pwd);
+					   
+					// super.setRedirect(false);
+					   super.setViewPage("/WEB-INF/view/login/registerAfterAutoLogin.jsp");
+				   }
 			} catch(SQLException e) {
 				e.printStackTrace();
-				message = "SQL 구문 에러발생";
-				loc = "javascript:history.back()"; // 자바스크립트를 이용한 이전페이지로 이동한다. 
-			}
+				
+				String message = "SQL 구문 에러발생";
+				String loc = "javascript:history.back()"; // 자바스크립트를 이용한 이전페이지로 이동한다. 
 			
-			request.setAttribute("message", message);
-			request.setAttribute("loc", loc);
+				request.setAttribute("message", message);
+				request.setAttribute("loc", loc);
 			
 			// super.setRedirect(false);
 			super.setViewPage("/WEB-INF/view/common/msg.jsp");
@@ -83,4 +82,5 @@ public class MemberRegisterAction extends AbstractController {
 
 	}
 
+}
 }

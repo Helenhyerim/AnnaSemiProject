@@ -1,4 +1,4 @@
-package member.controller;
+package memberYJ.controller;
 
 import java.util.*;
 
@@ -77,7 +77,7 @@ public class MemberListAction extends AbstractController {
 		
 		
 		// === 검색이 있을 경우 시작 === //
-			if(searchType != null && !"".equals(searchType) && !"name".equals(searchType) && !"userid".equals(searchType) && !"email".equals(searchType)) {
+			if(searchType != null && !"".equals(searchType) && !"name".equals(searchType) && !"userid".equals(searchType) && !"email".equals(searchType) && !"mobile".equals(searchType)) {
 			    // 사용자가 웹브라우저 주소입력란에서 searchType 란에 장난친 경우 
 				String message = "부적절한 검색 입니다. 장난치지 마세요~~";
 				String loc = request.getContextPath()+"/member/memberList.an";
@@ -95,6 +95,7 @@ public class MemberListAction extends AbstractController {
 			paraMap.put("searchWord", searchWord); 
 			// === 검색이 있을 경우 끝 === //
 		
+			
 		// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 전체회원에 대한 총 페이지 알아오기 
 		int totalPage = mdao.getTotalPage(paraMap);
 		
