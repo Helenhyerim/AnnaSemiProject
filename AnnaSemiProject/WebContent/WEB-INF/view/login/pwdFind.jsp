@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
@@ -76,6 +75,10 @@ function goCheckCode(){
 
 	
 } 
+
+function goCancel(){
+	location.href = "<%= request.getContextPath()%>/index.an";	
+}
 </script>
 
 <c:if test="${requestScope.method eq 'POST'}" >
@@ -118,12 +121,9 @@ function goCheckCode(){
 						<input type = "email" name = "email" id = "email" class = "col-md-10" />
 					</div>
 					<div class = "row">
-						<button class = "login_element w-100 btn btn-dark btn-lg text-center" type = "button" id = "btnPwdFind"onclick = "goPwdFind()" >비밀번호 찾기</button>
+						<button class = "login_element w-100 btn btn-dark btn-lg text-center mb-2" type = "button" id = "btnPwdFind"onclick = "goPwdFind();" >비밀번호 찾기</button>
+						<button class = "login_element w-100 btn btn-light btn-lg text-center" type = "button" onclick = "goCancel();" >취소하기</button>
 					</div>
-					<div class = "row">
-						<button class = "login_element w-100 btn btn-light btn-lg text-center" type = "button" onclick = "취소하기" >취소하기</button>
-					</div>
-						
 			    </form>
 			</c:if>		   
 		    <c:if test="${requestScope.method == 'POST' && requestScope.sendMailSuccess == true && requestScope.isUserExist == true}">
@@ -143,13 +143,6 @@ function goCheckCode(){
 		</div>	
 	</div>
 </div>
-
-
-
-
-
-
-
 
 
 

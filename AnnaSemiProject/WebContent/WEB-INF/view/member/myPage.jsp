@@ -9,11 +9,10 @@
     //     /MyMVC
 %>   
 
-<!-- Font Awesome 5 Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-	
-
 <jsp:include page="../common/header_login.jsp" />   
+
+<!-- 직접 만든 CSS -->
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/pagination_syj.css" />
 
 <style type="text/css">
 	.titleArea h2 {
@@ -23,183 +22,205 @@
 	    letter-spacing: 1px;
 	    font-family: 'Roboto','Noto Sans KR',sans-serif;
 	}
-
+	
 	#contents {
 	    width: 100%;
 	    float: none;
 	    padding: 200px 20px 0;
 	    box-sizing: border-box;  
 	} 
-	.myshopMain {
-	    padding: 50px;
+	
+	.memberFrm {
+    margin: 0 auto;
+    font-size: 12px;
+    }
+
+	select {
+    height: 24px;
+    border: 1px solid #d5d5d5;
+	}
+	
+	input[type=text] {
+		width: 144px;
+	    height: 24px;
+	    margin: 0 0 0 2px;
+	    padding: 0 6px;
+	    border: 1px solid #d5d5d5;
+	    line-height: 22px;
+	    font-size: 12px;
+	}
+	
+	form > button {
+		display: inline-block;
+	    height: 24px;
+	    margin: 0 10px 0 2px;
+	    padding: 0 10px;
+	    color: #999;
 	    border: 1px solid #ddd;
     }
     
-    p.myshopTit {
-	    font-size: 12px;
-	    border-bottom: 1px solid #ddd;
-	    padding-bottom: 8px;
-	    margin-bottom: 15px;
-	    font-weight: 600;
+    table#memberTbl {
+   	 	border: 1px solid #ddd;
     }
     
-    ul {
-	    display: inline-block;
-	    padding-inline-start: 0px;
-	    list-style:none;
-    }
+    table#memberTbl th, td {
+   		padding: 5px 0;
+   		color: black;
+    	font-weight: 300;
+    	text-align: center;
+   }
     
-    li strong {
-	    display: inline-block;
-	    margin: 0;
-	    font-size: 12px;
-    }
-    
-    .cs li, .order li{
-	    position: relative;
-	    float: none;
-	    display: inline-block;
-	    width: auto;
-	    margin: 0;
-	    padding-left: 5px;
-	    padding-right: 30px;
-	    letter-spacing: 0;
-	    word-spacing: 0;
-	}
-    
-    #myshopMain .shopMain {
-    	float: left;
-	    width: 33.3%;
-	    height: auto;
-	    min-height: 120px;
-	    border: 0;
-	    margin: 0;
-	    text-align: left;
-	    padding-bottom: 25px;
-    }
-    
-    
-    
-   #myshopMain .shopMain h3 strong {
-	    display: inline-block;
-	    font-size: 12px;
-	    color: #333;
-	    font-weight: 600;
-	    margin-left: 8px;
-	    vertical-align: middle;
-    }
-    
-	
-	#myshopMain .shopMain h3 a {
-	    display: block;
-	    padding-top: 0px;
-	    padding-right: 0px;
-	    padding-bottom: 15px;
-	    padding-left: 0px;
+	tr.memberInfo:hover {
+		background-color: #d5d5d5;
+		cursor: pointer;
 	}
 	
-	#myshopMain .shopMain p a {
-    	font-size: 12px;
-    }
-    
-    
+	.pagination {
+		color: black;
+		background-color: #ddd;
+	}
+	
+	
 </style>
-
 
 <script type="text/javascript">
 
 	$(document).ready(function(){
+		// **** select 태그에 대한 이벤트는 click 이 아니라 change 이다. **** //
+		$("select#sizePerPage").bind("change", function(){
+			const frm = document.memberFrm;
+			frm.action = "memberList.an";
+			frm.method = "get";
+			frm.submit();
+		});
 		
-	});
+		$("select#sizePerPage").val("${requestScope.sizePerPage}");
+		
+		
+		
+		$("form[name='memberFrm']").submit(function(){
+			if($("select#searchType").val() == "") {
+				alert("검색대상을 선택하세요!!");
+				return false; // return false; 는 submit을 하지말라는 것이다.
+			}
+			
+			if($("input#searchWord").val().trim() == "") {
+				alert("검색어를 입력하세요!!");
+				return false; // return false; 는 submit을 하지말라는 것이다.
+			}
+		});
+		
+		
+		$("input#searchWord").bind("keyup", function(event){
+			if(event.keyCode == 13) {
+				// 검색어에서 엔터를 치면 검색하러 가도록 한다.
+				goSearch();
+			}
+		});
+		
+		if("${requestScope.searchType}" != "") { 
+			$("select#searchType").val("${requestScope.searchType}");
+			$("input#searchWord").val("${requestScope.searchWord}");
+	    }
+		
+		 // 특정 회원을 클릭하면 그 회원의 상세정보를 보여주도록 한다.
+	    $("tr.memberInfo").click( ()=>{
+	    	
+	    	const $target = $(event.target);
+	        
+	        const userid = $target.parent().children(".userid").text();
+	    //  alert("확인용 => " + userid);
+	    
+	        location.href="<%= ctxPath%>/member/memberOneDetail.an?userid="+userid;
+	    //																									  &goBackURL=/member/memberList.up?currentShowPageNo=5 sizePerPage=10 searchType=name searchWord=%EC%9C%A0
+				
+	    });
+	 
+	});// end of $(document).ready(function(){})-----------------------------
+
+	// Function Declaration
+	function goSearch() {
+		
+		if($("select#searchType").val() == "") {
+			alert("검색대상을 선택하세요.");
+			return; // return; 는 goSearch() 함수 종료이다.
+		}
+		
+		if($("input#searchWord").val().trim() == "") {
+			alert("검색어를 입력하세요.");
+			return; // return; 는 goSearch() 함수 종료이다.
+		}
+		
+		const frm = document.memberFrm;
+		frm.action = "memberList.an";
+		frm.method = "get";
+		frm.submit();
+	}
 
 </script>
 
 <div class="contents mx-5" style="margin-top:230px;">
 	<div class="titleArea">
-	    <h2 class="w3-left-align mb-5">MY SHOPPING</h2>
+	    <h2 class="w3-left-align mb-5">전체회원목록</h2>
 	</div>
 	
-	<div class="myshopMain">
-		<div class="orderHistory" style="margin:30px 0;">
-			<p class="myshopTit">ORDER HISTORY</p>
-			<div class="state" >
-            	<ul class="order">
-				<li>
-                    <strong>입금전</strong>
-                    <a href="" class="count"><span id="xans_myshop_orderstate_shppied_before_count">0</span></a>
-         
-                </li>
-                <li>
-                    <strong>배송준비중</strong>
-                    <a href="" class="count"><span id="xans_myshop_orderstate_shppied_standby_count">0</span></a>
-              
-                </li>
-                <li>
-                    <strong>배송중</strong>
-                    <a href="" class="count"><span id="xans_myshop_orderstate_shppied_begin_count">0</span></a>
-                
-                </li>
-                <li>
-                    <strong>배송완료</strong>
-                    <a href="" class="count"><span id="xans_myshop_orderstate_shppied_complate_count">0</span></a>
-          
-                </li>
-            </ul>
-			<ul class="cs">
-				<li>
-                    <strong>취소</strong>
-                    <a href="" class="count"><span id="xans_myshop_orderstate_order_cancel_count">0</span></a>
-            
-                </li>
-                <li>
-                    <strong>교환</strong>
-                    <a href="" class="count"><span id="xans_myshop_orderstate_order_exchange_count">0</span></a>
-               
-                </li>
-                <li>
-                    <strong>반품</strong>
-                    <a href="" class="count"><span id="xans_myshop_orderstate_order_return_count">0</span></a>
-                	
-                </li>
-            </ul>
-			</div>
-		</div>
+	<div class="memberFrm">
+	    <form name="memberFrm" action="memberList.an" method="get">
+	    	<select id="searchType" name="searchType">
+	    		<option value="">검색대상</option>
+	    		<option value="name">회원명</option>
+	    		<option value="userid">아이디</option>
+	    		<option value="email">이메일</option>
+	    		<option value="mobile">휴대전화</option>
+	    	</select>
+	    	<input type="text" id="searchWord" name="searchWord">
+	    	<input type="text" style="display: none;" />
+	   	<button type="button" onclick="goSearch();">검색</button> 
+	     <!--  	<input type="submit" value="검색" style="margin-right: 30px" /> -->
+	    	
+	    	<span style="margin-right:2px">페이지당 회원명수</span>
+			<select id="sizePerPage" name="sizePerPage">
+				<option value="10">10</option>
+				<option value="5">5</option>
+				<option value="3">3</option>
+			</select>
+	    </form>
+	    
+	    <table id="memberTbl" class="table table-bordered" style="width: 100%; margin-top: 20px;">
+	        <thead>
+	        	<tr>
+	        		<th>아이디</th>
+	        		<th>회원명</th>
+	        		<th>이메일</th>
+	        		<th>휴대전화</th>
+	        	</tr>
+	        </thead>
+	        
+	        <tbody>
+		        <c:if test="${not empty requestScope.memberList}">
+		            <c:forEach var="mvo" items="${requestScope.memberList}">
+		            	<tr class="memberInfo">
+		            		<td class="userid">${mvo.userid}</td>
+		            		<td>${mvo.name}</td>
+		            		<td>${mvo.email}</td>
+		            		<td>${mvo.mobile}</td>
+		            	</tr>
+		            </c:forEach>
+	            </c:if>
+	            <c:if test="${empty requestScope.memberList}">
+            	<tr>
+            		<td colspan="4" style="text-align: center;">검색된 데이터가 존재하지 않습니다</td>
+            	</tr>
+            </c:if>
+	        </tbody>
+	    </table>    
 	
-	
-	<div id="myshopMain">
-		<p class="myshopTit">MY INFO</p>
-		<ul>
-			<li class="shopMain" id="order">
-                <h3><a href=""><i class="fas fa-list fa-xs"></i><strong>ORDER</strong></a></h3>
-                <p><a href="">고객님께서 주문하신 상품의 주문내역을 확인하실 수 있습니다.</a></p>
-            </li>
-            <li class="shopMain" id="profile">
-                <h3><a href="<%=ctxPath %>/member/memberEdit.an"><i class="far fa-user fa-xs"></i><strong>PROFILE</strong></a></h3>
-                <p><a href="">회원이신 고객님의 개인정보를 관리하는 공간입니다.<br>비밀번호 등의 정보를 수정하실 수 있습니다.</a></p>
-            </li>
-            <li class="shopMain" id="board">
-                <h3><a href=""><i class="far fa-file-alt fa-xs"></i><strong>BOARD</strong></a></h3>
-                <p><a href=""><i class="far fa-edit"></i>&nbsp;고객님께서 작성하신 리뷰를 관리하는 공간입니다.</a></p>
-                <p><a href=""><i class="fas fa-question"></i>&nbsp;고객님께서 작성하신 Q&A를 관리하는 공간입니다.</a></p>
-            </li>
-            <li class="shopMain" id="wishlist">
-                <h3><a href=""><i class="far fa-heart fa-xs"></i><strong>WISHLIST</strong></a></h3>
-                <p><a href="">관심상품으로 등록하신 상품의 목록을 보여드립니다.</a></p>
-            </li>
-            <li class="shopMain" id="mileage">
-                <h3 class="txtTitle16B"><a href=""><i class="fas fa-dollar-sign fa-xs"></i><strong>MILEAGE</strong></a></h3>
-                <p class="txtSub11"><a href="">고객님께서 보유하고 계신 적립금 내역을 보여드립니다.<br>포인트은 상품 구매 시 사용하실 수 있습니다.</a></p>
-           </li>
-             
-
-          
-        </ul>
-	</div>	
- </div>
+	    <nav class="my-5">
+	       <div style="display: flex;">
+	       	   <ul class="pagination" style='margin:auto;'>${requestScope.pageBar}</ul>
+	       </div>
+	    </nav>
+    </div>
 </div>
-		
-
-
-
 
 <jsp:include page="../common/footer.jsp" /> 

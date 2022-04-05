@@ -101,12 +101,12 @@
 		
 		$("form[name='memberFrm']").submit(function(){
 			if($("select#searchType").val() == "") {
-				alert("검색대상을 올바르게 선택하세요!!");
+				alert("검색대상을 선택하세요!!");
 				return false; // return false; 는 submit을 하지말라는 것이다.
 			}
 			
 			if($("input#searchWord").val().trim() == "") {
-				alert("검색어는 공백만으로는 되지 않습니다.\n검색어를 올바르게 입력하세요!!");
+				alert("검색어를 입력하세요!!");
 				return false; // return false; 는 submit을 하지말라는 것이다.
 			}
 		});
@@ -124,22 +124,19 @@
 			$("input#searchWord").val("${requestScope.searchWord}");
 	    }
 		
-		 
-		 
-	    // 특정 회원을 클릭하면 그 회원의 상세정보를 보여주도록 한다.
+		 // 특정 회원을 클릭하면 그 회원의 상세정보를 보여주도록 한다.
 	    $("tr.memberInfo").click( ()=>{
 	    	
 	    	const $target = $(event.target);
-	    	
-	    //	alert("확인용 => " + $target.parent().html() );
 	        
 	        const userid = $target.parent().children(".userid").text();
 	    //  alert("확인용 => " + userid);
 	    
 	        location.href="<%= ctxPath%>/member/memberOneDetail.an?userid="+userid;
-	    	
+	    //																									  &goBackURL=/member/memberList.up?currentShowPageNo=5 sizePerPage=10 searchType=name searchWord=%EC%9C%A0
+				
 	    });
-	    
+	 
 	});// end of $(document).ready(function(){})-----------------------------
 
 	// Function Declaration
@@ -167,8 +164,9 @@
 	<div class="titleArea">
 	    <h2 class="w3-left-align mb-5">전체회원목록</h2>
 	</div>
+	
 	<div class="memberFrm">
-	    <form name="memberFrm">
+	    <form name="memberFrm" action="memberList.an" method="get">
 	    	<select id="searchType" name="searchType">
 	    		<option value="">검색대상</option>
 	    		<option value="name">회원명</option>
@@ -178,7 +176,8 @@
 	    	</select>
 	    	<input type="text" id="searchWord" name="searchWord">
 	    	<input type="text" style="display: none;" />
-	    	<button type="button" onclick="goSearch();">검색</button>
+	   	<button type="button" onclick="goSearch();">검색</button> 
+	     <!--  	<input type="submit" value="검색" style="margin-right: 30px" /> -->
 	    	
 	    	<span style="margin-right:2px">페이지당 회원명수</span>
 			<select id="sizePerPage" name="sizePerPage">
@@ -199,14 +198,21 @@
 	        </thead>
 	        
 	        <tbody>
-	            <c:forEach var="mvo" items="${requestScope.memberList}">
-	            	<tr class="memberInfo">
-	            		<td>${mvo.userid}</td>
-	            		<td>${mvo.name}</td>
-	            		<td>${mvo.email}</td>
-	            		<td>${mvo.mobile}</td>
-	            	</tr>
-	            </c:forEach>
+		        <c:if test="${not empty requestScope.memberList}">
+		            <c:forEach var="mvo" items="${requestScope.memberList}">
+		            	<tr class="memberInfo">
+		            		<td class="userid">${mvo.userid}</td>
+		            		<td>${mvo.name}</td>
+		            		<td>${mvo.email}</td>
+		            		<td>${mvo.mobile}</td>
+		            	</tr>
+		            </c:forEach>
+	            </c:if>
+	            <c:if test="${empty requestScope.memberList}">
+            	<tr>
+            		<td colspan="4" style="text-align: center;">검색된 데이터가 존재하지 않습니다</td>
+            	</tr>
+            </c:if>
 	        </tbody>
 	    </table>    
 	
@@ -217,7 +223,5 @@
 	    </nav>
     </div>
 </div>
+
 <jsp:include page="../common/footer.jsp" /> 
-
-
-    

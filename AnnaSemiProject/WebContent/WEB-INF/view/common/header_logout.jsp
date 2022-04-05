@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 
-=======
-
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -136,11 +132,7 @@
 <body>
 
 	<!-- 상단 네비게이션 시작 -->
-<<<<<<< HEAD
-	<nav class="navbar-expand-lg bg-white navbar-light fixed-top" id="first-nav">
-=======
-	<nav class="navbar-expand-lg bg-white navbar-light fixed-top" id = "first-nav">
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
+
 		<!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
 		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img class = "mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
 		
@@ -268,8 +260,4 @@
 
 
 	<!-- 상단 네비게이션 끝 -->
-<<<<<<< HEAD
 
-
-=======
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
