@@ -401,12 +401,12 @@ $(document).ready(function(){
 // Function Declaration	
 
 // 회원탈퇴하기
-function goWithdrawal(){
+function goLeave(){
 	
 }
 // 취소하기
 function goCancel(){
-	
+	location.href = "<%= ctxPath%>/index.an";	
 }
 
 // 회원정보 수정하기
@@ -596,7 +596,7 @@ function goModify() {
 	          <button type="button" id="btncancel" class="btn btn-light btn-lg text-center" onClick="goCancel();">취소</button> 
 	      </div>
 	      <div style="line-height: 50px; margin: 10px auto; width:96%">
-	          <button type="button" id="btnWithdrawal" class="btn btn-light btn-lg text-center" onClick="goWithdrawal();">회원탈퇴</button> 
+	          <button type="button" id="btnWithdrawal" class="btn btn-light btn-lg text-center" onClick="goLeave();">회원탈퇴</button> 
 	      </div>
 	  
 	   </div>
