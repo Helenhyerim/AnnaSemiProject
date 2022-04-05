@@ -55,7 +55,7 @@ public class ProductDAO implements InterProductDAO {
 	
 
 
-	// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 전체회원에 대한 총페이지 알아오기
+	// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 전체회원에 대한 총페이지 알아오기_유혜림
 	@Override
 	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
 		int totalPage = 0;
@@ -85,7 +85,7 @@ public class ProductDAO implements InterProductDAO {
 	}// end of public int getTotalPage(Map<String, String> paraMap)
 
 
-	// 페이징 처리가 되어진 모든 회원 또는 검색한 회원 목록 보여주기
+	// 페이징 처리가 되어진 모든 회원 또는 검색한 회원 목록 보여주기_유혜림
 	@Override
 	public List<ProductVO> selectPagingProduct(Map<String, String> paraMap) throws SQLException {
 		List<ProductVO> productList = new ArrayList<>();
@@ -139,7 +139,7 @@ public class ProductDAO implements InterProductDAO {
 	}// end of public List<ProductVO> selectPagingProduct(Map<String, String> paraMap) 
 
 
-	// 한 상품 클릭시 productnum 을 받아서 해당 상품 디테일을 보여주기
+	// 한 상품 클릭시 productnum 을 받아서 해당 상품 디테일을 보여주기_유혜림=>근데 이거 성희가 이어서 하면 좋을듯!
 	public ProductVO getProductDetail(String productnum) throws SQLException {
 		
 		ProductVO pvo = new ProductVO();
@@ -215,4 +215,28 @@ public class ProductDAO implements InterProductDAO {
 		
 		return result;
 	}
+
+
+	// userid 를 받아서 장바구니에 있는 상품 보여주기_유혜림
+	@Override
+	public List<Map<String, String>> getCartItemsByUserid(String userid) throws SQLException {
+		
+		List<Map<String, String>> cartProductList = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =" select FK_PRODUCTNUM, ORDERQTY "
+					  + " from tbl_product "
+					  + " where userid = ";
+			
+			
+			pstmt = conn.prepareStatement(sql);
+			
+		} finally {
+			close();
+		}
+		
+		return cartProductList;
+	}// end of public List<Map<String, String>> getCartItemsByUserid(String userid)
 }
