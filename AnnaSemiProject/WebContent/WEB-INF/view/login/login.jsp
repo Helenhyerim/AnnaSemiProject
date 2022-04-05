@@ -38,7 +38,19 @@ $(document).ready(function(){
 		}
 	});
 	
-
+	const loginUserid = localStorage.getItem('saveUserid');
+	const loginUserPwd = localStorage.getItem('savePwd');
+	
+	if(loginUserid != null){
+		$("input#loginUserid").val(loginUserid);
+		$("input:checkbox[id='saveUserid']").prop("checked",true);
+	}
+	
+	if(loginUserPwd != null){
+		$("input#loginPwd").val(loginUserPwd);
+		$("input:checkbox[id='savePwd']").prop("checked",true);
+		localStorage.setItem('firstCheck',0);
+	}
 	
 	
 	
@@ -64,6 +76,32 @@ function goLogin(){
 		return;  // goLogin() 함수 종료
 	}
 	
+   if($("input:checkbox[id = 'saveUserid']").prop("checked") ){
+		  // alert("아이디 저장 체크를 하셨네요");
+		   
+		   localStorage.setItem('saveUserid',$("input#loginUserid").val());
+		   
+   }
+   else{
+	  // alert("아이디 저장 체크를 해제 하셨네요");
+	   localStorage.removeItem('saveUserid');
+   }
+   
+   if($("input:checkbox[id = 'savePwd']").prop("checked") ){
+	   
+	   	if(localStorage.getItem('firstCheck') == null || localStorage.getItem('firstCheck') != 0){
+		 	alert("비밀번호 저장을 체크시 해킹의 위험이 있을 수 있습니다.");
+	   	}	   
+		  localStorage.setItem('savePwd',$("input#loginPwd").val());
+		  localStorage.setItem('firstCheck',1);
+		   
+	}
+	else{
+		  // alert("아이디 저장 체크를 해제 하셨네요");
+		  localStorage.removeItem('savePwd');
+		  localStorage.removeItem('firstCheck');
+	}
+
 	const frm = document.loginfrm;
 	frm.action = "<%= request.getContextPath()%>/login/login.an";
 	frm.method = "post";
@@ -123,16 +161,24 @@ function goPwdFind(){
 					
 					<tr>
 						<td>
-							<button class = "login_element" type = "button" id = "btnLogin" style = "background-color: #999;" onclick = "goLogin()" >로그인</button>
+							<button class = "login_element btn btn-dark btn-lg text-center" type = "button" id = "btnLogin"  onclick = "goLogin()" >로그인</button>
 						</td>
 					</tr>
 					
 					<tr>
 						<td>
-							<button class = "login_element" type = "button" id = "btnRegister">회원가입</button>
+							<button type="button"  class = "login_element btn btn-light btn-lg text-center" type = "button" id = "btnRegister">회원가입</button>
 						</td>
 					</tr>
-			
+					<tr style = "text-align: left;">
+						<td>
+							<input type = "checkbox" name = "saveUserid" id = "saveUserid"/>
+							<label for="saveUserid">아이디 저장하기</label>
+							&nbsp;&nbsp;&nbsp;
+							<input type = "checkbox" name = "savePwd" id = "savePwd" />
+							<label for="savePwd">비밀번호 저장하기</label>
+						</td>
+					</tr>
 					<tr>
 						<td>
 

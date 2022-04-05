@@ -758,7 +758,7 @@ function goRegister() {
 	   </div>
    </form>
  </div>
-
+ㅣㅑ
 
 
 <jsp:include page="../common/footer.jsp"/>

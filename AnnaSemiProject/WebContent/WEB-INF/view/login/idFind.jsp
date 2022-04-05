@@ -80,7 +80,10 @@ function goIdFind(){
 					<input type = "email" name = "email" id = "email" class = "col-md-10" />
 				</div>
 				<div class = "row">
-					<button class = "login_element w-100" type = "button" id = "btnIdFind" style = "background-color: #999;" onclick = "goIdFind()" >아이디 찾기</button>
+					<button class = "login_element w-100 btn btn-dark btn-lg text-center" type = "button" id = "btnIdFind"  onclick = "goIdFind()" >아이디 찾기</button>
+				</div>
+				<div class = "row">
+					<button class = "login_element w-100 btn btn-light btn-lg text-center" type = "button" >취소하기</button>
 				</div>
 					
 		    </form>
