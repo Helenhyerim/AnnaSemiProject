@@ -1,4 +1,4 @@
-package member.controller;
+package memberYJ.controller;
 
 import java.util.*;
 
@@ -15,7 +15,6 @@ public class MemberListAction extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		// 일단 관리자가 아니더라도 페이지 접근하게 만듦.. 관리자 페이지가 뜨게 만들고 만들겠음. 
 		
 		// == 관리자(일단 지금은 hongkd)로 로그인 했을 때만 조회가능하게 하기 == //
 		HttpSession session = request.getSession();
@@ -38,6 +37,10 @@ public class MemberListAction extends AbstractController {
 		// 관리자(일단 지금은 hongkd)로 로그인 했을 경우 
 		// == 페이징 처리가 되어진 모든 회원 또는 검색한 회원 목록 보여주기 == //
 						
+		// 검색이 있을 경우
+		String searchType = request.getParameter("searchType");
+		String searchWord = request.getParameter("searchWord");
+		
 		InterMemberDAO mdao = new MemberDAO();
 		
 		Map<String, String> paraMap = new HashMap<>();
@@ -69,15 +72,50 @@ public class MemberListAction extends AbstractController {
 		} catch(NumberFormatException e) {
 			currentShowPageNo = "1";
 		}
+		
+		paraMap.put("sizePerPage", sizePerPage);		
+		
+		
+		// === 검색이 있을 경우 시작 === //
+			if(searchType != null && !"".equals(searchType) && !"name".equals(searchType) && !"userid".equals(searchType) && !"email".equals(searchType) && !"mobile".equals(searchType)) {
+			    // 사용자가 웹브라우저 주소입력란에서 searchType 란에 장난친 경우 
+				String message = "부적절한 검색 입니다. 장난치지 마세요~~";
+				String loc = request.getContextPath()+"/member/memberList.an";
+				
+				request.setAttribute("message", message);
+				request.setAttribute("loc", loc);
+				
+			//	super.setRedirect(false);
+				super.setViewPage("/WEB-INF/msg.jsp");
+				
+				return; // execute() 메소드를 종료시킨다.
+			}
+			
+			paraMap.put("searchType", searchType); 
+			paraMap.put("searchWord", searchWord); 
+			// === 검색이 있을 경우 끝 === //
+		
+			
+		// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 전체회원에 대한 총 페이지 알아오기 
+		int totalPage = mdao.getTotalPage(paraMap);
+		
+		//System.out.println("확인용 totalPage =>" +totalPage);
+		
+		// === GET 방식이므로 사용자가 웹브라우저 주소창에서 currentShowPageNo 에 토탈페이지수보다 큰 값을 입력하여  
+		//     장난친 경우라면 currentShowPageNo 는 1 페이지로 만들도록 한다. ==== // 
+		if ( Integer.parseInt(currentShowPageNo) > totalPage ){
+			currentShowPageNo = "1";
+		}
+		
 
 		
 		paraMap.put("currentShowPageNo", currentShowPageNo);
-		paraMap.put("sizePerPage", sizePerPage);
+
 		
 		List<MemberVO> memberList = mdao.selectPagingMember(paraMap);
 		
 		request.setAttribute("memberList", memberList);
-		
+		request.setAttribute("sizePerPage", sizePerPage)	;
 		
 		String pageBar = "";
 		
@@ -92,21 +130,20 @@ public class MemberListAction extends AbstractController {
 		int pageNo = ( ( Integer.parseInt(currentShowPageNo) - 1)/blockSize ) * blockSize + 1;
 		// pageNo는 페이지바에서 보여지는 첫번째 번호이다.
 		
-		// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 전체회원에 대한 총 페이지 알아오기 
-		int totalPage = mdao.getTotalPage(paraMap);
-		
-		//System.out.println("확인용 totalPage =>" +totalPage);
-		
-		// === GET 방식이므로 사용자가 웹브라우저 주소창에서 currentShowPageNo 에 토탈페이지수보다 큰 값을 입력하여  
-		//     장난친 경우라면 currentShowPageNo 는 1 페이지로 만들도록 한다. ==== // 
-		if ( Integer.parseInt(currentShowPageNo) > totalPage ){
-			currentShowPageNo = "1";
+
+		if(searchType == null) {
+			searchType = "";
 		}
+		
+		if(searchWord == null) {
+			searchWord = "";
+		}
+		
 		
 		// ** [맨처음][이전] 만들기 ** //
 		if(pageNo !=1) {
-			pageBar += "<li class='page-item'><a class='page-link' href='memberList.up?currentShowPageNo=1&sizePerPage="+sizePerPage+"'>[맨처음]</a></li>"; 
-			pageBar += "<li class='page-item'><a class='page-link' href='memberList.up?currentShowPageNo="+(pageNo-1)+"&sizePerPage="+sizePerPage+"'>[이전]</a></li>"; 
+			pageBar += "<li class='page-item'><a class='page-link' href='memberList.an?currentShowPageNo=1&sizePerPage="+sizePerPage+"'>《</a></li>"; 
+			pageBar += "<li class='page-item'><a class='page-link' href='memberList.an?currentShowPageNo="+(pageNo-1)+"&sizePerPage="+sizePerPage+"'>〈</a></li>"; 
 		}
 		
 		
@@ -116,7 +153,7 @@ public class MemberListAction extends AbstractController {
 				pageBar += "<li class='page-item active'><a class='page-link' href='#'>"+pageNo+"</a></li>"; 
 			}
 			else {
-				pageBar += "<li class='page-item'><a class='page-link' href='memberList.up?currentShowPageNo="+pageNo+"&sizePerPage="+sizePerPage+"'>"+pageNo+"</a></li>"; 
+				pageBar += "<li class='page-item'><a class='page-link' href='memberList.an?currentShowPageNo="+pageNo+"&sizePerPage="+sizePerPage+"'>"+pageNo+"</a></li>"; 
 			}
 			loop++;
 			pageNo++;
@@ -124,14 +161,16 @@ public class MemberListAction extends AbstractController {
 		
 		// ** [다음][마지막] 만들기 ** //
 		if(pageNo <= totalPage) {
-		pageBar += "<li class='page-item'><a class='page-link' href='memberList.up?currentShowPageNo="+pageNo+"&sizePerPage="+sizePerPage+"'>[다음]</a></li>"; 
+		pageBar += "<li class='page-item'><a class='page-link' href='memberList.an?currentShowPageNo="+pageNo+"&sizePerPage="+sizePerPage+"'>〉</a></li>"; 
 		
-		pageBar += "<li class='page-item'><a class='page-link' href='memberList.up?currentShowPageNo="+totalPage+"&sizePerPage="+sizePerPage+"'>[마지막]</a></li>"; 
+		pageBar += "<li class='page-item'><a class='page-link' href='memberList.an?currentShowPageNo="+totalPage+"&sizePerPage="+sizePerPage+"'>》</a></li>"; 
 		}
 		
 		request.setAttribute("pageBar", pageBar); 
 		// **** ============ 페이지바 만들기 끝 ============ **** //
 		
+		request.setAttribute("searchType", searchType);
+		request.setAttribute("searchWord", searchWord);
 		
 		
 		//	super.setRedirect(false);
