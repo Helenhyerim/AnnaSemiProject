@@ -24,18 +24,21 @@ button.accordion {
 	width: 100%;
 	font-size:14px; 
 	transition: 0.5s;
-	vertical-align: top
+	vertical-align: top;
+	
 }
 
 button.accordion.active{
 	font-weight:bold;
 	color : #000;
+	
 }
 
 
 div.card-header {
 	background-color : white;
 	height:50px;
+	
 }
 
 button.accordion:hover {    
@@ -48,7 +51,7 @@ div#contents {
 	text-align: left; 
 	color: black;
 	transition: ease-out;
-
+	
 	
 }
 

@@ -38,8 +38,16 @@
 		border-line: solid 1px black;
 		font-size: 14px;
 		width: 100px;
-	
+		
 	}
+	
+	input.img-button {
+        background: url( "<%= ctxPath%>/imagesCBJ/button_search.png" ) no-repeat;
+        border: none;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+      }
 </style>
 
 <script type="text/javascript">
@@ -137,11 +145,11 @@
 		</tbody>
 	</table>
 	
-	<div id="regist" style="display:inline-block; float:right;">
+	<div id="regist" style="display:inline-block; float:right; padding:20px;">
 		<a href="<%= ctxPath%>/noticeRegistForm.an"/><button>글등록</button></a>
 	</div>
 	
-	<form name="noticeFrm" action="notice.an" method="get">
+	<form name="noticeFrm" action="notice.an" method="get" style="padding:20px 20px 0 0;">
 		<select id="searchType" name="searchType">
 			<option value="">검색대상</option>
 			<option value="noticeTitle">제목</option>
@@ -151,17 +159,17 @@
 		
 		<input type="text" style="display: none;" />	
 		
-		<input type="submit" value="검색" style="margin-right: 30px" /> 
-		<span style="color: red; font-weight: bold; font-size: 12pt;">페이지당 공지사항수-</span>
-		<select id="noitceSizePerPage" name="noitceSizePerPage">
+		<input type="submit" class="img-button" value="  "  />
+		<!-- <span style="color: red; font-weight: bold; font-size: 12pt;">페이지당 공지사항수-</span> -->
+		<!-- <select id="noitceSizePerPage" name="noitceSizePerPage">
 		   <option value="10">10</option>
 		   <option value="5">5</option>
 		   <option value="3">3</option>
-		</select>
+		</select> -->
 	</form>
 	
 	<nav class="my-5">
-		<div style="display: flex; width: 80%;">
+		<div style="display: flex;">
 			<ul class="pagination" style='margin:auto;'>${requestScope.pageBar}</ul>
 		</div>
 		
