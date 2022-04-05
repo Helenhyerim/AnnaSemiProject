@@ -320,167 +320,6 @@ public class MemberDAO implements InterMemberDAO {
       }
       
    
-
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
    
    
    
@@ -500,23 +339,31 @@ public class MemberDAO implements InterMemberDAO {
             conn = ds.getConnection();
             
             String sql = " select userid, name, email, mobile "
-                  + " from "
-                  + " ( "
-                  + "    select rownum AS rno, userid, name, email, mobile "
-                  + "    from "
-                  + "    ( "
-                  + "        select userid, name, email, mobile "
-                  + "        from tbl_member "
-                  + "        where userid != 'admin' "
-                  + "        order by registerday desc "
-                  + "    ) V "
-                  + " ) T "
-                  + " where rno between ? and ? ";
+					+ " from "
+					+ " ( "
+					+ "    select rownum AS rno, userid, name, email, mobile "
+					+ "    from "
+					+ "    ( "
+					+ "        select userid, name, email, mobile "
+					+ "        from tbl_member "
+					+ "        where userid != 'hongkd' ";
+			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
             
+			if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+				sql += " and "+colname+" like '%'|| ? ||'%' ";
+			}
+			
+			sql += "        order by registerday desc "
+					+ "    ) V "
+					+ " ) T "
+					+ " where rno between ? and ? ";	
+				
             pstmt = conn.prepareStatement(sql);
             
             int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
-             int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
+            int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
             /*
               >>> where rno between A and B 
                    A 와 B 를 구하는 공식 <<< 
@@ -527,9 +374,23 @@ public class MemberDAO implements InterMemberDAO {
                   A 는 (currentShowPageNo * sizePerPage) - (sizePerPage - 1) 이다. 
                   B 는 (currentShowPageNo * sizePerPage) 이다.
              */   
-            pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
-            pstmt.setInt(2, (currentShowPageNo * sizePerPage));
-            
+             if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+ 		 		
+ 		 		if("email".equals(colname)) {
+ 		 			pstmt.setString(1, aes.encrypt(searchWord));
+ 				}
+ 				else {
+ 					pstmt.setString(1, searchWord);	
+ 				}
+ 		 		
+ 		 		pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+ 				pstmt.setInt(3, (currentShowPageNo * sizePerPage));	
+ 		 	}
+ 		 	else {
+ 		 		pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+ 				pstmt.setInt(2, (currentShowPageNo * sizePerPage));	
+ 		 	}
+             
             rs = pstmt.executeQuery();
             
             while(rs.next()) {
@@ -564,7 +425,7 @@ public class MemberDAO implements InterMemberDAO {
             
             String sql = " select ceil(count(*)/?) "
                      + " from tbl_member "
-                     + " where userid != 'admin' ";
+                     + " where userid != 'hongkd' ";
             
             pstmt = conn.prepareStatement(sql);
             
@@ -582,6 +443,52 @@ public class MemberDAO implements InterMemberDAO {
          
          return totalPage;
       }
+
+      
+   // userid 정보를 받아와서 회원에 대한 상세정보 알아오기
+	@Override
+	public MemberVO memberOneDetail(String userid) throws SQLException {
+		MemberVO mvo = null;
+		
+		try {
+			 conn = ds.getConnection();
+			 
+			 String sql = " select userid, name, email, mobile, postcode, address, detailaddress "+
+					      "     , substr(birthday,1,4) AS birthyyyy, substr(birthday,6,2) AS birthmm, substr(birthday,9) AS birthdd "+
+					      "     , point, to_char(registerday, 'yyyy-mm-dd') AS registerday, Sms_status, Email_status "+
+					      " from tbl_member "+
+					      " where userid = ? ";
+			 
+			 pstmt = conn.prepareStatement(sql);
+			 pstmt.setString(1, userid);
+			 			 
+			 rs = pstmt.executeQuery();
+			 
+			 if(rs.next()) {
+				 mvo = new MemberVO();
+				 
+				 mvo.setUserid(rs.getString(1));
+				 mvo.setName(rs.getString(2));
+				 mvo.setEmail( aes.decrypt(rs.getString(3)) );  // 복호화 
+				 mvo.setMobile( aes.decrypt(rs.getString(4)) ); // 복호화 
+				 mvo.setPostcode(rs.getString(5));
+				 mvo.setAddress(rs.getString(6));
+				 mvo.setDetailaddress(rs.getString(7));
+				 mvo.setBirthday(rs.getString(8) + rs.getString(9) + rs.getString(10));
+				 mvo.setPoint(rs.getInt(11));
+				 mvo.setRegisterday(rs.getString(12));
+				 mvo.setSms_status(rs.getInt(13));
+				 mvo.setEmail_status(rs.getInt(14));
+			 }
+		
+		} catch(GeneralSecurityException | UnsupportedEncodingException e) { 
+		    e.printStackTrace();	 
+		} finally {
+			close();
+		}
+		
+		return mvo;
+	}
       
       
 }
