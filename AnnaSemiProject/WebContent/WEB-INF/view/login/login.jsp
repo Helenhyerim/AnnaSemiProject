@@ -161,13 +161,13 @@ function goPwdFind(){
 					
 					<tr>
 						<td>
-							<button class = "login_element" type = "button" id = "btnLogin" style = "background-color: #999;" onclick = "goLogin()" >로그인</button>
+							<button class = "login_element btn btn-dark btn-lg text-center" type = "button" id = "btnLogin"  onclick = "goLogin()" >로그인</button>
 						</td>
 					</tr>
 					
 					<tr>
 						<td>
-							<button class = "login_element" type = "button" id = "btnRegister">회원가입</button>
+							<button type="button"  class = "login_element btn btn-light btn-lg text-center" type = "button" id = "btnRegister">회원가입</button>
 						</td>
 					</tr>
 					<tr style = "text-align: left;">

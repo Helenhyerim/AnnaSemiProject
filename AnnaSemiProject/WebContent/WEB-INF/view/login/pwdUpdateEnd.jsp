@@ -23,6 +23,16 @@ button {
 	border:0;
 	outline: 0;
 }
+
+button[type=button]{
+	border-radius: 0;
+    width: 100%;
+    min-width: auto;
+    height: 45px;
+    line-height: 44px;
+    font-size: 12px;
+    padding: 0
+}
 </style>
 
 
@@ -123,8 +133,9 @@ function pwdUpdate(){
 					<tr>
 						<td>
 							<div class = "row">
-								<button class = "login_element col-md-6" type = "button" id = "btnUpdate" style = "background-color: #999;" onclick = "pwdUpdate()">변경하기</button>
-								<button class = "login_element col-md-6" type = "button" id = "btnCancel">취소하기</button>
+								<button class = "login_element col-md-6 btn btn-dark btn-lg text-center" type = "button" id = "btnUpdate"  onclick = "pwdUpdate()">변경하기</button>
+								<button class = "login_element col-md-6 btn btn-dark btn-lg text-center" type = "button" id = "btnCancel">취소하기</button>
+								<button type="button" id = "btnCancel" class="btn btn-light btn-lg text-center" onClick="goRegister();">취소하기</button> 
 							</div>
 						</td>
 					</tr>
