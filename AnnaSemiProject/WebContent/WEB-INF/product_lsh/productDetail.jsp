@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <% String ctxPath = request.getContextPath(); %>
 
@@ -15,88 +16,92 @@
 
 	$(document).ready(function() {
 		
-		$("table#tbl_optionResult").hide();
-		$("tr#selOptionResult").hide();
-		
 		const isExistLoginUser = false;
 		
 		if(${not empty sessionScope.loginuser}) { isExistLoginUser = true; }
 		
-		// 대표이미지 변경하기(hover)
-		// $("div#img_list").bind("hover", function() {})
+		// 대표이미지 변경하기(hover) : 부드럽게 바뀌도록 수정하기
+		$("div#img_list > img").hover(function() {
+			const $target = $(event.target);
+			const index = $target.index();
+			var imgArr = new Array();
+			
+			$("input[name=imgfilename]").each(function(idx) {
+				var value = $(this).val();
+				
+				imgArr.push(value);
+			});
+			
+			$("div#cover").html('<img src="../images/' + imgArr[index] + '">');
+		});
 		
 		// 옵션 선택
 		// 필수 옵션
 		$("select#reqOption").change(function() {
+
+			const index = $("option:selected").index();	// 선택한 옵션의 인덱스
 			
-			const reqOption_value = $("select#reqOption").val();
+			const productName = $("option:eq("+index+")").text();
+		//	const productName = $("select#reqOption option:selected").text();	
 			
-			if(reqOption_value != "") {
-				const productName = $("select#reqOption option:selected").text();
-				
-				let addReqOption = "";
-				
-			//	if(.pname의 text 중에 productName과 중복되는 것이 없거나 reqTr이 존재하지 않는 경우에) {
-				
-				addReqOption += '<tr class="reqTr">'
-						  +  '    <th class="pname">' + productName + '</th>'
-						  +  '    <td>'
-						  +  '        <input type="text" min="1" max="20" value="1" readonly style="width: 50px;"/>'
-						  +  '        <span id="addQty" onclick="addQty()"><i class="fal fa-plus-circle"></i></span>'
-						  +  '        <span id="subQty" onclick="subQty()"><i class="fal fa-minus-circle"></i></span>'
-						  +  '        <span id="delProduct" onclick="delReqOption()"><i class="fal fa-trash-alt"></i></span>'
-						  +  '    </td>'
-						  +  '</tr>';
+			const isExistOption = $("ul#ul_reqOptionResult > li:contains(" + productName + ")").length;
+			
+			if($("select#reqOption").val() != "") {
+				if(isExistOption == 0) {
+					let html = '<li style="margin: 10px 0;">'
+							 + '	<label style="width: 150px;" id="pname">' + productName + '</label>'
+							 + '	<input type="text" value="1" readonly style="width: 40px; text-align: center;"/>'
+						 	 + '	<span onclick="addQty()">+</span>'
+						 	 + '	<span onclick="subQty()">-</span>'
+						 	 + '	<span onclick="delOption()">x</span>'
+						 	 + '</li>';
 						  
-				$("tr#selOptionResult").before(addReqOption);
-				$("table#tbl_optionResult").show();
-				
-			// } else { alert("이미 선택한 옵션입니다."); }
+					$("ul#ul_reqOptionResult").append(html);
+				}
+				else {
+					alert("이미 선택한 옵션입니다.");
+				}
 			}
 		});
 		
 		// 선택 옵션
 		$("select#selOption").change(function() {
 			
-			const reqOption_value = $("select#reqOption").val();
-			const selOption_value = $("select#selOption").val();
-			
-			if(reqOption_value == "") {
+			if($("ul#ul_reqOptionResult > li").length == 0) {
 				alert("필수 옵션 선택 후 선택 가능한 옵션입니다.");
-				return;
+				return; // 다시 "[선택] 옵션을 선택해주세요"로 변경하고 싶음.
 			}
 			
-			if(selOption_value != "") {
-				const selOptionName = $("select#selOption option:selected").text();
+			if($("select#selOption").val() != "") {
+				if($("ul#ul_selOptionResult > li").length == 0) {
+					const selOptionName = $("select#selOption option:selected").text();
 				
-				let addSelOption = "";
+					let html = '<li>'
+						 	 + '	<label>' + selOptionName + '</label>'
+						 	 + ' 	<span onclick="delOption()"><i class="fal fa-trash-alt"></i></span>'
+						 	 + '</li>';
 				
-				addSelOption = '<span for="delProduct" class="align-right" onclick="delSelOption()">x<i class="fal fa-trash-alt" id="delProduct"></i></span>';
-				
-				$("th#sel").text(selOptionName);
-				$("td#selAdd").html(addSelOption);
-				$("table#tbl_optionResult").show();
-				$("tr#selOptionResult").show();
+					$("ul#ul_selOptionResult").append(html);
+				}
+				else {
+					alert("이미 선택한 옵션입니다.");					
+				}
 			}
 		}); // end of $("select#selOption").change(function(){})
 		
 		
-		// 테이블(tbl_optionResult)이 변경될 때마다 총 가격과 수량을 나타내기
-		$("table#tbl_optionResult").change(function() {
-			// 필수옵션은 어차피 가격이 같으니까 그냥 requestScope로 받아오기
-			// 선택옵션은 value에 가격을 넣어서 가져다쓰기
+		// total 변경하기
+		$("form#optionFrm").change(function() {
 			
-			// c:fmt pattern #,###,###
-			// max 수량이 옵션당인지 total인지 물어보기
+			alert("form 변경");
 			
-			// 변경된 값 반영하기
 		});
 		
 		
 		// 구매하기 클릭
 		$("button#purchase").click(function() {
 			if(isExistLoginUser) { // 로그인 한 경우 : 구매 페이지로 이동
-				goOrderPage();
+				location.href="<%= ctxPath %>/product/myOrder.an";
 			}
 			else { // 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
 				goLoginPage();
@@ -123,7 +128,7 @@
 				
 				$.ajax({
 					url:"<%= ctxPath %>/product_lsh/wishDuplicateCheck.an",
-					data:{"productnum":"1", "userid":"simyj"}, <%-- 임시값 --%>
+					data:{"productnum":"${requestScope.pvo.productnum}", "userid":"yuhl"}, <%-- 임시값 --%>
 					type:"post",
 					dataType:"json",
 					async:false,
@@ -132,7 +137,7 @@
 							alert("이미 찜한 상품입니다.");
 						}
 						else {
-							const url = "<%= ctxPath %>/product_lsh/addWish.an?userid=${(sessionScope.loginuser).userid}&productnum=${requestScope.productnum}";
+							const url = "<%= ctxPath %>/product_lsh/addWish.an?userid=" + json.userid + "&productnum=" + json.productnum;
 							
 							window.open(url, "addWish", "left=300, top=300, width=500, height=200");
 						}
@@ -144,31 +149,7 @@
 			
 			}
 			else { // 로그인 안 한 경우
-			//	goLoginPage();
-			
-			//	아래는 테스트용 로그인 페이지 연동 후 지워야함
-			
-				$.ajax({
-					url:"<%= ctxPath %>/product_lsh/wishDuplicateCheck.an",
-					data:{"productnum":"6", "userid":"hongkd"}, <%-- 임시값 --%>
-					type:"post",
-					dataType:"json",
-					async:false,
-					success:function(json) {
-						if(json.isExist) {
-							alert("이미 찜한 상품입니다.");
-						}
-						else {
-						<%--const url = "<%= ctxPath %>/product_lsh/addWish.an?userid=${(sessionScope.loginuser).userid}&productnum=${requestScope.productnum}";--%>
-							const url = "<%= ctxPath %>/product_lsh/addWish.an?userid=" + json.userid + "&productnum=" + json.productnum;
-						
-							window.open(url, "addWish", "left=300, top=300, width=500, height=200");
-						}
-					},
-					error:function(reqeust, status, error) {
-		    			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
-		    		}
-				}); // end of $.ajax({})
+				goLoginPage();
 			}
 		});
 		
@@ -190,68 +171,45 @@
 		frm.submit();
 	}
 	
-	// 구매 페이지로 이동
-	function goOrderPage() {
-		
-		// 제품코드, 수량 넘겨주기
-		
-		location.href="<%= ctxPath %>/product/myOrder.an";
-	}
-	
 	// 로그인 페이지로 이동
 	function goLoginPage() {
-		alert("로그인 후 이용할 수 있습니다.${requestScope.goBackURL}");
-	<%--location.href="<%= ctxPath %>/login/login.an?goBackURL=${requestScope.goBackURL}";--%>
-		
-		// 로그인 후 다시 원래 페이지로 돌아오기(goBackURL)
+		alert("로그인 후 이용할 수 있습니다.");
+	
+		// 로그인 후 다시 원래 페이지로 돌아올 수 있도록 GET 방식으로 현재 URL 전송(goBackURL)
+		location.href="<%= ctxPath %>/login/login.an?goBackURL=${requestScope.goBackURL}";
 	}
 	
    	// 상품 수량 변경 및 삭제 함수(addQty, subQty, delProduct)
    	function addQty() {	
        	const $target = $(event.target);
        	
-       	let qty = Number($target.parent().siblings("input").val());
+       	let qty = Number($target.siblings("input").val());
        	
        	if(qty < 20) {
-       		$target.parent().siblings("input").val(qty + 1);
+       		$target.siblings("input").val(qty + 1);
        	}
        	else {
-       		alert("최대 구매 수량을 초과하였습니다.");
+       		alert("최대 주문 수량입니다.");
        	}
     }
        	
 	function subQty() {
 		const $target = $(event.target);
 		
-		let qty = Number($target.parent().siblings("input").val());
-		
-		if(qty > 1) {
-			$target.parent().siblings("input").val(qty - 1);
-		}
-		else {
-			alert("최소 구매 수량 미만입니다.");
-		}
+		let qty = Number($target.siblings("input").val());
+       	
+       	if(qty > 1) {
+       		$target.siblings("input").val(qty - 1);
+       	}
+       	else {
+       		alert("최소 주문 수량입니다.");
+       	}
 	}
 	
-	function delReqOption() { // target 인덱스와 table의 tr 인덱스가 같은 것을 삭제
-		const $target = $(event.target);
-		const table = $("table#tbl_optionResult");
-		
-		$target.parent().parent().parent().remove();
-		
-		if(table.find("tr.reqTr").length == 0) {
-			table.hide();
-			delSelOption();
-		}
-	}
-	
-	function delSelOption() {
+	function delOption() {
 		const $target = $(event.target);
 		
-		$target.parent().empty();
-		$target.parent().siblings("th#sel").empty();
-		
-		$("tr#selOptionResult").hide();
+		$target.closest("li").remove();
 	}
    	
 	
@@ -271,26 +229,30 @@
 	<div id="main_content">
 		<div id="top_content" class="row">
 			<div id="product_cover" class="col-md-7">
-				<div id="cover"><img alt="p1" src="../images/p1.png"></div>	<!-- hover html div 집어넣기 트리거로 기본 p1 보여주기 -->
+				<div id="cover"><img src="../images/${requestScope.pvo.productimage1}"></div>
 				<div id="img_list">
-					<img alt="p1" src="../images/p1.png">
-					<img alt="p2" src="../images/p2.png">
-					<img alt="p3" src="../images/p3.png">
-					<img alt="p4" src="../images/p4.png">
-					<img alt="p5" src="../images/p5.png">
+					<c:forEach var="pimg" items="${requestScope.imgList}" end="4">
+						<img src="../images/${pimg.imagefilename}">
+					</c:forEach>
 				</div>
 			</div>
 			<div id="product_option" class="col-md-5">
-				<h5 class="mb-3">14K RING / ARF0380QST</h5>	<!-- 제품명 / 제품코드 db 연동 -->
-				<p class="mb-0"><span>판매가 : </span>    345,000원</p>	<!-- 가격 db연동 -->
-				<p class="my-0"><span>회원가 : </span>    334,650원 (10,350원 할인)</p>	<!-- 가격 db연동 후 script 처리(3% 할인가) -->
-				
-				<hr style="border: solid 1px lightgray">
-				
-				<table id="tbl_option"> <%-- table을 form으로 바꿔야할듯 --%>
-					<tr>
-						<th>필수 옵션</th>
-						<td>
+				<form name="optionFrm">
+					<h5 class="mb-3">${requestScope.pvo.productname} / 제품코드-${requestScope.pvo.productnum}</h5>
+					<input type="hidden" name="productname" value="${requestScope.pvo.productname}"/>
+					
+					<div style="line-height: 40px;">
+						판매가 : <fmt:formatNumber value="${requestScope.pvo.productprice}" pattern="###,###"/><br>
+						회원가 : <fmt:formatNumber value="${requestScope.pvo.saleprice}" pattern="###,###"/>&nbsp;(<fmt:formatNumber value="${requestScope.discountPrice}" pattern="##,###"/>원 할인)
+					</div>
+					<input type="hidden" name="productprice" value="${requestScope.pvo.productprice}"/>
+					<input type="hidden" name="saleprice" value="${requestScope.pvo.productprice}"/>
+					
+					<hr style="border: solid 1px lightgray">
+					
+					<ul id="ul_option" style="list-style: none; line-height: 50px; padding-left: 0; margin: 0; width: 100%;">
+						<li>
+							<label style="width: 150px;">필수 옵션</label>
 							<select id="reqOption">
 								<option value="">[필수] 옵션을 선택해주세요</option>
 								<option>14K 로즈골드 5호</option>
@@ -306,40 +268,33 @@
 								<option>18K 옐로우골드 6호</option>
 								<option>18K 옐로우골드 7호</option>
 							</select>
-						</td>
-					</tr>
-					<tr>
-						<th>선택 옵션</th>						
-						<td>
+						</li>
+						<li>
+							<label style="width: 150px;">선택 옵션</label>						
 							<select id="selOption">
 								<option value="">[선택] 옵션을 선택해주세요</option>
-								<option>선물용 포장</option>
-							</select>
-						</td>
-						<td id="card_msg"></td>
-					</tr>
-				</table>
-				
-				<table id="tbl_optionResult" class="mt-4">
-					<tr id=selOptionResult>
-						<th id="sel"></th>
-						<td id="selAdd"></td>
-					</tr>
-				</table>
-				
-				<hr style="border: solid 1px lightgray">
-				
-				<p>TOTAL <span id="total" style="margin-left: 170px;">345,000원(1개)</span></p>
-				<p>!할인가가 적용된 최종 결제예정금액은 주문 시 확인할 수 있습니다.</p>
-				
-				<hr style="border: solid 1px lightgray;">
-				
-				<button type="button" class="btn btn-secondary btn-block" id="purchase">구매</button>
-				
-				<p data-toggle="tooltip" title="아이콘 안보임">
-					<span id='addCart'><i class="fal fa-shopping-cart"></i>장바구니</span>
-					<span id='addWish'><i class="fal fa-heart"></i>찜</span>
-				</p>
+								<option value="3000">선물용 포장</option>
+							</select>							
+						</li>
+					</ul>
+					
+					<ul id="ul_reqOptionResult" style="list-style: none; padding: 0;"></ul>
+					<ul id="ul_selOptionResult" style="list-style: none; padding: 0;"></ul>
+					
+					<hr style="border: solid 1px lightgray">
+					
+					<div id="totalResult"><span>TOTAL</span></div>
+					<div id="msg" class="mt-3" style="font-size: 10pt;">!할인가가 적용된 최종 결제예정금액은 주문 시 확인할 수 있습니다.</div>
+					
+					<hr style="border: solid 1px lightgray;">
+					
+					<button type="button" class="btn btn-secondary btn-block" id="btnPurchase">구매</button>
+					
+					<div>
+						<span id='addCart'><i class="fal fa-shopping-cart"></i>장바구니</span>
+						<span id='addWish'><i class="fal fa-heart"></i>찜</span>
+					</div>
+				</form>
 			</div>
 		</div>
 		<div id="bottom_content">
@@ -355,8 +310,9 @@
 				</ul>
 			</div>
 			<div id="productDetailImg">
-				<img alt="pd1" src="../images/pd1.jpg">
-				<img alt="pd2" src="../images/pd2.png">
+				<c:forEach var="pdimg" items="${requestScope.imgList}" begin="4">
+					<img src="../images/${pdimg.imagefilename}" style="width: 90%; margin: 0 auto;"/>
+				</c:forEach>
 			</div>
 			
 			<div id="review_board">
@@ -422,5 +378,10 @@
 <form name='sendCategoryFrm'>
 	<input type="hidden" name="category"/>
 </form>
+
+<%-- <script>에서 배열로 사용할 input --%>
+<c:forEach var="pimg" items="${requestScope.imgList}" end="4">	
+	<input type="hidden" name="imgfilename" value="${pimg.imagefilename}"/>
+</c:forEach>
 
 <jsp:include page="../view/common/footer.jsp"/>

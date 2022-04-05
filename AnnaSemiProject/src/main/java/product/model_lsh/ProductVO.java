@@ -15,10 +15,10 @@ public class ProductVO {
 	private int point;					// 적립금(디폴트 0)
 	private String productinputdate;	// 제품입고일자(디폴트 현재일자)
 	
+	private ProductImageVO imgvo;
 	
 	/////////////////////////////////////////////////////////////
-	
-	
+
 	public ProductVO() {}
 
 	public ProductVO(int productnum) {
@@ -147,6 +147,14 @@ public class ProductVO {
 
 	public void setProductinputdate(String productinputdate) {
 		this.productinputdate = productinputdate;
+	}
+	
+	public ProductImageVO getImgvo() {
+		return imgvo;
+	}
+
+	public void setImgvo(ProductImageVO imgvo) {
+		this.imgvo = imgvo;
 	}
 	
 }

@@ -14,7 +14,11 @@ public interface InterProductDAO {
 	// 상품 찜하기
 	int addWishProduct(Map<String, String> paraMap) throws SQLException;
 	
+	// 상품 정보 조회하기
+	ProductVO productInfo(String productnum) throws SQLException;
 	
+	// 상품 이미지 조회하기
+	List<ProductImageVO> productImageSelectAll(String productnum) throws SQLException;
 	
 	
 	
@@ -37,6 +41,10 @@ public interface InterProductDAO {
 
 	// 한 상품 클릭시 productnum 을 받아서 해당 상품 디테일을 보여주기
 	ProductVO getProductDetail(String productnum) throws SQLException;
+
+	
+
+	
 
 	
 

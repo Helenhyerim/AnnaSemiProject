@@ -126,13 +126,7 @@ div#img_list > img:hover {
 
 div#product_option {padding: 10px;}
 
-table#tbl_option, table#tbl_optionResult {width: 100%;}
-
-table#tbl_option tr, table#tbl_optionResult tr {height: 40px;}
-
-table#tbl_option th {width: 100px;}
-
-table#tbl_optionResult th {width: 200px};
+ul {list-style: none;}
 
 span.spanbtn {
 	display: inline-block;

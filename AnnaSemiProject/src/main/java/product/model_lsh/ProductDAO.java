@@ -147,20 +147,33 @@ public class ProductDAO implements InterProductDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql =" select * "
-					  + " from tbl_product ";
+			String sql = "select productimage1, productname, productnum, productprice, saleprice, productqty "
+					   + "from tbl_product "
+					   + "where productnum = ? ";
 			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(productnum));
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			pvo.setProductimage1(rs.getString(1));
+			pvo.setProductname(rs.getString(2));
+			pvo.setProductnum(rs.getInt(3));
+			pvo.setProductprice(rs.getInt(4));
+			pvo.setSaleprice(rs.getInt(5));
+			pvo.setProductqty(rs.getInt(6));
 			
 		} finally {
 			close();
 		}
-		
-		
+	
 		return pvo;
 	}
 
 
-	// 상품 찜하기 전에 이미 찜한 상품인지 중복 체크하기_임성희
+	// 상품 찜하기 전에 이미 찜한 상품인지 중복 체크하기
 	@Override
 	public boolean wishDuplicateCheck(Map<String, String> paraMap) throws SQLException {
 
@@ -190,7 +203,7 @@ public class ProductDAO implements InterProductDAO {
 	}
 
 
-	// 상품 찜하기_임성희
+	// 상품 찜하기
 	@Override
 	public int addWishProduct(Map<String, String> paraMap) throws SQLException {
 		
@@ -214,5 +227,80 @@ public class ProductDAO implements InterProductDAO {
 		}
 		
 		return result;
+	}
+
+
+	// 상품 이미지 조회하기
+	@Override
+	public List<ProductImageVO> productImageSelectAll(String productnum) throws SQLException {
+
+		List<ProductImageVO> imgList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select imagefilename " +
+						 "from " +
+						 "( " +
+						 "    select productnum, imagefilename " +
+						 "    from tbl_product_imagefile I "+
+						 "    JOIN tbl_product P "+
+						 "    ON I.fk_productnum = P.productnum "+
+						 ") V " +
+						 "where productnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(productnum));
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				ProductImageVO imgvo = new ProductImageVO();
+				imgvo.setImagefilename(rs.getString(1));
+				
+				imgList.add(imgvo);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return imgList;
+	}
+
+
+	// 상품정보 조회하기
+	@Override
+	public ProductVO productInfo(String productnum) throws SQLException {
+		
+		ProductVO pvo = new ProductVO();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select productimage1, productname, productnum, productprice, saleprice, productqty "
+					   + "from tbl_product "
+					   + "where productnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(productnum));
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			pvo.setProductimage1(rs.getString(1));
+			pvo.setProductname(rs.getString(2));
+			pvo.setProductnum(rs.getInt(3));
+			pvo.setProductprice(rs.getInt(4));
+			pvo.setSaleprice(rs.getInt(5));
+			pvo.setProductqty(rs.getInt(6));
+			
+		} finally {
+			close();
+		}
+	
+		return pvo;
 	}
 }
