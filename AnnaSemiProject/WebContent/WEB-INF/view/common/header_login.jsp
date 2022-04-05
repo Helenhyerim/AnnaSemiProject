@@ -256,38 +256,6 @@
          </div>
     <hr style="background-color: #ccc; height: 1.2px; position: relative; top:10px; margin: 0; margin-bottom: 10px;">
    </nav>
-   
-      
-   
-      <div id="myNav" class="overlay">
-     <a href="javascript:void(0)" class="closebtn"onclick="closeNav()" >&times;</a>
-     <div class="overlay-content">
-       <a href="#">Necklaces</a>
-       <a href="#">Earring</a>
-       <a href="#">Ring</a>
-       <a href="#">Bracelets</a>
-       <a href="#">Sale</a>
-       <c:if test="${empty sessionScope.loginuser}">
-
-          <a href="<%= ctxPath %>/login/login.an">Login</a>
-          <a href="<%= ctxPath %>/member/memberRegister.an">Join</a>
-       </c:if>
-        <c:if test="${empty sessionScope.loginuser}">
-          <a href="<%= ctxPath %>/login/logout.an">Logout</a>
-          <a href="<%= ctxPath %>/member/myPage.an">mypage</a>
-
-          <a href="<%= ctxPath %>/login/login.an">Login</a>
-          <a href="<%= ctxPath %>/member/memberRegister.an">Join</a>
-       </c:if>
-       <c:if test="">
-          <a href="<%= ctxPath %>/login/logout.an">Login</a>
-       </c:if>
-       <a href="#">Event</a>
-       <a href="#">Review</a>
-       <a href="#">Cart</a>
-       <a href="#">Help</a>
-     </div>
-   </div>
 
 
    <!-- 상단 네비게이션 끝 -->
