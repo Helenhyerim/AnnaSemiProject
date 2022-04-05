@@ -150,7 +150,7 @@
 		     
 		     <c:set var="myPageLink" value="/login/login.an"></c:set>
 		     <c:choose>
-				<c:when test="${sessionScope.loginuser.userid eq 'hongkd'}">
+				<c:when test="${sessionScope.loginuser.userid eq 'admin'}">
 					<li class="nav-item">
 		              <a class="nav-link h6" href="<%= ctxPath %>/member/myAdmin.an">MyAdmin</a>
 		           </li>
