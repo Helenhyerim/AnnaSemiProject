@@ -1,27 +1,21 @@
-
+<<<<<<< HEAD
+<<<<<<< HEAD
 show user;
 -- USER이(가) "SEMIORAUSER2"입니다.
 
 grant connect, resource, create view, unlimited tablespace to SEMIORAUSER2;
 
+select *
+from tbl_member
+order by registerday desc;
 
-select ceil(count(*)/10)
-from tbl_product
 
-select rno, productimage1, productname, productprice
-from
-(
-    select rownum as rno, productimage1, productname, productprice
-    from
-    (
-    select productimage1, productname, productprice
-    from tbl_product
-    order by productnum
-    ) V
-) T
-where rno between 1 and 9;
+update tbl_member set pwd = '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382'
+                    , email = 'TydU2C+Xay1SxjpsL1yhxw=='
+                    , mobile = 'AX7K6pBHjDhUMnGGWWtDdQ=='
+where userid='admin';
 
--------------------------------------------
+commit;
 
 select * 
 from tab;
@@ -2670,7 +2664,10 @@ create sequence seq_cartno
 
 select *
   from user_sequences;
-
-
+<<<<<<< HEAD
+=======
+=======
 commit
-
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
+>>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git

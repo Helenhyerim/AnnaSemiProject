@@ -18,6 +18,18 @@
 	pageContext.setAttribute("vo", vo);		
 %>
 
+<style type="text/css">
+
+	input#modify {
+		background-color: black;
+		color: white;
+		border-line: solid 1px black;
+		font-size: 14px;
+		width: 100px;
+	}
+	
+</style>
+
 <jsp:include page="../common/header_login.jsp"></jsp:include>
 
 <script type="text/javascript">
@@ -25,14 +37,13 @@
 </script>
 
 <div class="container">
-  <div style="width: 80%; margin: 20%; auto;">
-	<title>글 수정</title>
-	<h3>수정하기</h3>
+  <div style="margin: 20% auto;">
+	<h2 style="margin: 20px auto; font-weight: bold; color: black;">Notice</h2>
 	<form action="<%=ctxPath %>/noticeEdit.an" method="post" name="noticeUpdateFrm">
 		<input type="hidden" name="noticeNo" value="${vo.noticeNo}" />
-		<input type="text" name="noticeTitle" value="${vo.noticeTitle}" required /><br>	
-		<textarea rows="4" cols="20" name="noticeContents" placeholder="내용">${vo.noticeContents}</textarea><br>
-		<button type="submit">수정</button>
+		<input type="text" name="noticeTitle" value="${vo.noticeTitle}" style="width: 100%;" required /><br/><br/>
+		<textarea rows="20" cols="20" name="noticeContents" placeholder="내용" style="width: 100%;">${vo.noticeContents}</textarea><br/><br/>
+		<input id="modify" style="float:right;" type="submit" value="수정">
 	</form>
 
 <jsp:include page="../common/footer.jsp"></jsp:include>

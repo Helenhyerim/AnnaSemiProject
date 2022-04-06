@@ -194,7 +194,7 @@ $(document).ready(function(){
 		
 		<div  style="text-align: center; margin-top: 150px;">
 			<button type="button" class="btn btn-secondary btn-lg mr-3">모든 상품 주문하기</button>
-			<button type="button" class="btn btn-secondary btn-lg">선택 상품 주문하기</button>
+			<button type="button" class="btn btn-secondary btn-lg" >선택 상품 주문하기</button>
 		</div>
 	</div>
 
