@@ -205,7 +205,7 @@ public class NoticeDAO implements InterNoticeDAO {
 	}
 
 	@Override
-	public List<NoticeVO> noticeSelectPagingMember(Map<String, String> paraMap) throws SQLException {
+	public List<NoticeVO> selectPagingNotice(Map<String, String> paraMap) throws SQLException {
 		
 		List<NoticeVO> noticeList = new ArrayList<>();
 
@@ -214,7 +214,7 @@ public class NoticeDAO implements InterNoticeDAO {
 			
 			String sql = " select noticeno, noticedate, noticetitle, cnt "
 					+ " from "
-					+ " ("
+					+ " ( "
 					+ " 	select rownum AS rno, noticeno, noticedate, noticetitle, cnt "
 					+ " 	from "
 					+ " 	( "
@@ -226,15 +226,12 @@ public class NoticeDAO implements InterNoticeDAO {
 			String searchWord = paraMap.get("searchWord");
 			
 			if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+				
 				sql += " and "+colname+" like '%'|| ? ||'%' ";
-			/*  
-			    위치홀더(?) 에 들어오는 값은 데이터값만 들어올 수 있는 것이지
-			    위치홀더(?) 에 컬럼명이나 테이블명이 들어오면 오류가 발생한다.
-			    그러므로 컬럼명이나 테이블명이 변수로 사용할때는 위치홀더(?)가 아닌 변수로 처리해야 한다.  	
-			*/
+			
 			}
 			
-			sql += " 		order by noticedate desc "
+			sql += " 		order by noticeno desc "
 				+ " 	) V "
 				+ " ) T "
 				+ " where rno between ? and ? ";
@@ -242,18 +239,18 @@ public class NoticeDAO implements InterNoticeDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			int noticeCurrentShowPageNo = Integer.parseInt(paraMap.get("noticeCurrentShowPageNo"));
-			int noticeSizePerPage = Integer.parseInt(paraMap.get("noticeSizePerPage"));
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
 			
 			if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
 		 		
 				pstmt.setString(1, searchWord);						
-		 		pstmt.setInt(2, (noticeCurrentShowPageNo * noticeSizePerPage) -(noticeSizePerPage - 1));
-				pstmt.setInt(3, (noticeCurrentShowPageNo * noticeSizePerPage));
+		 		pstmt.setInt(2, (currentShowPageNo * sizePerPage) -(sizePerPage - 1));
+				pstmt.setInt(3, (currentShowPageNo * sizePerPage));
 		 	}
 		 	else {
-		 		pstmt.setInt(1, (noticeCurrentShowPageNo * noticeSizePerPage) -(noticeSizePerPage - 1));
-				pstmt.setInt(2, (noticeCurrentShowPageNo * noticeSizePerPage));
+		 		pstmt.setInt(1, (currentShowPageNo * sizePerPage) -(sizePerPage - 1));
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage));
 		 	}
 			
 			rs = pstmt.executeQuery();
@@ -277,7 +274,7 @@ public class NoticeDAO implements InterNoticeDAO {
 	}
 
 	@Override
-	public int noticeGetTotalPage(Map<String, String> paraMap) throws SQLException {
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
 		
 		int totalPage = 0;
 		
@@ -298,7 +295,7 @@ public class NoticeDAO implements InterNoticeDAO {
 			}
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, paraMap.get("noticeSizePerPage"));
+			pstmt.setString(1, paraMap.get("sizePerPage"));
 			
 			if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
 				

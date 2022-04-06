@@ -19,7 +19,7 @@ public interface InterNoticeDAO {
 
 	int update(NoticeVO vo) throws SQLException;
 
-	List<NoticeVO> noticeSelectPagingMember(Map<String, String> paraMap) throws SQLException;
+	List<NoticeVO> selectPagingNotice(Map<String, String> paraMap) throws SQLException;
 
-	int noticeGetTotalPage(Map<String, String> paraMap) throws SQLException;
+	int getTotalPage(Map<String, String> paraMap) throws SQLException;
 }

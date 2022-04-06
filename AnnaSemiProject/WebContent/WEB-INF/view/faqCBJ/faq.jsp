@@ -1,17 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="faqCBJ.model.*, java.util.List"%>
+    pageEncoding="UTF-8"%>
     
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%
 	String ctxPath = request.getContextPath();
-%>
-
-<%
-	FaqDAO dao = new FaqDAO();
-	List<FaqVO> ls = dao.selectAll();
-	pageContext.setAttribute("ls", ls);
 %>
 
 <jsp:include page="../common/header_login.jsp"></jsp:include>
@@ -51,27 +45,60 @@ div#contents {
 	text-align: left; 
 	color: black;
 	transition: ease-out;
+}
 	
+button#regist {
+	background-color: black;
+	color: white;
+	border-line: solid 1px black;
+	font-size: 14px;
+	width: 100px;
+}
 	
+a {
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+ul.pagination a {
+	border: none;
+	font-weight: bold;
 }
 
 </style>
 
 <script type="text/javascript">
 
+	$(document).ready(function(){
+		
+		$("select#sizePerPage").val("${requestScope.sizePerPage}");
+		
+	});// end of $(document).ready(function(){})-----------------------------
+
 </script>
 
 <div class="container">
   <div style="margin: 20% auto;">
   
-	<h2 style="color: black; font-weight: bold;">FaQ</h2>		
+	<h2 style="color: black; font-weight: bold;">FaQ</h2>
+		<div class="board_tab" style="margin: 20px auto;">			
+			<a>전체</a>&#124;
+			<a>사이즈가이드</a>&#124;
+			<a>상품문의</a>&#124;
+			<a>배송문의</a>&#124;
+			<a>주문/결제</a>&#124;
+			<a>교환/반품</a>&#124;
+			<a>AS문의</a>	&#124;
+			<a>회원관련</a>					
+		</div>
+		
 		<table>
 			<tr>
 				<th style="width: 150px; text-align:center; color: black;">카테고리</th>
 				<th style="width: 1000px; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;제목</th>			
 			</tr>
 		</table>
-			<c:forEach var="faq" items="${ls}">
+			<c:forEach var="faq" items="${requestScope.faqList}">
 				<div class="accordion" id="accordion">
 					<div class="card" style="border-left: none; border-right: none; " >
 					  <div class="card-header" id="heading${faq.faqNo}">
@@ -90,18 +117,18 @@ div#contents {
 				  </div>
 			</c:forEach>
 		
-		
-		
+		<c:if test="${sessionScope.loginuser.userid eq 'admin'}">
+			<div id="regist" style="display:inline-block; float:right; padding:20px;"">
+				<a href="<%= ctxPath%>/faqRegistForm.an"/><button id="regist">글등록</button></a>
+			</div>
+		</c:if>
 		
 		<nav class="my-5">
-			<div style="display: flex; width: 80%;">
+			<div style="display: flex; width: 100%;">
 				<ul class="pagination" style='margin:auto;'>${requestScope.pageBar}</ul>
 			</div>
 		</nav>
 		
-		<div id="regist">
-			<a href="<%= ctxPath%>/noticeRegistForm.an"/><button>글등록</button></a>
-		</div>		
   </div>		
 </div>
 

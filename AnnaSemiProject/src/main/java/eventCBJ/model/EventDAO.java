@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -108,5 +110,80 @@ public class EventDAO implements InterEventDAO {
 			close();
 		}
 		return event;
+	}
+	
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+
+		int totalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select ceil( count(*)/? ) "
+					   + " from tbl_event";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("sizePerPage"));
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalPage = rs.getInt(1);							
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;
+		
+	}
+
+	@Override
+	public List<EventVO> selectPagingEvent(Map<String, String> paraMap) throws SQLException {
+		
+		List<EventVO> eventList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select eventno, eventtitle "
+						+ " from "
+						+ " ( "
+						+ "    select rownum AS rno, eventno, eventtitle "
+						+ "    from "
+						+ "    ( "
+						+ "        select eventno, eventtitle "
+						+ "        from tbl_event "			
+						+ "        order by eventno "
+						+ "    ) V "
+						+ " ) T "
+						+ " where rno between ? and ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+		 	int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
+			
+		 	pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage));	
+		 	
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				EventVO evo = new EventVO();
+				evo.setEventNo(rs.getInt(1));
+				evo.setEventTitle(rs.getString(1));
+				
+				eventList.add(evo);
+			}// end of while--------------------------------
+		
+		} finally {
+			close();
+		}
+		
+		return eventList;
 	}
 }

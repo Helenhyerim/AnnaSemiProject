@@ -79,12 +79,15 @@
 		</div>
 		<div style="text-align: right; padding: 20px;">
 			view : ${vo.cnt}
-		</div>	
-		<div style="float: right; padding: 20px;">
-			<a href="<%=ctxPath %>/noticeEditForm.an?noticeNo=${vo.noticeNo}"><button id="modify">수정</button></a>
-			<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="<%=ctxPath %>/noticeDelete.an?noticeNo=${vo.noticeNo}"><button id="delete">삭제</button></a>
-	  </div>
-  </div>		
+		</div>
+		
+		<c:if test="${sessionScope.loginuser.userid eq 'admin'}">
+			<div style="float: right; padding: 20px;">
+				<a href="<%=ctxPath %>/noticeEditForm.an?noticeNo=${vo.noticeNo}"><button id="modify">수정</button></a>
+				<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="<%=ctxPath %>/noticeDelete.an?noticeNo=${vo.noticeNo}"><button id="delete">삭제</button></a>
+			</div>
+		</c:if>
+	</div>		
 </div>
 
 <jsp:include page="../common/footer.jsp"></jsp:include>

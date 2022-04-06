@@ -1,10 +1,15 @@
 package faqCBJ.model;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -13,6 +18,7 @@ import javax.sql.DataSource;
 
 import common.controller.AbstractController;
 import faqCBJ.model.FaqVO;
+import member.model.MemberVO;
 
 public class FaqDAO implements InterFaqDAO {
 
@@ -71,5 +77,114 @@ public class FaqDAO implements InterFaqDAO {
 			close();
 		}
 		return faqList;
+	}
+
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+
+		int totalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select ceil( count(*)/? ) "
+					   + " from tbl_faq";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("sizePerPage"));
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalPage = rs.getInt(1);							
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;
+		
+	}
+
+	@Override
+	public List<FaqVO> selectPagingFaq(Map<String, String> paraMap) throws SQLException {
+		
+		List<FaqVO> faqList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select faqno, faqrequesttype, faqtitle, faqcontents "
+						+ " from "
+						+ " ( "
+						+ "    select rownum AS rno, faqno, faqrequesttype, faqtitle, faqcontents "
+						+ "    from "
+						+ "    ( "
+						+ "        select faqno, faqrequesttype, faqtitle, faqcontents "
+						+ "        from tbl_faq "			
+						+ "        order by faqno "
+						+ "    ) V "
+						+ " ) T "
+						+ " where rno between ? and ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+		 	int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
+			
+		 	pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage));	
+		 	
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				FaqVO fvo = new FaqVO();
+				fvo.setFaqNo(rs.getInt(1));
+				fvo.setFaqRequestType(rs.getString(2));
+				fvo.setFaqTitle(rs.getString(3));
+				fvo.setFaqContents(rs.getString(4)); // 복호화
+				
+				faqList.add(fvo);
+			}// end of while--------------------------------
+		
+		} finally {
+			close();
+		}
+		
+		return faqList;
+	}
+
+	@Override
+	public List<FaqCategoryVO> getfaqCategory(Map<String, String> paraMap) throws SQLException {
+
+		List<FaqCategoryVO> faqCategory = new ArrayList<>();
+		
+		try {
+			 conn = ds.getConnection();
+			 
+			 String sql = " select cnum, faqrequesttype "+
+					      " from TBL_FAQCATEGORY "+
+					      " order by cnum asc ";
+			 
+			 pstmt = conn.prepareStatement(sql);
+			 
+			 rs = pstmt.executeQuery();
+			 
+			 while(rs.next()) {
+				 FaqCategoryVO fcvo = new FaqCategoryVO();
+				 fcvo.setCnum(rs.getInt(1));
+				 fcvo.setFaqrequesttype(rs.getString(2));
+				 
+				 faqCategory.add(fcvo);
+			 }// end of while(rs.next())-------------------------------
+			 
+		} finally {
+			close();
+		}
+		
+		return faqCategory;
+		
 	}
 }
