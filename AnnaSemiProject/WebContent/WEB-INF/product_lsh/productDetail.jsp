@@ -14,11 +14,13 @@
 
 <script type="text/javascript">
 
+	const isExistLoginUser = true;
+
+	if(${not empty sessionScope.loginuser}) { isExistLoginUser = true; }
+
 	$(document).ready(function() {
 		
-		const isExistLoginUser = false;
-		
-		if(${not empty sessionScope.loginuser}) { isExistLoginUser = true; }
+	//	$("div#hiddenTotalResult").hide();
 		
 		// 대표이미지 변경하기(hover) : 부드럽게 바뀌도록 수정하기
 		$("div#img_list > img").hover(function() {
@@ -50,13 +52,14 @@
 				if(isExistOption == 0) {
 					let html = '<li style="margin: 10px 0;">'
 							 + '	<label style="width: 150px;" id="pname">' + productName + '</label>'
-							 + '	<input type="text" value="1" readonly style="width: 40px; text-align: center;"/>'
-						 	 + '	<span onclick="addQty()">+</span>'
-						 	 + '	<span onclick="subQty()">-</span>'
-						 	 + '	<span onclick="delOption()">x</span>'
+							 + '	<input type="text" name="productqty" value="1" readonly style="width: 40px; text-align: center;"/>'
+						 	 + '	<img onclick="addQty()" src="../images/plus.png" style="width: 20px;">'
+						 	 + '	<img onclick="subQty()" src="../images/minus.png" style="width: 20px;">'
+						 	 + '	<img onclick="delOption()" src="../images/cancel.png" style="width: 20px;">'
 						 	 + '</li>';
 						  
 					$("ul#ul_reqOptionResult").append(html);
+					optionResult();
 				}
 				else {
 					alert("이미 선택한 옵션입니다.");
@@ -77,11 +80,12 @@
 					const selOptionName = $("select#selOption option:selected").text();
 				
 					let html = '<li>'
-						 	 + '	<label>' + selOptionName + '</label>'
-						 	 + ' 	<span onclick="delOption()"><i class="fal fa-trash-alt"></i></span>'
+						 	 + '	<label id="pname">' + selOptionName + '</label>'
+						 	 + ' 	<img onclick="delOption()" src="../images/cancel.png" style="width: 20px;">'
 						 	 + '</li>';
 				
 					$("ul#ul_selOptionResult").append(html);
+					optionResult();
 				}
 				else {
 					alert("이미 선택한 옵션입니다.");					
@@ -89,19 +93,37 @@
 			}
 		}); // end of $("select#selOption").change(function(){})
 		
-		
-		// total 변경하기
-		$("form#optionFrm").change(function() {
-			
-			alert("form 변경");
-			
-		});
-		
-		
+
 		// 구매하기 클릭
-		$("button#purchase").click(function() {
+		$("button#btnPurchase").click(function() {
 			if(isExistLoginUser) { // 로그인 한 경우 : 구매 페이지로 이동
-				location.href="<%= ctxPath %>/product/myOrder.an";
+		
+				var opList = new Array();
+				var qtyList = new Array();
+				
+				if($("ul#ul_reqOptionResult li").length != 0) { // 필수 옵션이 선택되어 있는 경우
+					
+					// 선택된 옵션별 옵션명을 알아오는 반복문
+					$("label#pname").each(function(){
+						var pname = $(this).text();
+						
+						opList.push(pname);
+					});
+					
+					// 선택된 옵션별 수량을 알아오는 반복문
+					$("ul#ul_reqOptionResult li input[name=productqty]").each(function() {
+						var value = $(this).val();
+			
+						qtyList.push(value);
+					});
+					
+					if($("ul#ul_selOptionResult li").length != 0) { // 선택 옵션이 선택되어 있는 경우
+						qtyList.push('1');
+					}
+				}
+				else {
+					alert("옵션을 선택해주세요.");
+				}
 			}
 			else { // 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
 				goLoginPage();
@@ -112,23 +134,74 @@
 		// 장바구니 클릭
 		$("span#addCart").click(function() {
 			if(isExistLoginUser) { // 로그인 한 경우 : 장바구니에 추가했습니다(alert), 장바구니 페이지에 갈 것인지 쇼핑 계속하기로 현재 창에 머무를 것인지 선택
-				// popup
-				const url = "<%= ctxPath %>/product_lsh/addCart.an";
 				
-				window.open(url, "addWish", "left=300, top=300, width=500, height=200");
+				var opList = new Array();
+				var qtyList = new Array();
+				
+				if($("ul#ul_reqOptionResult li").length != 0) { // 필수 옵션이 선택되어 있는 경우
+					
+					// 선택된 옵션별 옵션명을 알아오는 반복문
+					$("label#pname").each(function(){
+						var pname = $(this).text();
+						
+						opList.push(pname);
+					});
+					
+					// 선택된 옵션별 수량을 알아오는 반복문
+					$("ul#ul_reqOptionResult li input[name=productqty]").each(function() {
+						var value = $(this).val();
+			
+						qtyList.push(value);
+					});
+					
+					if($("ul#ul_selOptionResult li").length != 0) { // 선택 옵션이 선택되어 있는 경우
+						qtyList.push('1');
+					}
+				}
+				else {
+					alert("옵션을 선택해주세요.");
+				}
+				
+				$.ajax({
+					url:"<%= ctxPath %>/product_lsh/cartDuplicateCheck.an",
+					data:{"userid":"hongkd", <%-- 임시값(${sessionScope.loginuser.userid}) --%>
+						  "productnum":"${requestScope.pvo.productnum}",
+						  "productname":"${requestScope.pvo.productname}",
+						  "opList":opList,
+						  "qtyList":qtyList,
+						  "productprice":"${requestScope.pvo.saleprice}"}, 
+					type:"post",
+					dataType:"json",
+					async:false,
+					success:function(json) {
+						if(json.isExist) {
+							alert("이미 장바구니에 추가한 상품입니다.");
+						}
+						else {
+							const url = "<%= ctxPath %>/product_lsh/addCart.an";
+										
+							window.open(url, "addCart", "left=300, top=300, width=500, height=200");
+						}
+					},
+					error:function(request, status, error) {
+		    			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+		    		}
+				}); // end of $.ajax({})
+				
 			}
 			else { // 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
 				goLoginPage();
 			}
-		});	
+		});	// end of $("span#addCart").click(function() {})
 			
+		
 		// 찜하기 클릭
 		$("span#addWish").click(function() {
 			if(isExistLoginUser) { // 로그인 한 경우
 				
 				$.ajax({
 					url:"<%= ctxPath %>/product_lsh/wishDuplicateCheck.an",
-					data:{"productnum":"${requestScope.pvo.productnum}", "userid":"yuhl"}, <%-- 임시값 --%>
+					data:{"productnum":"${requestScope.pvo.productnum}", "userid":"yuhl"}, <%-- 임시값(${sessionScope.loginuser.userid}) --%>
 					type:"post",
 					dataType:"json",
 					async:false,
@@ -142,7 +215,7 @@
 							window.open(url, "addWish", "left=300, top=300, width=500, height=200");
 						}
 					},
-					error:function(reqeust, status, error) {
+					error:function(request, status, error) {
 		    			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
 		    		}
 				}); // end of $.ajax({})
@@ -154,6 +227,7 @@
 		});
 		
 	}); // end of $(document).ready(function() {})
+	
 	
 	// 선택 카테고리 페이지로 이동
 	function goCategoryPage() {
@@ -171,6 +245,7 @@
 		frm.submit();
 	}
 	
+	
 	// 로그인 페이지로 이동
 	function goLoginPage() {
 		alert("로그인 후 이용할 수 있습니다.");
@@ -179,7 +254,8 @@
 		location.href="<%= ctxPath %>/login/login.an?goBackURL=${requestScope.goBackURL}";
 	}
 	
-   	// 상품 수량 변경 및 삭제 함수(addQty, subQty, delProduct)
+	
+   	// 선택한 옵션별 수량 변경 및 삭제 함수(addQty, subQty, delProduct)
    	function addQty() {	
        	const $target = $(event.target);
        	
@@ -187,6 +263,7 @@
        	
        	if(qty < 20) {
        		$target.siblings("input").val(qty + 1);
+       		optionResult();
        	}
        	else {
        		alert("최대 주문 수량입니다.");
@@ -200,6 +277,7 @@
        	
        	if(qty > 1) {
        		$target.siblings("input").val(qty - 1);
+       		optionResult();
        	}
        	else {
        		alert("최소 주문 수량입니다.");
@@ -210,8 +288,46 @@
 		const $target = $(event.target);
 		
 		$target.closest("li").remove();
+		
+		optionResult();
 	}
-   	
+	
+	
+	// ul_reqOptionResult, ul_selOptionResult에 변동이 생길 때마다 호출되는 함수(totalPrice, totalQty 계산)
+   	function optionResult() {
+
+		let qty = 0;
+		let price = 0;
+		var qtyArr = new Array();
+		
+		if(isExistLoginUser) { price = $("input[name=saleprice]").val(); }	// 334650
+		else { price = $("input[name=productprice]").val(); }	// 345000
+		
+		if($("ul#ul_reqOptionResult li").length != 0) { // 필수 옵션이 선택되어 있는 경우
+			// 선택된 옵션별 수량을 알아오는 반복문
+			$("ul#ul_reqOptionResult li input[name=productqty]").each(function(idx) {
+				var value = $(this).val();
+	
+				qty = qty + Number(value);
+			});
+			
+			if($("ul#ul_selOptionResult li").length != 0) { // 선택 옵션이 선택되어 있는 경우
+				price = (Number(price) * Number(qty)) + 3000;
+				qty = qty + 1;
+			}
+			else {
+				price = Number(price) * Number(qty);
+			}
+			
+			$("span#totalResult").text(price.toLocaleString('en') + "원 (" + qty + "개)");
+			$("span#totalResult").show();
+		}
+		else {
+			$("span#totalResult").hide();
+		}
+	}
+	
+//	function addHiddenInput()
 	
 </script>
 
@@ -238,7 +354,7 @@
 			</div>
 			<div id="product_option" class="col-md-5">
 				<form name="optionFrm">
-					<h5 class="mb-3">${requestScope.pvo.productname} / 제품코드-${requestScope.pvo.productnum}</h5>
+					<h5 class="mb-3">${requestScope.pvo.productname}</h5>
 					<input type="hidden" name="productname" value="${requestScope.pvo.productname}"/>
 					
 					<div style="line-height: 40px;">
@@ -246,7 +362,7 @@
 						회원가 : <fmt:formatNumber value="${requestScope.pvo.saleprice}" pattern="###,###"/>&nbsp;(<fmt:formatNumber value="${requestScope.discountPrice}" pattern="##,###"/>원 할인)
 					</div>
 					<input type="hidden" name="productprice" value="${requestScope.pvo.productprice}"/>
-					<input type="hidden" name="saleprice" value="${requestScope.pvo.productprice}"/>
+					<input type="hidden" name="saleprice" value="${requestScope.pvo.saleprice}"/>
 					
 					<hr style="border: solid 1px lightgray">
 					
@@ -273,7 +389,7 @@
 							<label style="width: 150px;">선택 옵션</label>						
 							<select id="selOption">
 								<option value="">[선택] 옵션을 선택해주세요</option>
-								<option value="3000">선물용 포장</option>
+								<option>선물용 포장</option>
 							</select>							
 						</li>
 					</ul>
@@ -283,16 +399,17 @@
 					
 					<hr style="border: solid 1px lightgray">
 					
-					<div id="totalResult"><span>TOTAL</span></div>
+					<div>TOTAL<span id="totalResult" style="margin-left: 50px;"></span></div>
+					<div id="hiddenTotalResult"></div>
 					<div id="msg" class="mt-3" style="font-size: 10pt;">!할인가가 적용된 최종 결제예정금액은 주문 시 확인할 수 있습니다.</div>
 					
 					<hr style="border: solid 1px lightgray;">
 					
 					<button type="button" class="btn btn-secondary btn-block" id="btnPurchase">구매</button>
 					
-					<div>
-						<span id='addCart'><i class="fal fa-shopping-cart"></i>장바구니</span>
-						<span id='addWish'><i class="fal fa-heart"></i>찜</span>
+					<div class="row" style="margin-top: 20px; text-align: center;">
+						<div class="col-md-6"><span id='addCart' style="font-size: 10pt; font-weight: bold;"><img src="../images/cart.png">&nbsp;장바구니</span></div>
+						<div class="col-md-6"><span id='addWish' style="font-size: 10pt; font-weight: bold;"><img src="../images/heart.png" style="width: 30px;">&nbsp;찜</span></div>
 					</div>
 				</form>
 			</div>
@@ -383,5 +500,19 @@
 <c:forEach var="pimg" items="${requestScope.imgList}" end="4">	
 	<input type="hidden" name="imgfilename" value="${pimg.imagefilename}"/>
 </c:forEach>
+
+<%-- 선택한 옵션 전송하는 form --%>
+<form name='sendOptionFrm'>
+	<input type="hidden" name="userid" />
+	<input type="hidden" name="pnum" />
+	<input type="hidden" name="pname" />
+	<c:forEach var="option" items="">
+		<input type="hidden" name="opList[]"/>
+	</c:forEach>
+	<c:forEach var="qty" items="">
+		<input type="hidden" name="qtyList[]"/>
+	</c:forEach>
+	<input type="hidden" name="pprice" />
+</form>
 
 <jsp:include page="../view/common/footer.jsp"/>

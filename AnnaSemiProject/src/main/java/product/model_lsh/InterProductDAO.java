@@ -20,9 +20,11 @@ public interface InterProductDAO {
 	// 상품 이미지 조회하기
 	List<ProductImageVO> productImageSelectAll(String productnum) throws SQLException;
 	
+	// 상품 장바구니에 추가하기 전에 이미 추가한 상품인지 중복 체크하기
+	boolean cartDuplicateCheck(Map<String, String> paraMap) throws SQLException;
 	
-	
-	
+	// 상품 장바구니에 추가하기
+	int addCartProduct(Map<String, String> paraMap) throws SQLException;
 	
 	
 	
@@ -41,6 +43,10 @@ public interface InterProductDAO {
 
 	// 한 상품 클릭시 productnum 을 받아서 해당 상품 디테일을 보여주기
 	ProductVO getProductDetail(String productnum) throws SQLException;
+
+	
+
+	
 
 	
 

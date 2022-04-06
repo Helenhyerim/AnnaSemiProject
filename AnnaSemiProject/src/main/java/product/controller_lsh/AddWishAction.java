@@ -23,10 +23,8 @@ public class AddWishAction extends AbstractController {
 		
 		Map<String, String> paraMap = new HashMap<>();
 		
-		paraMap.put("productnum", productnum);	// 정수 변환 해줘야 함(productDAO)
+		paraMap.put("productnum", productnum);	// 정수 변환 해줘야 함(productDAO에서)
 		paraMap.put("userid", userid);
-		
-		System.out.println(productnum + userid);
 		
 		try {
 			InterProductDAO pdao = new ProductDAO();

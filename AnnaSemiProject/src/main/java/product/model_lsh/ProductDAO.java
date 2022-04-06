@@ -303,4 +303,63 @@ public class ProductDAO implements InterProductDAO {
 	
 		return pvo;
 	}
+
+
+	// 상품 장바구니에 추가하기 전에 이미 추가한 상품인지 중복 체크하기
+	@Override
+	public boolean cartDuplicateCheck(Map<String, String> paraMap) throws SQLException {
+
+		boolean isExist = false;
+		int productnum = Integer.parseInt(paraMap.get("productnum"));
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select * "
+					   + "from tbl_cart "
+					   + "where fk_productnum = ? and fk_userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, productnum);
+			pstmt.setString(2, paraMap.get("userid"));
+			
+			rs = pstmt.executeQuery();
+			
+			isExist = rs.next(); // 행이 있으면 true, 없으면 false
+			
+		} finally {
+			close();
+		}
+		
+		return isExist;
+	}
+
+
+	// 상품 장바구니에 추가하기
+	@Override
+	public int addCartProduct(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		int productnum = Integer.parseInt(paraMap.get("productnum"));
+		int orderqty = Integer.parseInt(paraMap.get("orderqty"));
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "insert into tbl_cart(cartno, fk_userid, fk_productnum, orderqty) "
+					   + "values(seq_cartno.nextval, ?, ?, ?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setInt(2, productnum);
+			pstmt.setInt(3, orderqty);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
 }
