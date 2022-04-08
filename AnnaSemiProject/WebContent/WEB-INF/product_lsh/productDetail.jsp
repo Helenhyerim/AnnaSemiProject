@@ -121,9 +121,17 @@
 						qtyList.push('1');
 					}
 				}
-				else {
+				else {	// 필수 옵션이 선택되어 있지 않은 경우
 					alert("옵션을 선택해주세요.");
+					return;
 				}
+				
+				addHiddenInput(opList, qtyList);
+				
+				const frm = document.sendOptionFrm;
+				frm.action = "<%= ctxPath %>/product/myOrder.an";
+                frm.method = "post";
+                frm.submit();
 			}
 			else { // 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
 				goLoginPage();
@@ -160,16 +168,14 @@
 				}
 				else {
 					alert("옵션을 선택해주세요.");
+					return;
 				}
 				
 				$.ajax({
 					url:"<%= ctxPath %>/product_lsh/cartDuplicateCheck.an",
 					data:{"userid":"hongkd", <%-- 임시값(${sessionScope.loginuser.userid}) --%>
 						  "productnum":"${requestScope.pvo.productnum}",
-						  "productname":"${requestScope.pvo.productname}",
-						  "opList":opList,
-						  "qtyList":qtyList,
-						  "productprice":"${requestScope.pvo.saleprice}"}, 
+						  "productname":"${requestScope.pvo.productname}"}, 
 					type:"post",
 					dataType:"json",
 					async:false,
@@ -178,9 +184,17 @@
 							alert("이미 장바구니에 추가한 상품입니다.");
 						}
 						else {
-							const url = "<%= ctxPath %>/product_lsh/addCart.an";
-										
-							window.open(url, "addCart", "left=300, top=300, width=500, height=200");
+							addHiddenInput(opList, qtyList);
+							
+							var pop_title = "addCart";
+							
+							window.open("", pop_title, "left=300, top=300, width=500, height=200");
+							
+							const frm = document.sendOptionFrm;
+							frm.target = pop_title;
+		                    frm.action = "<%= ctxPath %>/product_lsh/addCart.an";
+		                    frm.method = "post";
+		                    frm.submit();
 						}
 					},
 					error:function(request, status, error) {
@@ -230,19 +244,9 @@
 	
 	
 	// 선택 카테고리 페이지로 이동
-	function goCategoryPage() {
-		// 선택한 카테고리가 무엇인지 알아오기
-		const $target = $(event.target);
-		
-		let category = $target.text();
-		
-		// 페이지 이동하기 전 선택한 카테고리 값 넘겨주기(번호로 넘겨주기?)
-		const frm = document.sendCategoryFrm;
-		frm.category.value = category;
-		
-		frm.action = "<%= ctxPath %>/product/categoryClick.an";
-		frm.method = "post";
-		frm.submit();
+	function goCategoryPage(categorynum) {
+
+		location.href = "<%= ctxPath %>/product/categoryClick.an?categorynum=" + categorynum;
 	}
 	
 	
@@ -327,18 +331,29 @@
 		}
 	}
 	
-//	function addHiddenInput()
+	// 구매, 장바구니 추가에서 form으로 전송할 값 넣어주기
+	function addHiddenInput(opList, qtyList) {
+		for(var i in opList) {
+			html = '<input type="hidden" name="opList[]" value="' + opList[i] + '" />';
+			
+			$("div#opListInput").append(html);
+		}
+		
+		for(var i in qtyList) {
+			html = '<input type="hidden" name="qtyList[]" value="' + qtyList[i] + '" />';
+			
+			$("div#qtyListInput").append(html);
+		}
+	}
 	
 </script>
 
 <div id="contianer">
 	<div id="sidebar">
 		<ul>
-			<li><a class='category' onclick='goCategoryPage()'>Necklaces</a></li>
-			<li><a class='category' onclick='goCategoryPage()'>Earrings</a></li>
-			<li><a class='category' onclick='goCategoryPage()'>Rings</a></li>
-			<li><a class='category' onclick='goCategoryPage()'>Bracelets</a></li>
-			<li><a class='category' onclick='goCategoryPage()'>Sale</a></li>
+			<c:forEach var='category' items="${requestScope.categoryList}">
+				<li><a class='category' onclick="goCategoryPage(${category.categorynum})">${category.categoryname}</a></li>
+			</c:forEach>
 		</ul>
 	</div>
 
@@ -353,65 +368,62 @@
 				</div>
 			</div>
 			<div id="product_option" class="col-md-5">
-				<form name="optionFrm">
-					<h5 class="mb-3">${requestScope.pvo.productname}</h5>
-					<input type="hidden" name="productname" value="${requestScope.pvo.productname}"/>
-					
-					<div style="line-height: 40px;">
-						판매가 : <fmt:formatNumber value="${requestScope.pvo.productprice}" pattern="###,###"/><br>
-						회원가 : <fmt:formatNumber value="${requestScope.pvo.saleprice}" pattern="###,###"/>&nbsp;(<fmt:formatNumber value="${requestScope.discountPrice}" pattern="##,###"/>원 할인)
-					</div>
-					<input type="hidden" name="productprice" value="${requestScope.pvo.productprice}"/>
-					<input type="hidden" name="saleprice" value="${requestScope.pvo.saleprice}"/>
-					
-					<hr style="border: solid 1px lightgray">
-					
-					<ul id="ul_option" style="list-style: none; line-height: 50px; padding-left: 0; margin: 0; width: 100%;">
-						<li>
-							<label style="width: 150px;">필수 옵션</label>
-							<select id="reqOption">
-								<option value="">[필수] 옵션을 선택해주세요</option>
-								<option>14K 로즈골드 5호</option>
-								<option>14K 로즈골드 6호</option>
-								<option>14K 로즈골드 7호</option>
-								<option>14K 옐로우골드 5호</option>
-								<option>14K 옐로우골드 6호</option>
-								<option>14K 옐로우골드 7호</option>
-								<option>18K 로즈골드 5호</option>
-								<option>18K 로즈골드 6호</option>
-								<option>18K 로즈골드 7호</option>
-								<option>18K 옐로우골드 5호</option>
-								<option>18K 옐로우골드 6호</option>
-								<option>18K 옐로우골드 7호</option>
-							</select>
-						</li>
-						<li>
-							<label style="width: 150px;">선택 옵션</label>						
-							<select id="selOption">
-								<option value="">[선택] 옵션을 선택해주세요</option>
-								<option>선물용 포장</option>
-							</select>							
-						</li>
-					</ul>
-					
-					<ul id="ul_reqOptionResult" style="list-style: none; padding: 0;"></ul>
-					<ul id="ul_selOptionResult" style="list-style: none; padding: 0;"></ul>
-					
-					<hr style="border: solid 1px lightgray">
-					
-					<div>TOTAL<span id="totalResult" style="margin-left: 50px;"></span></div>
-					<div id="hiddenTotalResult"></div>
-					<div id="msg" class="mt-3" style="font-size: 10pt;">!할인가가 적용된 최종 결제예정금액은 주문 시 확인할 수 있습니다.</div>
-					
-					<hr style="border: solid 1px lightgray;">
-					
-					<button type="button" class="btn btn-secondary btn-block" id="btnPurchase">구매</button>
-					
-					<div class="row" style="margin-top: 20px; text-align: center;">
-						<div class="col-md-6"><span id='addCart' style="font-size: 10pt; font-weight: bold;"><img src="../images/cart.png">&nbsp;장바구니</span></div>
-						<div class="col-md-6"><span id='addWish' style="font-size: 10pt; font-weight: bold;"><img src="../images/heart.png" style="width: 30px;">&nbsp;찜</span></div>
-					</div>
-				</form>
+				<h5 class="mb-3">${requestScope.pvo.productname}</h5>
+				
+				<div style="line-height: 40px;">
+					판매가 : <fmt:formatNumber value="${requestScope.pvo.productprice}" pattern="###,###"/><br>
+					회원가 : <fmt:formatNumber value="${requestScope.pvo.saleprice}" pattern="###,###"/>&nbsp;(<fmt:formatNumber value="${requestScope.discountPrice}" pattern="##,###"/>원 할인)
+				</div>
+				<input type="hidden" name="productprice" value="${requestScope.pvo.productprice}"/>
+				<input type="hidden" name="saleprice" value="${requestScope.pvo.saleprice}"/>
+				
+				<hr style="border: solid 1px lightgray">
+				
+				<ul id="ul_option" style="list-style: none; line-height: 50px; padding-left: 0; margin: 0; width: 100%;">
+					<li>
+						<label style="width: 150px;">필수 옵션</label>
+						<select id="reqOption">
+							<option value="">[필수] 옵션을 선택해주세요</option>
+							<option>14K 로즈골드 5호</option>
+							<option>14K 로즈골드 6호</option>
+							<option>14K 로즈골드 7호</option>
+							<option>14K 옐로우골드 5호</option>
+							<option>14K 옐로우골드 6호</option>
+							<option>14K 옐로우골드 7호</option>
+							<option>18K 로즈골드 5호</option>
+							<option>18K 로즈골드 6호</option>
+							<option>18K 로즈골드 7호</option>
+							<option>18K 옐로우골드 5호</option>
+							<option>18K 옐로우골드 6호</option>
+							<option>18K 옐로우골드 7호</option>
+						</select>
+					</li>
+					<li>
+						<label style="width: 150px;">선택 옵션</label>						
+						<select id="selOption">
+							<option value="">[선택] 옵션을 선택해주세요</option>
+							<option>선물용 포장</option>
+						</select>							
+					</li>
+				</ul>
+				
+				<ul id="ul_reqOptionResult" style="list-style: none; padding: 0;"></ul>
+				<ul id="ul_selOptionResult" style="list-style: none; padding: 0;"></ul>
+				
+				<hr style="border: solid 1px lightgray">
+				
+				<div>TOTAL<span id="totalResult" style="margin-left: 50px;"></span></div>
+				<div id="hiddenTotalResult"></div>
+				<div id="msg" class="mt-3" style="font-size: 10pt;">!할인가가 적용된 최종 결제예정금액은 주문 시 확인할 수 있습니다.</div>
+				
+				<hr style="border: solid 1px lightgray;">
+				
+				<button type="button" class="btn btn-secondary btn-block" id="btnPurchase">구매</button>
+				
+				<div class="row" style="margin-top: 20px; text-align: center;">
+					<div class="col-md-6"><span id='addCart' style="font-size: 10pt; font-weight: bold;"><img src="../images/cart.png">&nbsp;장바구니</span></div>
+					<div class="col-md-6"><span id='addWish' style="font-size: 10pt; font-weight: bold;"><img src="../images/heart.png" style="width: 30px;">&nbsp;찜</span></div>
+				</div>
 			</div>
 		</div>
 		<div id="bottom_content">
@@ -491,11 +503,6 @@
 	</div>
 </div>
 
-<%-- 선택한 카테고리 값 전송하는 form --%> 
-<form name='sendCategoryFrm'>
-	<input type="hidden" name="category"/>
-</form>
-
 <%-- <script>에서 배열로 사용할 input --%>
 <c:forEach var="pimg" items="${requestScope.imgList}" end="4">	
 	<input type="hidden" name="imgfilename" value="${pimg.imagefilename}"/>
@@ -503,16 +510,12 @@
 
 <%-- 선택한 옵션 전송하는 form --%>
 <form name='sendOptionFrm'>
-	<input type="hidden" name="userid" />
-	<input type="hidden" name="pnum" />
-	<input type="hidden" name="pname" />
-	<c:forEach var="option" items="">
-		<input type="hidden" name="opList[]"/>
-	</c:forEach>
-	<c:forEach var="qty" items="">
-		<input type="hidden" name="qtyList[]"/>
-	</c:forEach>
-	<input type="hidden" name="pprice" />
+	<input type="hidden" name="userid" value="hongkd"/> <%-- 임시값(sessionScope.loginuser.userid) --%>
+	<input type="hidden" name="pnum" value="${requestScope.pvo.productnum}"/>
+	<input type="hidden" name="pname" value="${requestScope.pvo.productname}"/>
+	<div id="opListInput"></div>
+	<div id="qtyListInput"></div>
+	<input type="hidden" name="pprice" value="${requestScope.pvo.saleprice}"/>
 </form>
 
 <jsp:include page="../view/common/footer.jsp"/>

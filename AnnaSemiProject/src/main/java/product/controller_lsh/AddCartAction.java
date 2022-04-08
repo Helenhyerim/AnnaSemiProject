@@ -23,19 +23,17 @@ public class AddCartAction extends AbstractController {
 		String[] qtyList = request.getParameterValues("qtyList[]");
 		String productprice = request.getParameter("pprice");
 		
-		String orderqty = "";
+		int orderqty = 0;
 		
 		for(String qty : qtyList) {
-			orderqty += Integer.parseInt(qty);
+			orderqty = orderqty + Integer.parseInt(qty);
 		}
-		
-		System.out.println(orderqty);
 		
 		Map<String, String> paraMap = new HashMap<>();
 		
 		paraMap.put("userid", userid);
 		paraMap.put("productnum", productnum);
-		paraMap.put("orderqty", orderqty);
+		paraMap.put("orderqty", String.valueOf(orderqty));
 		
 		try {
 			InterProductDAO pdao = new ProductDAO();
@@ -44,8 +42,15 @@ public class AddCartAction extends AbstractController {
 		
 			if(n == 1) {
 				
+				request.setAttribute("userid", userid);
+				request.setAttribute("productnum", productnum);
+				request.setAttribute("productname", productname);
+				request.setAttribute("opList", opList);
+				request.setAttribute("qtyList", qtyList);
+				request.setAttribute("productprice", productprice);
+				
 			//	super.setRedirect(false);
-				super.setViewPage("/WEB-INF/product/addCart.jsp");	
+				super.setViewPage("/WEB-INF/product_lsh/addCart.jsp");	
 			}
 		} catch(SQLException e) {
 			e.printStackTrace();

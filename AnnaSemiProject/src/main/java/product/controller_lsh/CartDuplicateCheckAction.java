@@ -20,10 +20,6 @@ public class CartDuplicateCheckAction extends AbstractController {
 		// 파라미터 받아오기
 		String userid = request.getParameter("userid");
 		String productnum = request.getParameter("productnum");
-		String productname = request.getParameter("productname");
-		String[] opList = request.getParameterValues("opList[]");
-		String[] qtyList = request.getParameterValues("qtyList[]");
-		String productprice = request.getParameter("productprice");
 		
 		Map<String, String> paraMap = new HashMap<>();
 		
@@ -35,12 +31,6 @@ public class CartDuplicateCheckAction extends AbstractController {
 		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("isExist", isExist);
-		jsonObj.put("userid", userid);
-		jsonObj.put("productnum", productnum);
-		jsonObj.put("productname", productname);
-		jsonObj.put("opList", opList);
-		jsonObj.put("qtyList", qtyList);
-		jsonObj.put("productprice", productprice);
 		
 		String json = jsonObj.toString();
 		

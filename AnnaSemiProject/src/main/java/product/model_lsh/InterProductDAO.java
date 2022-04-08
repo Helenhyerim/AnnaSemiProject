@@ -1,6 +1,7 @@
 package product.model_lsh;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,9 @@ public interface InterProductDAO {
 	// 상품 장바구니에 추가하기
 	int addCartProduct(Map<String, String> paraMap) throws SQLException;
 	
-	
+	// tbl_category 테이블에서 카테고리 대분류 번호(cnum), 카테고리코드(code), 카테고리명(cname)을 조회해오기 
+	// VO 를 사용하지 않고 Map 으로 처리해보겠습니다.
+	List<HashMap<String, String>> getCategoryList() throws SQLException;
 	
 	
 	
@@ -46,6 +49,8 @@ public interface InterProductDAO {
 
 	// userid 를 받아서 장바구니에 있는 상품 보여주기
 	List<Map<String, String>> getCartItemsByUserid(String userid) throws SQLException;
+
+	
 
 	
 

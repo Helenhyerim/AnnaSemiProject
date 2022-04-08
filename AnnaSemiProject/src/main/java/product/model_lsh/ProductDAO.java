@@ -1,12 +1,11 @@
 package product.model_lsh;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,9 +13,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-
-import member.model.MemberVO;
-
 
 public class ProductDAO implements InterProductDAO {
 
@@ -385,4 +381,39 @@ public class ProductDAO implements InterProductDAO {
 		
 		return cartProductList;
 	} // end of public List<Map<String, String>> getCartItemsByUserid(String userid)
+
+
+	// tbl_category 테이블에서 카테고리 대분류 번호(cnum), 카테고리코드(code), 카테고리명(cname)을 조회해오기 
+	// VO 를 사용하지 않고 Map 으로 처리해보겠습니다.	
+	@Override
+	public List<HashMap<String, String>> getCategoryList() throws SQLException {
+		
+		List<HashMap<String, String>> categoryList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select categorynum, code, categoryname "
+					   + "from tbl_category "
+					   + "order by categorynum asc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				HashMap<String, String> map = new HashMap<>();
+				map.put("categorynum", rs.getString(1));
+				map.put("code", rs.getString(2));
+				map.put("categoryname", rs.getString(3));
+				
+				categoryList.add(map);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return categoryList;
+	}
 }
