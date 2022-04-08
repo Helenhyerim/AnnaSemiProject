@@ -15,6 +15,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import cart.model.CartVO;
 import member.model.MemberVO;
 
 
@@ -88,34 +89,68 @@ public class ProductDAO implements InterProductDAO {
 	// 페이징 처리가 되어진 모든 회원 또는 검색한 회원 목록 보여주기_유혜림
 	@Override
 	public List<ProductVO> selectPagingProduct(Map<String, String> paraMap) throws SQLException {
+		
 		List<ProductVO> productList = new ArrayList<>();
 		
 		try {
 			conn = ds.getConnection();
 			
-			// rno 는 빼고 한다.
+			// rno와 categorynum는 빼고 select 한다.
+		/*	
 			String sql = "select productimage1, productname, productprice, productnum "+
 					"from "+
 					"( "+
-					"    select rownum as rno, productimage1, productname, productprice, productnum "+
+					"    select rownum as rno, productimage1, productname, productprice, productnum, categorynum "+
 					"    from "+
 					"    ( "+
-					"    select productimage1, productname, productprice, productnum "+
+					"    select productimage1, productname, productprice, productnum, categorynum "+
 					"    from tbl_product "+
-					"    order by productnum "+
+					"    order by ? "+
 					"    ) V "+
 					") T "+
-					"where rno between ? and ? ";
+					"where rno between ? and ? and categorynum = ? ";
+		*/
+			String orderby = "";
+			switch (paraMap.get("sort")) {
+				case "1":
+					orderby = " productinputdate asc ";
+					break;
+					
+				case "2":
+					orderby = " productprice desc ";
+					break;	
+				
+				case "3":
+					orderby = " productprice asc ";
+					break;	
+			};
 			
+			String sql = "select productimage1, productname, productprice, productnum "+
+					"from "+
+					"( "+
+					"    select rownum as rno, productimage1, productname, productprice, productnum, categorynum "+
+					"    from "+
+					"    ( "+
+					"    select productimage1, productname, productprice, productnum, categorynum "+
+					"    from tbl_product "
+					+ "  order by " + orderby;
+			
+			sql += "    ) V "+
+					") T "+
+					"where rno between ? and ? and categorynum = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
 			// '1' '10' 해도 잘 select 된다. 그러므로 setInt 혹은 setString 으로 해도 된다.
 			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
 			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
-			
+		//	System.out.println(" paraMap.get(\"sort\") => " + paraMap.get("sort"));
+		//	pstmt.setString(1, paraMap.get("sort"));
 			pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
 			pstmt.setInt(2, (currentShowPageNo * sizePerPage));
+			pstmt.setString(3, paraMap.get("categorynum"));
+			
+			System.out.println("~~~ 확인용 categorynum=> " + paraMap.get("categorynum") );
 			
 			rs = pstmt.executeQuery();
 			
@@ -219,24 +254,107 @@ public class ProductDAO implements InterProductDAO {
 
 	// userid 를 받아서 장바구니에 있는 상품 보여주기_유혜림
 	@Override
-	public List<Map<String, String>> getCartItemsByUserid(String userid) throws SQLException {
+	public List<ProductVO> getCartItemsByUserid(String userid) throws SQLException {
 		
-		List<Map<String, String>> cartProductList = null;
+		List<ProductVO> productList = new ArrayList<>();
 		
 		try {
 			conn = ds.getConnection();
 			
-			String sql =" select FK_PRODUCTNUM, ORDERQTY "
-					  + " from tbl_product "
-					  + " where userid = ";
+			String sql =" select C.FK_PRODUCTNUM, C.ORDERQTY, " + 
+					"        P.PRODUCTNAME, P.PRODUCTIMAGE1, P.PRODUCTQTY, P.PRODUCTPRICE, P.SALEPRICE, P.POINT, " +
+					"		 C.cartno " +
+					" from tbl_product P " + 
+					" JOIN tbl_cart C " + 
+					" ON P.productnum = C.fk_productnum " + 
+					" JOIN tbl_member M " + 
+					" ON M.userid = C.fk_userid " + 
+					" where M.userid = ? " + 
+					" order by C.fk_productnum asc ";
 			
 			
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				CartVO cvo = new CartVO();
+								
+				cvo.setFk_productnum(rs.getInt(1));
+				cvo.setOrderqty(rs.getInt(2));
+				
+				ProductVO pvo = new ProductVO();
+				
+				pvo.setProductname(rs.getString(3));
+				pvo.setProductimage1(rs.getString(4));
+				pvo.setProductqty(rs.getInt(5));
+				pvo.setProductprice(rs.getInt(6));
+				pvo.setSaleprice(rs.getInt(7));
+				pvo.setPoint(rs.getInt(8));
+								
+				cvo.setCartno(rs.getInt(9));
+				pvo.setCvo(cvo); // 장바구니
+				
+				productList.add(pvo);
+			}// end of while(rs.next()) --------
 			
 		} finally {
 			close();
 		}
 		
-		return cartProductList;
+		return productList;
 	}// end of public List<Map<String, String>> getCartItemsByUserid(String userid)
+
+
+	// 장바구니 페이지에서 넘어온 cartno 로 주문페이지에 보여줄 아이템 조회해오기
+	@Override
+	public ProductVO getOrderItems(String cartno) throws SQLException {
+		
+		ProductVO pvo = new ProductVO();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =" select P.productnum, P.productname, P.productcompany, P.productimage1 " + 
+					"     , P.productprice, P.saleprice, P.point  " + 
+					"     , C.ORDERQTY " + 
+					" from tbl_product P JOIN tbl_cart C " + 
+					" ON P.productnum = C.fk_productnum " + 
+					" where C.cartno = ? ";
+			
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, cartno);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+								
+				pvo.setProductnum(Integer.parseInt(rs.getString(1)));
+				pvo.setProductname(rs.getString(2));
+				pvo.setProductcompany(rs.getString(3));
+				pvo.setProductimage1(rs.getString(4));
+				pvo.setProductprice(rs.getInt(5));
+				pvo.setSaleprice(rs.getInt(6));
+				pvo.setPoint(rs.getInt(7));
+								
+				CartVO cvo = new CartVO();
+				cvo.setOrderqty(rs.getInt(8));
+				
+				pvo.setCvo(cvo); // 장바구니
+				
+						
+			}// end of while(rs.next()) --------
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		} 
+		
+		return pvo;
+	}// end of public List<ProductVO> getOrderItems(String cart_checked)----------
+	
+	
 }

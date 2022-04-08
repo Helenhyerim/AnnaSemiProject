@@ -1,5 +1,7 @@
 package product.model_lsh;
 
+import cart.model.CartVO;
+
 public class ProductVO {
 	private int productnum;				// 제품번호
 	private int categorynum;			// 카테고리대분류번호
@@ -15,7 +17,7 @@ public class ProductVO {
 	private int point;					// 적립금(디폴트 0)
 	private String productinputdate;	// 제품입고일자(디폴트 현재일자)
 	
-	
+	private CartVO cvo;
 	/////////////////////////////////////////////////////////////
 	
 	
@@ -147,6 +149,14 @@ public class ProductVO {
 
 	public void setProductinputdate(String productinputdate) {
 		this.productinputdate = productinputdate;
+	}
+
+	public CartVO getCvo() {
+		return cvo;
+	}
+
+	public void setCvo(CartVO cvo) {
+		this.cvo = cvo;
 	}
 	
 }

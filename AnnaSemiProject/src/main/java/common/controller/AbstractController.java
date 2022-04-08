@@ -1,5 +1,10 @@
 package common.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import member.model.MemberVO;
+
 public abstract class AbstractController implements InterCommand {
 // AbstractController 클래스는 미완성(추상) 부모클래스로 사용된다. 
 	
@@ -54,6 +59,20 @@ public abstract class AbstractController implements InterCommand {
 		this.viewPage = viewPage;
 	}
 	
+	////////////////////////////////////////////////////////////////////////////////////////
+		
+	// 로그인 여부를 검사해서 로그인 했으면 true, 안했으면 false 리턴
+	public boolean checkLogin(HttpServletRequest request) {
 	
+	HttpSession session = request.getSession();
+	MemberVO member = (MemberVO)session.getAttribute("loginuser");
+	
+	if(member != null) {// 로그인 한 경우
+	return true;
+	}else {// 로그인 안한 경우
+	return false;
+	}
+	
+	}// end of public boolean checkLogin(HttpServletRequest request) -----------
 	
 }

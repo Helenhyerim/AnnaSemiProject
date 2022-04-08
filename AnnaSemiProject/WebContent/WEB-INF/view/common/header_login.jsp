@@ -44,6 +44,12 @@
       $("#sidecontent").html(side_html);
       $("#maincontent").html(content_html);
       
+      //
+      $("a#Necklaces").click(function(event){
+    	 const $target = $(event).target;
+    //	 alert($target);
+      });
+      //
    });   
       
    function openNav() {
@@ -181,7 +187,7 @@
 			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Review</a>
 			 </li>
 			 <li class="nav-item">
-			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Cart</a>
+			    <a class="nav-link h6" href="<%= ctxPath %>/product/myCart.an?userid=${sessionScope.loginuser.userid}">Cart</a>
 			 </li>
 			  <li class="nav-item dropdown">
 			        <a class="nav-link h6" href="#" id="navbarDropdown"> 
@@ -199,8 +205,8 @@
 		
 		<div class="collapse navbar-collapse row-vh mx-2"  >
 		  <ul class="navbar-nav flex-row mb-2"  style="font-size: 12pt;">
-		       <li class="nav-item dropdown">
-			        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
+		       <li class="nav-item dropdown" value="Necklaces">
+			        <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=1"> 
 			                      Necklaces                     
 			        </a>
 			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -210,7 +216,7 @@
 			        </div>
 			 </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
+		        <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=2"> 
 		                      Earings                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -220,7 +226,7 @@
 		        </div>
 		     </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
+		        <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=3"> 
 		                      Rings                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -230,7 +236,7 @@
 		        </div>
 		     </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
+		        <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=4"> 
 		                      Bracelets                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -240,7 +246,7 @@
 		        </div>
 		     </li>
 		      <li class="nav-item active">
-		     	<a class="nav-link menufont_size" href="#" style="color:#00000080;">Sale</a>
+		     	<a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=5" style="color:#00000080;">Sale</a>
 		     </li>
 		  </ul>
   		</div>		

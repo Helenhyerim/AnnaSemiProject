@@ -8,9 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import common.controller.AbstractController;
-import member.model.InterMemberDAO;
-import member.model.MemberDAO;
-import member.model.MemberVO;
 import product.model_lsh.InterProductDAO;
 import product.model_lsh.ProductDAO;
 import product.model_lsh.ProductVO;
@@ -37,6 +34,9 @@ public class CategoryClickAction extends AbstractController {
 		// sizePerPage 이 null 이라면 sizePerPage 를 9 으로 바꾸어야 한다.
 		// "9" 또는 "6" 또는 "3" 등..
 
+		// sort
+		String sort = request.getParameter("sort");
+		
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";
 		}
@@ -44,6 +44,11 @@ public class CategoryClickAction extends AbstractController {
 		if(sizePerPage == null ||
 				!("3".equals(sizePerPage) || "6".equals(sizePerPage) || "9".equals(sizePerPage)) ) {
 			sizePerPage = "9";
+		}
+		
+		// sort
+		if(sort == null) {
+		   sort = "1";
 		}
 
 		// === GET 방식이므로 사용자가 웹브라우저 주소창에서 currentShowPageNo 에 숫자가 아닌 문자를 입력한 경우 또는 
@@ -56,9 +61,9 @@ public class CategoryClickAction extends AbstractController {
 		}
 
 		paraMap.put("sizePerPage", sizePerPage);
-
 		
-		// 전체회원에 대한 총페이지 알아오기
+		
+		// 전체상품에 대한 총페이지 알아오기
 		int totalPage = pdao.getTotalPage(paraMap);
 
 		// === GET 방식이므로 사용자가 웹브라우저 주소창에서 currentShowPageNo 에 토탈페이지수보다 큰 값을 입력해 
@@ -68,12 +73,19 @@ public class CategoryClickAction extends AbstractController {
 		}
 
 		paraMap.put("currentShowPageNo", currentShowPageNo);
-
-
+		// sort
+		paraMap.put("sort", sort);
+		
+		String categorynum = request.getParameter("categorynum");
+		paraMap.put("categorynum", categorynum);
 		List<ProductVO> productList = pdao.selectPagingProduct(paraMap);
-
+		
+		request.setAttribute("categorynum", categorynum);
 		
 		request.setAttribute("sizePerPage", sizePerPage); // jsp 단에서 선택한 페이지수를 유지해주기위해 넘겨준다
+		
+		// sort
+		request.setAttribute("sort", sort); // jsp 단에서 선택한 정렬기준을 유지해주기위해 넘겨준다
 
 
 		// *** === 페이지바 만들기 시작 === *** //
@@ -93,8 +105,8 @@ public class CategoryClickAction extends AbstractController {
 
 		// **** [맨처음] [이전] 만들기 **** //
 		if( pageNo != 1 ) {
-			pageBar += "<li class='page-item'><a class='page-link' href='categoryClick.an?currentShowPageNo=1&sizePerPage="+sizePerPage+"'>[맨처음]</a></li>"; 
-			pageBar += "<li class='page-item'><a class='page-link' href='categoryClick.an?currentShowPageNo="+(pageNo-1)+"&sizePerPage="+sizePerPage+"'>[이전]</a></li>";  
+			pageBar += "<li class='page-item'><a class='page-link' href='categoryClick.an?currentShowPageNo=1&sizePerPage="+sizePerPage+"&categorynum="+categorynum+"&sort="+sort+"'>[맨처음]</a></li>"; 
+			pageBar += "<li class='page-item'><a class='page-link' href='categoryClick.an?currentShowPageNo="+(pageNo-1)+"&sizePerPage="+sizePerPage+"&categorynum="+categorynum+"&sort="+sort+"'>[이전]</a></li>";  
 		}
 
 		while( !(loop > blockSize || pageNo > totalPage) ) {
@@ -103,7 +115,7 @@ public class CategoryClickAction extends AbstractController {
 				pageBar += "<li class='page-item active'><a class='page-link' href='#'>"+pageNo+"</a></li>"; 
 			}
 			else {
-				pageBar += "<li class='page-item'><a class='page-link' href='categoryClick.an?currentShowPageNo="+pageNo+"&sizePerPage="+sizePerPage+"'>"+pageNo+"</a></li>";   
+				pageBar += "<li class='page-item'><a class='page-link' href='categoryClick.an?currentShowPageNo="+pageNo+"&sizePerPage="+sizePerPage+"&categorynum="+categorynum+"&sort="+sort+"'>"+pageNo+"</a></li>";   
 			}
 
 			loop++;
@@ -113,8 +125,8 @@ public class CategoryClickAction extends AbstractController {
 		// **** [다음] [마지막] 만들기 **** //
 		// pageNo ==> 11 인 상태에서
 		if( pageNo <= totalPage) {// 맨 마지막에는 다음과 마지막이 나오지 않게 하기 위해
-			pageBar += "<li class='page-item'><a class='page-link' href='categoryClick.an?currentShowPageNo="+pageNo+"&sizePerPage="+sizePerPage+"'>[다음]</a></li>";  
-			pageBar += "<li class='page-item'><a class='page-link' href='categoryClick.an?currentShowPageNo="+totalPage+"&sizePerPage="+sizePerPage+"&searchType="+"'>[마지막]</a></li>"; 
+			pageBar += "<li class='page-item'><a class='page-link' href='categoryClick.an?currentShowPageNo="+pageNo+"&sizePerPage="+sizePerPage+"&categorynum="+categorynum+"&sort="+sort+"'>[다음]</a></li>";  
+			pageBar += "<li class='page-item'><a class='page-link' href='categoryClick.an?currentShowPageNo="+totalPage+"&sizePerPage="+sizePerPage+"&categorynum="+categorynum+"&sort="+sort+"'>[마지막]</a></li>"; 
 
 		}
 
