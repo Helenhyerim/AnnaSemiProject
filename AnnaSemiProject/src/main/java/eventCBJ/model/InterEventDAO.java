@@ -23,4 +23,6 @@ public interface InterEventDAO {
 
 	int eventInsert(EventVO evo) throws SQLException;
 
+	int eventUpdate(EventVO evo) throws SQLException;
+
 }

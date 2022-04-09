@@ -96,13 +96,13 @@ public class EventRegistFormController extends AbstractController {
 				try {
 					edao.eventInsert(evo);
 					
-					message = "제품등록 성공!!";
+					message = "등록 성공!!";
 					loc = request.getContextPath()+"/event.an";
 					
 				} catch(SQLException e) {
 					e.printStackTrace();
 					
-					message = "제품등록 실패!!";
+					message = "등록 실패!!";
 					loc = request.getContextPath()+"/eventRegistForm.an";
 				}
 				

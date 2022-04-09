@@ -262,6 +262,37 @@ public class EventDAO implements InterEventDAO {
 		
 		return result;
 	}
+
+	@Override
+	public int eventUpdate(EventVO evo) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_event set eventtitle = ?, eventstartdate =  ?, eventenddate = ?, "
+					   + " eventimg1 = ?, eventimg2 = ?, thumbnail = ? "
+					   + " where eventno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, evo.getEventTitle());
+			pstmt.setString(2, evo.getEventStartdate());
+			pstmt.setString(3, evo.getEventEnddate());
+			pstmt.setString(4, evo.getEventImg1());
+			pstmt.setString(5, evo.getEventImg2());
+			pstmt.setString(6, evo.getThumbNail());
+			pstmt.setInt(7, evo.getEventNo());
+			
+	        result = pstmt.executeUpdate();
+	        
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
 	
 	
 }

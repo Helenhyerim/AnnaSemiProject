@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="eventCBJ.model.*"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -19,7 +19,7 @@
    
 	.error {color: red; font-weight: bold; font-size: 9pt;}
 
-	input#btnRegister, input#btnCancel {
+	input#btnEditer, input#btnCancel {
 		background-color: black;
 		color: white;
 		border-line: solid 1px black;
@@ -28,6 +28,13 @@
 	}
 </style>
 
+<%
+	int eventNo = Integer.parseInt(request.getParameter("eventNo"));
+	EventDAO dao = new EventDAO();
+	EventVO vo = dao.selectOne(eventNo);
+	pageContext.setAttribute("vo", vo);		
+%>
+
 <script type="text/javascript">
 
 	$(document).ready(function(){
@@ -35,7 +42,7 @@
 		$("span.error").hide();
 		
 		// 제품등록하기
-		$("input#btnRegister").click(function(){
+		$("input#btnEditer").click(function(){
 						
 			let flag = false;
 			
@@ -70,13 +77,14 @@
 	<h2 style="margin: 20px auto; font-weight: bold; color: black;">글 등록</h2>	
 	
 	<form name="eventInputFrm"
-	  action="<%= request.getContextPath()%>/eventRegistForm.an"
+	  action="<%= request.getContextPath()%>/eventEditForm.an"
 	  method="POST"
 	  enctype="multipart/form-data">
 	  
 		<table id="tblEventInput" >
 	  
-			<tbody>
+			<input type="hidden" name="eventNo" value="${vo.eventNo}" />
+			<tbody>		
 				<tr>
 					<td width="15%" class=eventInputName>제목</td>
 					<td width="75%" align="left" style="border-bottom: hidden;" >
@@ -106,7 +114,7 @@
 				</tr>
 				<tr style="height: 70px;">
 					<td colspan="2" align="center" style="border-left: hidden; border-bottom: hidden; border-right: hidden;">
-						<input type="button" value="수정" id="btnRegister" style="width: 80px;" /> 
+						<input type="button" value="수정" id="btnEditer" style="width: 80px;" /> 
 						&nbsp;
 						<input type="reset" value="취소" id="btnCancel" style="width: 80px;" />   
 					</td>
