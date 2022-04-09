@@ -17,4 +17,10 @@ public interface InterEventDAO {
 
 	List<EventVO> selectPagingEvent(Map<String, String> paraMap) throws SQLException;
 
+	int delete(int eventNo) throws SQLException;
+
+	int getEnumOfEvent() throws SQLException;
+
+	int eventInsert(EventVO evo) throws SQLException;
+
 }

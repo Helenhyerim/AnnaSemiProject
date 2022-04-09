@@ -65,6 +65,14 @@ ul.pagination a {
 	font-weight: bold;
 }
 
+button#modify,#delete {
+	background-color: black;
+	color: white;
+	border-line: solid 1px black;
+	font-size: 14px;
+	width: 100px;
+}
+	
 </style>
 
 <script type="text/javascript">
@@ -112,6 +120,12 @@ ul.pagination a {
 				    <div id="panel${faq.faqNo}" class="accordion-collapse collapse" aria-labelledby="headingOne${faq.faqNo}" data-parent="#accordion">
 				      <div class="accordion-body">
 				        <img src="<%= ctxPath %>/imagesCBJ/${faq.faqNo}.png"/>
+				        <c:if test="${sessionScope.loginuser.userid eq 'admin'}">
+							<div style="float: right; padding: 20px;">
+								<a href="<%=ctxPath %>/faqEditForm.an?faqNo=${faq.faqNo}"><button id="modify">수정</button></a>
+								<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="<%=ctxPath %>/faqDelete.an?faqNo=${faq.faqNo}"><button id="delete">삭제</button></a>
+							</div> 
+						</c:if>
 				      </div>
 				    </div>
 				  </div>

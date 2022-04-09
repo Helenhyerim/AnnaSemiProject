@@ -79,6 +79,26 @@ public class FaqDAO implements InterFaqDAO {
 		return faqList;
 	}
 
+	// 삭제(D)
+	@Override
+	public int delete(int faqNo) throws SQLException {
+
+		int result = 0;
+		
+		try {                                                                                                                                       
+			conn = ds.getConnection();
+			
+			String sql = " delete from tbl_faq where faqno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);			
+			pstmt.setInt(1, faqNo);
+			result = pstmt.executeUpdate(); // 잘 들어가면 숫자가 바뀔 것이다
+		} finally {
+			close();
+		}
+		return result;
+	}
+	
 	@Override
 	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
 

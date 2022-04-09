@@ -59,7 +59,7 @@
 		     	 <div class="col-sm-4 col-lg-4 mb-3">	     	 
 		     	    <div>
 		     	    	<a href = "<%= ctxPath %>/eventDetail.an?eventNo=${event.eventNo}">
-							<img src="<%= ctxPath %>/imagesCBJ/${event.thumbNail}.jpg" alt="thumbnail" class="img-thumbnail" type="button" width="350">
+							<img src="/AnnaSemiProject/imagesCBJ/${event.thumbNail}" alt="thumbnail" class="img-thumbnail" type="button" width="350">
 						</a>
 						<div>
 							<br/>

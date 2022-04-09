@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -113,6 +115,25 @@ public class EventDAO implements InterEventDAO {
 	}
 	
 	@Override
+	public int delete(int eventNo) throws SQLException {
+
+		int result = 0;
+		
+		try {                                                                                                                                       
+			conn = ds.getConnection();
+			
+			String sql = " delete from tbl_event where eventno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);			
+			pstmt.setInt(1, eventNo);
+			result = pstmt.executeUpdate(); // 잘 들어가면 숫자가 바뀔 것이다
+		} finally {
+			close();
+		}
+		return result;
+	}
+	
+	@Override
 	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
 
 		int totalPage = 0;
@@ -186,4 +207,61 @@ public class EventDAO implements InterEventDAO {
 		
 		return eventList;
 	}
+
+	@Override
+	public int getEnumOfEvent() throws SQLException {
+
+		int eventNo = 0;
+		
+		try {
+			 conn = ds.getConnection();
+			 
+			 String sql = " select seq_eventno.nextval "
+			 			+ " from dual ";
+			 
+			 pstmt = conn.prepareStatement(sql);			 
+			 
+			 rs = pstmt.executeQuery();			 
+			 
+			 rs.next();
+			 eventNo = rs.getInt(1);
+			 
+		} finally {
+			close();
+		}
+		
+		return eventNo;
+	}
+
+	@Override
+	public int eventInsert(EventVO evo) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " insert into tbl_event(eventno, userid, registdate, eventtitle, eventstartdate, eventenddate, eventimg1, eventimg2, thumbnail) "
+						+ " values(?, 'admin', sysdate, ?, ?, ?, ?, ?, ?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, evo.getEventNo());
+			pstmt.setString(2, evo.getEventTitle());
+			pstmt.setString(3, evo.getEventStartdate());
+			pstmt.setString(4, evo.getEventEnddate());
+			pstmt.setString(5, evo.getEventImg1());
+			pstmt.setString(6, evo.getEventImg2());
+			pstmt.setString(7, evo.getThumbNail());
+			
+	        result = pstmt.executeUpdate();
+	        
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
+	
+	
 }

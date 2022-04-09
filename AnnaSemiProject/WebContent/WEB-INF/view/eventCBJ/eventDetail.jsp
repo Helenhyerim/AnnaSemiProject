@@ -31,10 +31,18 @@
 		display: inline-block;
 		font-size: 20px;
 	}
+	
 	img {
 		width: 100%;
 	}
 	
+	button#modify,#delete {
+		background-color: black;
+		color: white;
+		border-line: solid 1px black;
+		font-size: 14px;
+		width: 100px;
+	}
 </style>
 
 <jsp:include page="../common/header_login.jsp"></jsp:include>
@@ -72,6 +80,12 @@
 				<div>
 					<img src="<%= ctxPath %>/imagesCBJ/${vo.eventImg1}">
 					<img src="<%= ctxPath %>/imagesCBJ/${vo.eventImg2}">
+				</div>
+			</c:if>
+			<c:if test="${sessionScope.loginuser.userid eq 'admin'}">
+				<div style="float: right; padding: 20px;">
+					<a href="<%=ctxPath %>/eventEditForm.an?eventNo=${vo.eventNo}"><button id="modify">수정</button></a>
+					<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="<%=ctxPath %>/eventDelete.an?eventNo=${vo.eventNo}"><button id="delete">삭제</button></a>
 				</div>
 			</c:if>
 	  </div>		
