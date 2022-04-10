@@ -75,6 +75,8 @@ button#modify,#delete {
 	
 </style>
 
+
+
 <script type="text/javascript">
 
 	$(document).ready(function(){
@@ -119,10 +121,10 @@ button#modify,#delete {
 					</div>
 				    <div id="panel${faq.faqNo}" class="accordion-collapse collapse" aria-labelledby="headingOne${faq.faqNo}" data-parent="#accordion">
 				      <div class="accordion-body">
-				        <img src="<%= ctxPath %>/imagesCBJ/${faq.faqNo}.png"/>
+				        <img src="/AnnaSemiProject/imagesCBJ/${faq.faqImg}"/>
 				        <c:if test="${sessionScope.loginuser.userid eq 'admin'}">
 							<div style="float: right; padding: 20px;">
-								<a href="<%=ctxPath %>/faqEditForm.an?faqNo=${faq.faqNo}"><button id="modify">수정</button></a>
+								<a href="<%=ctxPath %>/faqEditForm.an?faqNo=${faq.faqImg}"><button id="modify">수정</button></a>
 								<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="<%=ctxPath %>/faqDelete.an?faqNo=${faq.faqNo}"><button id="delete">삭제</button></a>
 							</div> 
 						</c:if>

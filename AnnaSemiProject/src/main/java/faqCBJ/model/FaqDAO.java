@@ -1,7 +1,5 @@
 package faqCBJ.model;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,10 +13,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-
-import common.controller.AbstractController;
-import faqCBJ.model.FaqVO;
-import member.model.MemberVO;
 
 public class FaqDAO implements InterFaqDAO {
 
@@ -58,7 +52,9 @@ public class FaqDAO implements InterFaqDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = "select faqno, fk_userid, faqrequesttype, faqtitle, faqcontents from tbl_faq order by faqno ";
+			String sql = " select faqno, fk_userid, faqrequesttype, faqtitle, faqimg, fk_cnum, cname "
+						+ " from tbl_faq join tbl_faqcategory on fk_cnum = cnum "
+						+ " order by faqno ";
 			
 			pstmt = conn.prepareStatement(sql);			
 			
@@ -70,8 +66,14 @@ public class FaqDAO implements InterFaqDAO {
 				faq.setFk_userId(rs.getString(2));
 				faq.setFaqRequestType(rs.getString(3));
 				faq.setFaqTitle(rs.getString(4));
-				faq.setFaqContents(rs.getString(5));
+				faq.setFaqImg(rs.getString(5));
+				faq.setFk_cnum(rs.getInt(6));
+
+				FaqCategoryVO faqcategvo = new FaqCategoryVO();
+				faqcategvo.setCname(rs.getString(7));
+				
 				faqList.add(faq);
+				
 			}
 		} finally {
 			close();
@@ -135,13 +137,13 @@ public class FaqDAO implements InterFaqDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select faqno, faqrequesttype, faqtitle, faqcontents "
+			String sql = " select faqno, faqrequesttype, faqtitle, faqimg, fk_cnum "
 						+ " from "
 						+ " ( "
-						+ "    select rownum AS rno, faqno, faqrequesttype, faqtitle, faqcontents "
+						+ "    select rownum AS rno, faqno, faqrequesttype, faqtitle, faqimg, fk_cnum "
 						+ "    from "
 						+ "    ( "
-						+ "        select faqno, faqrequesttype, faqtitle, faqcontents "
+						+ "        select faqno, faqrequesttype, faqtitle, faqimg, fk_cnum "
 						+ "        from tbl_faq "			
 						+ "        order by faqno "
 						+ "    ) V "
@@ -164,7 +166,8 @@ public class FaqDAO implements InterFaqDAO {
 				fvo.setFaqNo(rs.getInt(1));
 				fvo.setFaqRequestType(rs.getString(2));
 				fvo.setFaqTitle(rs.getString(3));
-				fvo.setFaqContents(rs.getString(4)); // 복호화
+				fvo.setFaqImg(rs.getString(4));
+				fvo.setFk_cnum(rs.getInt(5));
 				
 				faqList.add(fvo);
 			}// end of while--------------------------------
@@ -174,18 +177,73 @@ public class FaqDAO implements InterFaqDAO {
 		}
 		
 		return faqList;
-	}
+	}	
 
 	@Override
-	public List<FaqCategoryVO> getfaqCategory(Map<String, String> paraMap) throws SQLException {
-
-		List<FaqCategoryVO> faqCategory = new ArrayList<>();
+	public int getFnumOfFaq() throws SQLException {
+		
+		int fqaNo = 0;
 		
 		try {
 			 conn = ds.getConnection();
 			 
-			 String sql = " select cnum, faqrequesttype "+
-					      " from TBL_FAQCATEGORY "+
+			 String sql = " select seq_faqno.nextval "
+			 			+ " from dual ";
+			 
+			 pstmt = conn.prepareStatement(sql);			 
+			 
+			 rs = pstmt.executeQuery();			 
+			 
+			 rs.next();
+			 fqaNo = rs.getInt(1);
+			 
+		} finally {
+			close();
+		}
+		
+		return fqaNo;
+		
+	}
+	
+
+	@Override
+	public int faqInsert(FaqVO evo) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " insert into tbl_faq(faqno, fk_userid, faqrequesttype, faqtitle, faqimg, fk_cnum) "
+						+ " values(?, 'admin', ?, ?, ?, ?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, evo.getFaqNo());
+			pstmt.setString(2, evo.getFaqRequestType());
+			pstmt.setString(3, evo.getFaqTitle());
+			pstmt.setString(4, evo.getFaqImg());
+			pstmt.setInt(5, evo.getFk_cnum());
+			
+	        result = pstmt.executeUpdate();
+	        
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<HashMap<String, String>> getFaqCategoryList() throws SQLException {
+
+		List<HashMap<String, String>> faqCategoryList = new ArrayList<>();
+		
+		try {
+			 conn = ds.getConnection();
+			 
+			 String sql = " select cnum, cname "+
+					      " from tbl_faqcategory "+
 					      " order by cnum asc ";
 			 
 			 pstmt = conn.prepareStatement(sql);
@@ -193,18 +251,18 @@ public class FaqDAO implements InterFaqDAO {
 			 rs = pstmt.executeQuery();
 			 
 			 while(rs.next()) {
-				 FaqCategoryVO fcvo = new FaqCategoryVO();
-				 fcvo.setCnum(rs.getInt(1));
-				 fcvo.setFaqrequesttype(rs.getString(2));
+				 HashMap<String, String> map = new HashMap<>();
+				 map.put("cnum", rs.getString(1));
+				 map.put("cname", rs.getString(2));
 				 
-				 faqCategory.add(fcvo);
+				 faqCategoryList.add(map);
 			 }// end of while(rs.next())-------------------------------
 			 
 		} finally {
 			close();
 		}
 		
-		return faqCategory;
-		
+		return faqCategoryList;
 	}
+	
 }

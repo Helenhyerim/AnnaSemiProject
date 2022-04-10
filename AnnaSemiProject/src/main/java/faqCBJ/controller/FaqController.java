@@ -2,6 +2,7 @@ package faqCBJ.controller;
 
 import java.util.*;
 
+import javax.print.attribute.standard.NumberOfDocuments;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,6 +15,8 @@ public class FaqController extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+		super.getFaqCategoryList(request);
+		
 		InterFaqDAO fdao = new FaqDAO();
 		
 		Map<String, String> paraMap = new HashMap<>();

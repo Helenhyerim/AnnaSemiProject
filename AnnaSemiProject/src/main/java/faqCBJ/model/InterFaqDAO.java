@@ -16,8 +16,13 @@ public interface InterFaqDAO {
 
 	List<FaqVO> selectPagingFaq(Map<String, String> paraMap) throws SQLException;
 
-	List<FaqCategoryVO> getfaqCategory(Map<String, String> paraMap) throws SQLException;
-
 	int delete(int faqNo) throws SQLException;
+
+	int getFnumOfFaq() throws SQLException;
+
+	int faqInsert(FaqVO evo) throws SQLException;
+
+	List<HashMap<String, String>> getFaqCategoryList() throws SQLException;
+
 
 }

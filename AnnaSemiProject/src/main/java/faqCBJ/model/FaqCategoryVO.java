@@ -3,14 +3,14 @@ package faqCBJ.model;
 public class FaqCategoryVO {
 
 	private int cnum;
-	private String faqrequesttype;
+	private String cname;
 	
 	public FaqCategoryVO() {}
 
-	public FaqCategoryVO(int cnum, String faqrequesttype) {
+	public FaqCategoryVO(int cnum, String cname) {
 		super();
 		this.cnum = cnum;
-		this.faqrequesttype = faqrequesttype;
+		this.cname = cname;
 	}
 
 	public int getCnum() {
@@ -21,13 +21,14 @@ public class FaqCategoryVO {
 		this.cnum = cnum;
 	}
 
-	public String getFaqrequesttype() {
-		return faqrequesttype;
+	public String getCname() {
+		return cname;
 	}
 
-	public void setFaqrequesttype(String faqrequesttype) {
-		this.faqrequesttype = faqrequesttype;
+	public void setCname(String cname) {
+		this.cname = cname;
 	}
+
 	
 	
 	
