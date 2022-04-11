@@ -14,13 +14,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-<<<<<<< HEAD
-=======
 import cart.model.CartVO;
 import member.model.MemberVO;
 
 
->>>>>>> branch 'product_branch4' of https://github.com/Helenhyerim/AnnaSemiProject.git
 public class ProductDAO implements InterProductDAO {
 
 	private DataSource ds;	// DataSource ds는 아파치톰캣이 제공하는 DBCP(DB Connection Pool)이다.
@@ -460,8 +457,7 @@ public class ProductDAO implements InterProductDAO {
 			close();
 		}
 		
-<<<<<<< HEAD
-		return cartProductList;
+		return productList;
 	} // end of public List<Map<String, String>> getCartItemsByUserid(String userid)
 
 
@@ -592,10 +588,6 @@ public class ProductDAO implements InterProductDAO {
 		
 		return reviewList;
 	}
-}
-=======
-		return productList;
-	}// end of public List<Map<String, String>> getCartItemsByUserid(String userid)
 
 
 	// 장바구니 페이지에서 넘어온 cartno 로 주문페이지에 보여줄 아이템 조회해오기
@@ -647,6 +639,4 @@ public class ProductDAO implements InterProductDAO {
 		return pvo;
 	}// end of public List<ProductVO> getOrderItems(String cart_checked)----------
 	
-	
 }
->>>>>>> branch 'product_branch4' of https://github.com/Helenhyerim/AnnaSemiProject.git

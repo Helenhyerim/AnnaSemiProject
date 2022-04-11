@@ -17,7 +17,6 @@ public class MyOrderAction extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-<<<<<<< HEAD
 	
 		// form 태그로 넘긴 값
 		// 사용자 아이디 : userid
@@ -32,7 +31,6 @@ public class MyOrderAction extends AbstractController {
 		
 		//	super.setRedirect(false);
 		super.setViewPage("/WEB-INF/view/product_YHL/order_YHL.jsp");
-=======
 		
 		// 주문내역에 들어가기 위한 전제 조건은, 먼저 로그인을 해야 하는 것이다.
 		if(super.checkLogin(request)) {// true 라면 로그인을 한 경우임
@@ -50,7 +48,6 @@ public class MyOrderAction extends AbstractController {
 			
 			if(loginuser.getUserid().equals(userid)) {// 세션에 저장된 아이디와, getPara 한 아이디가 같으면
 				// 즉 로그인 한 사용자가 자신을 위해 결제하는 경우
->>>>>>> branch 'product_branch4' of https://github.com/Helenhyerim/AnnaSemiProject.git
 
 				InterProductDAO pdao = new ProductDAO();
 				

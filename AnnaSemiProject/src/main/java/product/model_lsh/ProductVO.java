@@ -151,10 +151,14 @@ public class ProductVO {
 		this.productinputdate = productinputdate;
 	}
 
+	public CartVO getCvo() {
+		return cvo;
+	}
 
+	public void setCvo(CartVO cvo) {
+		this.cvo = cvo;
+	}
 
-
-	
 	public ProductImageVO getImgvo() {
 		return imgvo;
 	}

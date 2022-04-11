@@ -217,11 +217,7 @@ public class MemberVO {
 		
 	}
 
-<<<<<<< HEAD
 }
 	
 	
 
-=======
-}
->>>>>>> branch 'product_branch4' of https://github.com/Helenhyerim/AnnaSemiProject.git
