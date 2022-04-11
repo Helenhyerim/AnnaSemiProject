@@ -43,7 +43,7 @@
 	</div>
 	
 	<form name="sendCartFrm">
-		<input type="hidden" name="userid" value="${requestScope.userid}" />
+		<input type="hidden" name="userid" value="${sessionScope.loginuser.userid}" />
 		<input type="hidden" name="productnum" value="${requestScope.productnum}" />
 		<input type="hidden" name="productname" value="${requestScope.productname}" />
 		<c:forEach var="option" items="${requestScope.opList}">

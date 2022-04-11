@@ -14,13 +14,7 @@
 
 <script type="text/javascript">
 
-	const isExistLoginUser = true;
-
-	if(${not empty sessionScope.loginuser}) { isExistLoginUser = true; }
-
 	$(document).ready(function() {
-		
-	//	$("div#hiddenTotalResult").hide();
 		
 		// 대표이미지 변경하기(hover) : 부드럽게 바뀌도록 수정하기
 		$("div#img_list > img").hover(function() {
@@ -52,7 +46,7 @@
 				if(isExistOption == 0) {
 					let html = '<li style="margin: 10px 0;">'
 							 + '	<label style="width: 150px;" id="pname">' + productName + '</label>'
-							 + '	<input type="text" name="productqty" value="1" readonly style="width: 40px; text-align: center;"/>'
+							 + '	<input class="mr-3" type="text" name="productqty" value="1" readonly style="width: 40px; text-align: center;"/>'
 						 	 + '	<img onclick="addQty()" src="../images/plus.png" style="width: 20px;">'
 						 	 + '	<img onclick="subQty()" src="../images/minus.png" style="width: 20px;">'
 						 	 + '	<img onclick="delOption()" src="../images/cancel.png" style="width: 20px;">'
@@ -96,8 +90,7 @@
 
 		// 구매하기 클릭
 		$("button#btnPurchase").click(function() {
-			if(isExistLoginUser) { // 로그인 한 경우 : 구매 페이지로 이동
-		
+			if(${not empty sessionScope.loginuser}) {
 				var opList = new Array();
 				var qtyList = new Array();
 				
@@ -130,10 +123,10 @@
 				
 				const frm = document.sendOptionFrm;
 				frm.action = "<%= ctxPath %>/product/myOrder.an";
-                frm.method = "post";
-                frm.submit();
+	            frm.method = "post";
+	            frm.submit();
 			}
-			else { // 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
+			else {
 				goLoginPage();
 			}
 		});
@@ -141,8 +134,7 @@
 	
 		// 장바구니 클릭
 		$("span#addCart").click(function() {
-			if(isExistLoginUser) { // 로그인 한 경우 : 장바구니에 추가했습니다(alert), 장바구니 페이지에 갈 것인지 쇼핑 계속하기로 현재 창에 머무를 것인지 선택
-				
+			if(${not empty sessionScope.loginuser}) {	
 				var opList = new Array();
 				var qtyList = new Array();
 				
@@ -173,7 +165,7 @@
 				
 				$.ajax({
 					url:"<%= ctxPath %>/product_lsh/cartDuplicateCheck.an",
-					data:{"userid":"hongkd", <%-- 임시값(${sessionScope.loginuser.userid}) --%>
+					data:{"userid":"${sessionScope.loginuser.userid}",
 						  "productnum":"${requestScope.pvo.productnum}",
 						  "productname":"${requestScope.pvo.productname}"}, 
 					type:"post",
@@ -201,9 +193,8 @@
 		    			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
 		    		}
 				}); // end of $.ajax({})
-				
 			}
-			else { // 로그인 안 한 경우 : 로그인 후 이용할 수 있습니다(alert), 로그인 페이지로 이동
+			else {
 				goLoginPage();
 			}
 		});	// end of $("span#addCart").click(function() {})
@@ -211,11 +202,11 @@
 		
 		// 찜하기 클릭
 		$("span#addWish").click(function() {
-			if(isExistLoginUser) { // 로그인 한 경우
-				
+			if(${not empty sessionScope.loginuser}) {	
 				$.ajax({
 					url:"<%= ctxPath %>/product_lsh/wishDuplicateCheck.an",
-					data:{"productnum":"${requestScope.pvo.productnum}", "userid":"yuhl"}, <%-- 임시값(${sessionScope.loginuser.userid}) --%>
+					data:{"productnum":"${requestScope.pvo.productnum}",
+						  "userid":"${sessionScope.loginuser.userid}"},
 					type:"post",
 					dataType:"json",
 					async:false,
@@ -233,11 +224,18 @@
 		    			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
 		    		}
 				}); // end of $.ajax({})
-			
 			}
-			else { // 로그인 안 한 경우
+			else {
 				goLoginPage();
 			}
+		}); // end of $("span#addWish").click(function() {})
+		
+		
+		// 리뷰 테이블 아코디언
+		$("tr.reviewContents").hide();
+		
+		$("table#tbl_review tr.reviewTitle").click(function() {
+			$(this).next("tr.reviewContents").toggle();
 		});
 		
 	}); // end of $(document).ready(function() {})
@@ -254,8 +252,7 @@
 	function goLoginPage() {
 		alert("로그인 후 이용할 수 있습니다.");
 	
-		// 로그인 후 다시 원래 페이지로 돌아올 수 있도록 GET 방식으로 현재 URL 전송(goBackURL)
-		location.href="<%= ctxPath %>/login/login.an?goBackURL=${requestScope.goBackURL}";
+		location.href="<%= ctxPath %>/login/login.an";
 	}
 	
 	
@@ -304,7 +301,7 @@
 		let price = 0;
 		var qtyArr = new Array();
 		
-		if(isExistLoginUser) { price = $("input[name=saleprice]").val(); }	// 334650
+		if(${not empty sessionScope.loginuser}) { price = $("input[name=saleprice]").val(); }	// 334650
 		else { price = $("input[name=productprice]").val(); }	// 345000
 		
 		if($("ul#ul_reqOptionResult li").length != 0) { // 필수 옵션이 선택되어 있는 경우
@@ -346,6 +343,16 @@
 		}
 	}
 	
+	// 리뷰 작성
+	function writeReview() {
+		
+	}
+	
+	// Q&A 작성
+	function writeQNA() {
+		
+	}
+	
 </script>
 
 <div id="contianer">
@@ -379,10 +386,10 @@
 				
 				<hr style="border: solid 1px lightgray">
 				
-				<ul id="ul_option" style="list-style: none; line-height: 50px; padding-left: 0; margin: 0; width: 100%;">
+				<ul id="ul_option" style="list-style: none; line-height: 50px; padding-left: 0; margin: 10px 0; width: 100%;">
 					<li>
 						<label style="width: 150px;">필수 옵션</label>
-						<select id="reqOption">
+						<select id="reqOption" style="width: 300px;">
 							<option value="">[필수] 옵션을 선택해주세요</option>
 							<option>14K 로즈골드 5호</option>
 							<option>14K 로즈골드 6호</option>
@@ -400,10 +407,10 @@
 					</li>
 					<li>
 						<label style="width: 150px;">선택 옵션</label>						
-						<select id="selOption">
+						<select id="selOption" style="width: 300px;">
 							<option value="">[선택] 옵션을 선택해주세요</option>
 							<option>선물용 포장</option>
-						</select>							
+						</select>		
 					</li>
 				</ul>
 				
@@ -446,7 +453,7 @@
 			
 			<div id="review_board">
 				<h5>리뷰</h5>
-				<table class="table">
+				<table class="table" id="tbl_review">
 			    	<thead class="thead-light">
 			      		<tr>
 			        		<th>No.</th>
@@ -456,19 +463,34 @@
 			      		</tr>
 			    	</thead>
 			    	<tbody>
-			      		<tr>
-			        		<td>1</td>
-			        		<td>리뷰1</td>
-			        		<td>닉네임1</td>
-			        		<td>1</td>
-			      		</tr>
-			      		<tr>
-			        		<td>2</td>
-			        		<td>리뷰2</td>
-			        		<td>닉네임2</td>
-			        		<td>2</td>
-			      		</tr>
+			    		<c:if test="${not empty requestScope.reviewList}">
+				      		<c:forEach var="review" items="${requestScope.reviewList}" varStatus="status">
+				      			<tr class="reviewTitle">
+				      				<td>${status.count}</td>
+				      				<td>${review.reviewtitle}</td>
+				      				<td>${review.userid}</td>
+				      				<td>0</td>
+				      			</tr>
+				      			<tr class="reviewContents">
+				      				<td colspan="4" align=center style="font-size: 10pt;">${review.reviewcontents}</td>
+				      			</tr>
+				      		</c:forEach>
+			      		</c:if>
+			      		<c:if test="${empty requestScope.reviewList}">
+			      			<tr>
+			      				<td colspan="4" align=center>게시물이 없습니다.</td>
+			      			</tr>
+			      		</c:if>
 			    	</tbody>
+			    	<tfoot>
+			    		<tr>
+			    			<td colspan="4" align=right>
+			    			<c:if test="${not empty sessionScope.loginuser}">
+		    					<button type="button" onclick="writeReview()">리뷰 작성</button>
+			    			</c:if>
+			    			</td>
+			    		</tr>
+			    	</tfoot>
 			  	</table>
 			</div>
 			
@@ -497,6 +519,15 @@
 			        		<td>2</td>
 			      		</tr>
 			    	</tbody>
+			    	<tfoot>
+			    		<tr>
+			    			<td colspan="4" align=right>
+			    			<c:if test="${not empty sessionScope.loginuser}">
+		    					<button type="button" onclick="writeQNA()">Q&A 작성</button>
+			    			</c:if>
+			    			</td>
+			    		</tr>
+			    	</tfoot>
 			  	</table>
 			</div>
 		</div>
@@ -510,7 +541,7 @@
 
 <%-- 선택한 옵션 전송하는 form --%>
 <form name='sendOptionFrm'>
-	<input type="hidden" name="userid" value="hongkd"/> <%-- 임시값(sessionScope.loginuser.userid) --%>
+	<input type="hidden" name="userid" value="${sessionScope.loginuser.userid}"/>
 	<input type="hidden" name="pnum" value="${requestScope.pvo.productnum}"/>
 	<input type="hidden" name="pname" value="${requestScope.pvo.productname}"/>
 	<div id="opListInput"></div>

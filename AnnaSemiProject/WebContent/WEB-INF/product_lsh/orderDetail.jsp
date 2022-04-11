@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 
 <jsp:include page="../view/common/header_login.jsp"/>
 
@@ -71,7 +73,7 @@
 
 <div id="container">
 	<div>
-		<table>
+		<table id="tbl_order">
 			<thead>
 				<tr>
 					<th style="text-align: center;"><input type="checkbox" id="checkAll"></th>
@@ -93,50 +95,6 @@
 						</td>
 					</tr>
 			<%--	</c:forEach>	--%>
-					<tr>	<%-- 주문 개수만큼 반복(each) --%>
-						<td><input type="checkbox" class="product" name="product"></td>
-						<td style="width: 20%;"><img alt="p1" src="../images/p2.png" style="width: 80%;"></td>
-						<td>
-							<ul>
-								<li><label>상품명</label></li>
-								<li><label>가격/수량</label></li>
-								<li><label>옵션명</label></li>
-							</ul>
-						</td>
-					</tr>
-					<tr>	<%-- 주문 개수만큼 반복(each) --%>
-						<td><input type="checkbox" class="product" name="product"></td>
-						<td style="width: 20%;"><img alt="p1" src="../images/p3.png" style="width: 80%;"></td>
-						<td>
-							<ul>
-								<li><label>상품명</label></li>
-								<li><label>가격/수량</label></li>
-								<li><label>옵션명</label></li>
-							</ul>
-						</td>
-					</tr>
-					<tr>	<%-- 주문 개수만큼 반복(each) --%>
-						<td><input type="checkbox" class="product" name="product"></td>
-						<td style="width: 20%;"><img alt="p1" src="../images/p4.png" style="width: 80%;"></td>
-						<td>
-							<ul>
-								<li><label>상품명</label></li>
-								<li><label>가격/수량</label></li>
-								<li><label>옵션명</label></li>
-							</ul>
-						</td>
-					</tr>
-					<tr>	<%-- 주문 개수만큼 반복(each) --%>
-						<td><input type="checkbox" class="product" name="product"></td>
-						<td style="width: 20%;"><img alt="p1" src="../images/p5.png" style="width: 80%;"></td>
-						<td>
-							<ul>
-								<li><label>상품명</label></li>
-								<li><label>가격/수량</label></li>
-								<li><label>옵션명</label></li>
-							</ul>
-						</td>
-					</tr>
 			</tbody>
 			<tfoot style="text-align: right;">
 				<tr>
@@ -151,19 +109,60 @@
 		</table>
 	</div>
 	
-	<div style="width: 60%; margin: 10px auto;">
-		<div id="orderInfo" style="display: inline-block;">
-			주문정보<br>
-			주문자    홍길동<br>
-			전화번호    010-1234-5678<br>
-			배송지    서울특별시 마포구 서교동
+	<div class="row" style="width: 100%; margin: 10px auto;">
+		<div class="col-md-6">
+			<table id="tbl_deliveryInfo"> 
+				<thead>
+					<tr>
+						<th colspan="2">배송지 정보</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>받으시는 분</th>
+						<td>${requestScope.ovo.name_receiver}</td>
+					</tr>
+					<tr>
+						<th>우편번호</th>
+						<td>${requestScope.ovo.zipcode}</td>
+					</tr>
+					<tr>
+						<th>주소</th>
+						<td>${requestScope.ovo.address}</td>
+					</tr>
+					<tr>
+						<th>휴대전화</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>배송메시지</th>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-		<div id="payInfo" style="display: inline-block;">
-			결제정보<br>
-			결제방법    신용카드<br>
-			상품금액    금액<br>
-			배송비    무료<br>
-			총결제금액    금액
+		<div class="col-md-6">
+			<table id="tbl_payInfo"> 
+				<thead>
+					<tr>
+						<th colspan="2">결제 정보</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>금액</th>
+						<td>${requestScope.ovo.ordertotalprice}</td>
+					</tr>
+					<tr>
+						<th>적립 포인트</th>
+						<td>${requestScope.ovo.ordertotalpoint}</td>
+					</tr>
+					<tr>
+						<th>결제수단</th>
+						<td>신용카드</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 	

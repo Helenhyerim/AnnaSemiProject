@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import member.model.MemberVO;
 import my.util.MyUtil;
 import product.model_lsh.InterProductDAO;
 import product.model_lsh.ProductDAO;
@@ -63,6 +64,23 @@ public abstract class AbstractController implements InterCommand {
 
 	public void setViewPage(String viewPage) {
 		this.viewPage = viewPage;
+	}
+	
+	///////////////////////////////////////////////////////////////////
+		
+	// 로그인 유무 검사해서 로그인 했으면 true를 리턴해주고,
+	// 로그인 안했으면 false를 리턴해주도록 한다.
+	public boolean checkLogin(HttpServletRequest request) {
+	
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+		
+		if(loginuser != null) { // 로그인 한 경우
+			return true;
+		}
+		else { // 로그인 안 한 경우
+			return false;
+		}
 	}
 	
 	///////////////////////////////////////////////////////////////////

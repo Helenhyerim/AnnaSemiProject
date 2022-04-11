@@ -270,7 +270,7 @@ public class ProductDAO implements InterProductDAO {
 	@Override
 	public ProductVO productInfo(String productnum) throws SQLException {
 		
-		ProductVO pvo = new ProductVO();
+		ProductVO pvo = null;
 		
 		try {
 			conn = ds.getConnection();
@@ -284,14 +284,23 @@ public class ProductDAO implements InterProductDAO {
 			
 			rs = pstmt.executeQuery();
 			
-			rs.next();
-			
-			pvo.setProductimage1(rs.getString(1));
-			pvo.setProductname(rs.getString(2));
-			pvo.setProductnum(rs.getInt(3));
-			pvo.setProductprice(rs.getInt(4));
-			pvo.setSaleprice(rs.getInt(5));
-			pvo.setProductqty(rs.getInt(6));
+			if(rs.next()) {
+				String productimage1 = rs.getString(1);
+				String productname = rs.getString(2);
+				int pnum = rs.getInt(3);
+				int productprice = rs.getInt(4);
+				int saleprice = rs.getInt(5);
+				int productqty = rs.getInt(6);
+				
+				pvo = new ProductVO();
+				
+				pvo.setProductimage1(productimage1);
+				pvo.setProductname(productname);
+				pvo.setProductnum(pnum);
+				pvo.setProductprice(productprice);
+				pvo.setSaleprice(saleprice);
+				pvo.setProductqty(productqty);
+			}
 			
 		} finally {
 			close();
@@ -415,5 +424,99 @@ public class ProductDAO implements InterProductDAO {
 		}
 		
 		return categoryList;
+	}
+
+
+	// 최근 주문 정보 알아오기
+	@Override
+	public OrderVO selectRecentOrder(String userid) throws SQLException {
+
+		OrderVO ovo = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select ordernum, ordertotalprice, ordertotalpoint, to_char(orderdate, 'yyyy-mm-dd hh24:mi:ss'), paymethod, name_receiver, zipcode, address "
+					   + "from tbl_order "
+					   + "where fk_userid = ? "
+					   + "order by sysdate desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String ordernum = rs.getString(1);
+				int ordertotalprice = rs.getInt(2);
+				int ordertotalpoint = rs.getInt(3);
+				String orderdate = rs.getString(4);
+				String name_receiver = rs.getString(5);
+				String zipcode = rs.getString(6);
+				String address = rs.getString(7);
+				
+				ovo = new OrderVO();
+				
+				ovo.setOrdernum(ordernum);
+				ovo.setOrdertotalprice(ordertotalprice);
+				ovo.setOrdertotalpoint(ordertotalpoint);
+				ovo.setOrderdate(orderdate);
+				ovo.setName_receiver(name_receiver);
+				ovo.setZipcode(zipcode);
+				ovo.setAddress(address);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return ovo;
+	}
+
+
+	// 상품 리뷰 알아오기
+	@Override
+	public List<PurchaseReviewVO> reviewInfo(String productnum) throws SQLException {
+		
+		List<PurchaseReviewVO> reviewList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select review_no, fk_userid, fk_productnum, reviewtitle, reviewcontents, reviewdate "
+					   + "from tbl_purchase_reviews "
+					   + "where fk_productnum = ? "
+					   + "order by review_no desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, productnum);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				int review_no = rs.getInt(1);				// 리뷰 번호(시퀀스)
+				String userid = rs.getString(2);			// 사용자 ID
+				int pnum = rs.getInt(3);					// 제품 번호
+				String reviewtitle = rs.getString(4);		// 리뷰 제목
+				String reviewcontents = rs.getString(5);	// 리뷰 내용
+				String reviewdate = rs.getString(6);		// 리뷰 작성일자
+				
+				PurchaseReviewVO reviewvo = new PurchaseReviewVO();
+				reviewvo.setReview_no(review_no);
+				reviewvo.setUserid(userid);
+				reviewvo.setProductnum(pnum);
+				reviewvo.setReviewtitle(reviewtitle);
+				reviewvo.setReviewcontents(reviewcontents);
+				reviewvo.setReviewdate(reviewdate);
+				
+				reviewList.add(reviewvo);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return reviewList;
 	}
 }
