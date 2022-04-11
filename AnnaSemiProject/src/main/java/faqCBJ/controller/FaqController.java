@@ -48,7 +48,7 @@ public class FaqController extends AbstractController {
 		
 		paraMap.put("currentShowPageNo", currentShowPageNo);
 		
-		List<FaqVO> faqList = fdao.selectPagingFaq(paraMap);
+		List<Object> faqList = fdao.selectPagingFaq(paraMap);
 		
 		request.setAttribute("faqList", faqList);
 		request.setAttribute("sizePerPage", sizePerPage);

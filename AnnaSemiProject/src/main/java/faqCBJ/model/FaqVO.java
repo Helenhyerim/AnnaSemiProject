@@ -1,5 +1,9 @@
 package faqCBJ.model;
 
+/**
+ * @author sist
+ *
+ */
 public class FaqVO {
 
 	private int faqNo;
@@ -10,7 +14,7 @@ public class FaqVO {
 	private int fk_cnum;
 	
 	private FaqCategoryVO faqcategvo;
-	
+		
 	public FaqVO() {}
 
 	public FaqVO(int faqNo, String fk_userId, String faqRequestType, String faqTitle, String faqImg, int fk_cnum) {
@@ -79,6 +83,5 @@ public class FaqVO {
 		this.faqcategvo = faqcategvo;
 	}
 
-	
 	
 }

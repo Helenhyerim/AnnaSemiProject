@@ -189,7 +189,7 @@
 			        </a>
 			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 			           <a class="dropdown-item" href="<%= ctxPath %>/notice.an">공지사항</a>
-			           <a class="dropdown-item" href="#">QnA</a>
+			           <a class="dropdown-item" href="<%= ctxPath %>/qna.an">QnA</a>
 			           <a class="dropdown-item" href="<%= ctxPath %>/faq.an">FaQ</a>
 			        </div>
 			 </li>

@@ -14,6 +14,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import eventCBJ.model.EventVO;
+
 public class FaqDAO implements InterFaqDAO {
 
 	private DataSource ds;    // DataSource ds 는 아파치톰캣이 제공하는 DBCP(DB Connection Pool) 이다.
@@ -72,15 +74,49 @@ public class FaqDAO implements InterFaqDAO {
 				FaqCategoryVO faqcategvo = new FaqCategoryVO();
 				faqcategvo.setCname(rs.getString(7));
 				
+				faq.setFaqcategvo(faqcategvo);
+				
 				faqList.add(faq);
 				
 			}
 		} finally {
 			close();
 		}
-		return faqList;
+		return faqList;	
 	}
 
+	// 조건 조회(R)
+	@Override
+	public FaqVO selectOne(int faqno) throws SQLException {
+			
+		FaqVO faq = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select faqno, fk_userid, faqrequesttype, faqtitle, faqimg, fk_cnum "
+					   + " from tbl_faq where faqno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, faqno);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				faq = new FaqVO();		
+				faq.setFaqNo(rs.getInt(1));
+				faq.setFk_userId(rs.getString(2));
+				faq.setFaqRequestType(rs.getString(3));
+				faq.setFaqTitle(rs.getString(4));
+				faq.setFaqImg(rs.getString(5));
+				faq.setFk_cnum(rs.getInt(6));
+			}
+		} finally {
+			close();
+		}
+		return faq;
+	}
+	
 	// 삭제(D)
 	@Override
 	public int delete(int faqNo) throws SQLException {
@@ -130,22 +166,22 @@ public class FaqDAO implements InterFaqDAO {
 	}
 
 	@Override
-	public List<FaqVO> selectPagingFaq(Map<String, String> paraMap) throws SQLException {
+	public List<Object> selectPagingFaq(Map<String, String> paraMap) throws SQLException {
 		
-		List<FaqVO> faqList = new ArrayList<>();
+		List<Object> faqList = new ArrayList<>();
 		
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select faqno, faqrequesttype, faqtitle, faqimg, fk_cnum "
+			String sql = " select faqno, faqrequesttype, faqtitle, faqimg, fk_cnum, cname "
 						+ " from "
 						+ " ( "
-						+ "    select rownum AS rno, faqno, faqrequesttype, faqtitle, faqimg, fk_cnum "
+						+ "    select rownum AS rno, faqno, faqrequesttype, faqtitle, faqimg, fk_cnum, cname "
 						+ "    from "
 						+ "    ( "
-						+ "        select faqno, faqrequesttype, faqtitle, faqimg, fk_cnum "
-						+ "        from tbl_faq "			
-						+ "        order by faqno "
+						+ "        select faqno, faqrequesttype, faqtitle, faqimg, fk_cnum, cname "
+						+ "        from tbl_faq join tbl_faqcategory on fk_cnum = cnum "			
+						+ "        order by cname "
 						+ "    ) V "
 						+ " ) T "
 						+ " where rno between ? and ? ";
@@ -162,14 +198,15 @@ public class FaqDAO implements InterFaqDAO {
 			
 			while(rs.next()) {
 				
-				FaqVO fvo = new FaqVO();
-				fvo.setFaqNo(rs.getInt(1));
-				fvo.setFaqRequestType(rs.getString(2));
-				fvo.setFaqTitle(rs.getString(3));
-				fvo.setFaqImg(rs.getString(4));
-				fvo.setFk_cnum(rs.getInt(5));
+				Map<String, String> map = new HashMap<>();
+				map.put("faqno", Integer.toString(rs.getInt("faqno")));
+				map.put("faqrequesttype", rs.getString("faqrequesttype"));
+				map.put("faqtitle", rs.getString("faqtitle"));
+				map.put("faqimg", rs.getString("faqimg"));
+				map.put("fk_cnum", Integer.toString(rs.getInt("fk_cnum")));
+				map.put("cname", rs.getString("cname"));
 				
-				faqList.add(fvo);
+				faqList.add(map);
 			}// end of while--------------------------------
 		
 		} finally {
@@ -264,5 +301,29 @@ public class FaqDAO implements InterFaqDAO {
 		
 		return faqCategoryList;
 	}
-	
+
+	@Override
+	public int faqUpdate(FaqVO fvo) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_faq set faqtitle = ?, faqimg = ? "
+						+ " where faqno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, fvo.getFaqTitle());
+			pstmt.setString(2, fvo.getFaqImg());
+			pstmt.setInt(3, fvo.getFaqNo());
+			
+	        result = pstmt.executeUpdate();
+	        
+		} finally {
+			close();		
+		}
+		return result;
+	}
 }

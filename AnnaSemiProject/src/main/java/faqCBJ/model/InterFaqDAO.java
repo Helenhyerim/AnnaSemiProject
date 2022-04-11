@@ -14,7 +14,7 @@ public interface InterFaqDAO {
 
 	int getTotalPage(Map<String, String> paraMap) throws SQLException;
 
-	List<FaqVO> selectPagingFaq(Map<String, String> paraMap) throws SQLException;
+	List<Object> selectPagingFaq(Map<String, String> paraMap) throws SQLException;
 
 	int delete(int faqNo) throws SQLException;
 
@@ -23,6 +23,10 @@ public interface InterFaqDAO {
 	int faqInsert(FaqVO evo) throws SQLException;
 
 	List<HashMap<String, String>> getFaqCategoryList() throws SQLException;
+
+	FaqVO selectOne(int faqno) throws SQLException;
+
+	int faqUpdate(FaqVO fvo) throws SQLException;
 
 
 }

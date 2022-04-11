@@ -89,7 +89,8 @@ public class EventDAO implements InterEventDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = "select eventno, userid, registdate, eventtitle, eventstartdate, eventenddate, eventimg1, eventimg2, thumbnail from tbl_event where eventno = ? ";
+			String sql = " select eventno, userid, registdate, eventtitle, eventstartdate, eventenddate, eventimg1, eventimg2, thumbnail "
+					   + " from tbl_event where eventno = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
