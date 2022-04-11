@@ -56,7 +56,10 @@ function goIdFind(){
 	frm.submit();
 	
 }
- 
+// 취소하기 버튼
+function goCancel(){
+	location.href = "<%= request.getContextPath()%>/index.an";	
+}
  </script>
 
 <div class = "container mb-5">
@@ -80,15 +83,12 @@ function goIdFind(){
 					<input type = "email" name = "email" id = "email" class = "col-md-10" />
 				</div>
 				<div class = "row">
-					<button class = "login_element w-100" type = "button" id = "btnIdFind" style = "background-color: #999;" onclick = "goIdFind()" >아이디 찾기</button>
+					<button class = "login_element w-100 btn btn-dark btn-lg text-center mb-2" type = "button" id = "btnIdFind"  onclick = "goIdFind()" >아이디 찾기</button>
+					<button class = "login_element w-100 btn btn-light btn-lg text-center" type = "button" onclick = "goCancel();" >취소하기</button>
 				</div>
-					
 		    </form>
 		</div>	
 	</div>
 </div>
-
- 
-
 
 <jsp:include page="../common/footer.jsp"></jsp:include>

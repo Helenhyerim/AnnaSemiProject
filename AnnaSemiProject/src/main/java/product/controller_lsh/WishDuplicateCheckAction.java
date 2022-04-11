@@ -5,10 +5,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
 import common.controller.AbstractController;
+import member.model.MemberVO;
 import product.model_lsh.InterProductDAO;
 import product.model_lsh.ProductDAO;
 
@@ -18,36 +20,45 @@ public class WishDuplicateCheckAction extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		// 제품코드와 사용자 아이디를 받아와서 DB 연동해주어야 함. (MemberEditEndAction.java 참조)
-		// 찜할 상품 중복 체크
+		// 로그인 유무 검사하기
+		boolean isLogin = super.checkLogin(request);
 		
-		// 제품코드와 로그인한 사용자 아이디 받아오기
-		String productnum = request.getParameter("productnum");
-		String userid = request.getParameter("userid");
+		if(isLogin) { // 로그인을 한 경우
 		
-	//	String productnum = "8";
-	//	String userid = "simyj";
-		
-	//	System.out.println("확인용 productnum, userid => " + productnum + ", " + userid);
-		
-		// 찜할 상품 중복 체크
-		Map<String, String> paraMap = new HashMap<>();
-		
-		paraMap.put("productnum", productnum);	// 정수 변환 해줘야 함(productDAO)
-		paraMap.put("userid", userid);
-		
-		InterProductDAO pdao = new ProductDAO();
-		boolean isExist = pdao.wishDuplicateCheck(paraMap);
-		
-		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("isExist", isExist);
-		jsonObj.put("productnum", productnum);
-		jsonObj.put("userid", userid);
-		
-		String json = jsonObj.toString();
-		
-		request.setAttribute("json", json);
-		
-		super.setViewPage("/WEB-INF/jsonview.jsp");
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+			
+			String userid = loginuser.getUserid();
+			String productnum = request.getParameter("productnum");
+			
+			Map<String, String> paraMap = new HashMap<>();
+			
+			paraMap.put("productnum", productnum);	// 정수 변환 해줘야 함(productDAO)
+			paraMap.put("userid", userid);
+			
+			InterProductDAO pdao = new ProductDAO();
+			boolean isExist = pdao.wishDuplicateCheck(paraMap);
+			
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("isExist", isExist);
+			jsonObj.put("productnum", productnum);
+			jsonObj.put("userid", userid);
+			
+			String json = jsonObj.toString();
+			
+			request.setAttribute("json", json);
+			
+			super.setViewPage("/WEB-INF/jsonview.jsp");
+			
+		}
+		else { // 로그인을 하지 않은 경우
+			request.setAttribute("message", "로그인 후 이용할 수 있습니다.");
+			request.setAttribute("loc", request.getContextPath() + "/login/login.an");
+			
+		//	super.setRedirect(false);
+			super.setViewPage("/WEB-INF/msg.jsp");
+					
+			return;
+		}
 	}
 }

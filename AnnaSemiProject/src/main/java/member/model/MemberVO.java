@@ -218,3 +218,6 @@ public class MemberVO {
 	}
 
 }
+	
+	
+

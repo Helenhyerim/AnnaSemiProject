@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
 <jsp:include page="../common/header_login.jsp"></jsp:include>
@@ -66,6 +67,9 @@ function goCheckCode(){
 	frm.submit();
 	
 } 
+function goCancel(){
+	location.href = "<%= request.getContextPath()%>/index.an";	
+}
 </script>
 
 <c:if test="${requestScope.method eq 'POST'}" >
@@ -108,9 +112,9 @@ function goCheckCode(){
 						<input type = "email" name = "email" id = "email" class = "col-md-10" />
 					</div>
 					<div class = "row">
-						<button class = "login_element w-100" type = "button" id = "btnPwdFind" style = "background-color: #999;" onclick = "goPwdFind()" >비밀번호 찾기</button>
+						<button class = "login_element w-100 btn btn-dark btn-lg text-center mb-2" type = "button" id = "btnPwdFind"onclick = "goPwdFind();" >비밀번호 찾기</button>
+						<button class = "login_element w-100 btn btn-light btn-lg text-center" type = "button" onclick = "goCancel();" >취소하기</button>
 					</div>
-						
 			    </form>
 			</c:if>		   
 		    <c:if test="${requestScope.method == 'POST' && requestScope.sendMailSuccess == true && requestScope.isUserExist == true}">
@@ -120,21 +124,16 @@ function goCheckCode(){
 						<input type = "text" name = "usercertificationCode" id = "usercertificationCode" class = "col-md-10"/>
 					</div>
 					<div class = "row">
-						<button class = "w-100" type = "button" id = "btnCheckCode" style = "background-color: #999;" onclick = "goCheckCode()" >인증번호 확인</button>
+						<button class = "w-100 btn btn-dark btn-lg text-center" type = "button" id = "btnCheckCode" onclick = "goCheckCode()" >인증번호 확인</button>
+						
 					</div>
+					 
 					<input type = "hidden" name = "userid" value = "${requestScope.userid}"/>
 			    </form>
 			</c:if>
 		</div>	
 	</div>
 </div>
-
-
-
-
-
-
-
 
 
 

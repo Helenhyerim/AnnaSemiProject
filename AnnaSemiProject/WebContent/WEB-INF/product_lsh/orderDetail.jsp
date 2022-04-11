@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 
 <jsp:include page="../view/common/header_login.jsp"/>
 
 <style type="text/css">
 
 	div#container {
-		width: 90%;
+		width: 70%;
 		margin: 220px auto 100px auto;
 	}
 	
@@ -32,15 +34,35 @@
 
 <script type="text/javascript">
 
-	// 체크박스 전체 선택/해제
-	$("input[type='checkbox']#checkall").click(function() {
-		alert("전체선택/해제 체크박스를 클릭하셨군요!")
-	});
+	$(document).ready(function() {
 
+		// 체크박스 전체 선택/해제
+		$("input#checkAll").click(function() {
+			if($("input#checkAll").prop("checked")) {
+				$("input.product").prop("checked", true);
+			}
+			else {
+				$("input.product").prop("checked", false);
+			}
+		});
+		
+		$("input.product").click(function() {
+			if($("input[name='product']:checked").length == 5) {
+				$("input#checkAll").prop("checked", true);
+			}
+			else {
+				$("input#checkAll").prop("checked", false);
+			}
+		});
+
+	}); // end of $(document).ready(function() {})
+	
+	
 	// 선택 주문 취소
 	function selOrderCancel() {
 		alert("선택 주문 취소를 클릭하셨군요");
 	}
+	
 	
 	// 전체 주문 취소
 	function allOrderCancel() {
@@ -51,42 +73,28 @@
 
 <div id="container">
 	<div>
-		<table>
+		<table id="tbl_order">
 			<thead>
 				<tr>
-					<td><input type="checkbox" name='checkall' id='checkall'></td>
+					<th style="text-align: center;"><input type="checkbox" id="checkAll"></th>
 					<th colspan="2" style="text-align: center; font-size: 16pt;">상세 주문 내역</th>
 				</tr>
 			</thead>
 			
 			<tbody>
-				<tr>	<%-- 주문 개수만큼 반복(each) --%>
-					<td><input type="checkbox" name='product' id='product0' value='상품명1'></td>
-					<td style="width: 20%;"><img alt="p1" src="../images/p1.png" style="width: 100%;"></td>
-					<td>
-						상품명<br>
-						가격/수량<br>
-						선택 옵션
-					</td>
-				<tr>
-				<tr>	<%-- 주문 개수만큼 반복(each) --%>
-					<td><input type="checkbox" name='product' id='product1' value='상품명2'></td>
-					<td style="width: 20%;"><img alt="p1" src="../images/p1.png" style="width: 100%;"></td>
-					<td>
-						상품명<br>
-						가격/수량<br>
-						선택 옵션
-					</td>
-				<tr>
-				<tr>	<%-- 주문 개수만큼 반복(each) --%>
-					<td><input type="checkbox" name='product' id='product2' value='상품명3'></td>
-					<td style="width: 20%;"><img alt="p1" src="../images/p1.png" style="width: 100%;"></td>
-					<td>
-						상품명<br>
-						가격/수량<br>
-						선택 옵션
-					</td>
-				<tr>
+			<%--	<c:forEach var="order" items="orderList">	--%>
+					<tr>	<%-- 주문 개수만큼 반복(each) --%>
+						<td><input type="checkbox" class="product" name="product"></td>
+						<td style="width: 20%;"><img src="../images/p1.png" style="width: 80%;"></td>
+						<td>
+							<ul style="list-style: none; padding: 0; line-height: 35px;">
+								<li><label>상품명</label></li>
+								<li><label>가격/수량</label></li>
+								<li><label>옵션명</label></li>
+							</ul>
+						</td>
+					</tr>
+			<%--	</c:forEach>	--%>
 			</tbody>
 			<tfoot style="text-align: right;">
 				<tr>
@@ -100,23 +108,66 @@
 			</tfoot>
 		</table>
 	</div>
-	<div style="width: 60%; margin: 10px auto;">
-		<div id="orderInfo" style="display: inline-block;">
-			주문정보<br>
-			주문자    홍길동<br>
-			전화번호    010-1234-5678<br>
-			배송지    서울특별시 마포구 서교동
+	
+	<div class="row" style="width: 100%; margin: 10px auto;">
+		<div class="col-md-6">
+			<table id="tbl_deliveryInfo"> 
+				<thead>
+					<tr>
+						<th colspan="2">배송지 정보</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>받으시는 분</th>
+						<td>${requestScope.ovo.name_receiver}</td>
+					</tr>
+					<tr>
+						<th>우편번호</th>
+						<td>${requestScope.ovo.zipcode}</td>
+					</tr>
+					<tr>
+						<th>주소</th>
+						<td>${requestScope.ovo.address}</td>
+					</tr>
+					<tr>
+						<th>휴대전화</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>배송메시지</th>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-		<div id="payInfo" style="display: inline-block;">
-			결제정보<br>
-			결제방법    신용카드<br>
-			상품금액    금액<br>
-			배송비    무료<br>
-			총결제금액    금액
+		<div class="col-md-6">
+			<table id="tbl_payInfo"> 
+				<thead>
+					<tr>
+						<th colspan="2">결제 정보</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>금액</th>
+						<td>${requestScope.ovo.ordertotalprice}</td>
+					</tr>
+					<tr>
+						<th>적립 포인트</th>
+						<td>${requestScope.ovo.ordertotalpoint}</td>
+					</tr>
+					<tr>
+						<th>결제수단</th>
+						<td>신용카드</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
+	
 	<div style="text-align: center; margin-top: 30px;">
-		<button type="button" class="btn btn-secondary" style="width: 300px;" onclick=''>목록으로</button>
+		<button type="button" class="btn btn-secondary" style="width: 300px;" onclick='javascript:history.back()'>목록으로</button>
 	</div>
 </div>
 

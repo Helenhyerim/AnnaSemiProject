@@ -22,6 +22,7 @@ public class LoginAction extends AbstractController {
          if("GET".equalsIgnoreCase(method)) {
             super.setRedirect(false); // logoutAction 에서 true를 사용했기 때문에 다시 false로 바꿔줌 
                                   // 안바꿔주니 한번 로그아웃 하면 404 에러가 뜸
+            
             super.setViewPage("/WEB-INF/view/login/login.jsp");
          }
          else {
@@ -85,8 +86,6 @@ public class LoginAction extends AbstractController {
                   super.setRedirect(true);
                   
                   // 로그인을 하면 시작페이지(index.up)로 가는 것이 아니라 로그인을 시도하려고 머물렀던 그 페이지로 가기 위한 것이다.
-                  
-                  
                   
                   
                   super.setViewPage(request.getContextPath()+"/index.an");

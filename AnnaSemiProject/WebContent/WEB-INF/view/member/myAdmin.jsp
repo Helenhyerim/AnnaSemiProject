@@ -183,7 +183,14 @@
 	</div>	
  </div>
 </div>
+<<<<<<< HEAD
+=======
+		
+>>>>>>> branch 'product_branch4' of https://github.com/Helenhyerim/AnnaSemiProject.git
 
 
 <jsp:include page="../common/footer.jsp" /> 
+<<<<<<< HEAD
 
+=======
+>>>>>>> branch 'product_branch4' of https://github.com/Helenhyerim/AnnaSemiProject.git

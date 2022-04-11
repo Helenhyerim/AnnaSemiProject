@@ -1,6 +1,7 @@
 package product.model_lsh;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,14 +15,27 @@ public interface InterProductDAO {
 	// 상품 찜하기
 	int addWishProduct(Map<String, String> paraMap) throws SQLException;
 	
+	// 상품 정보 조회하기
+	ProductVO productInfo(String productnum) throws SQLException;
 	
+	// 상품 이미지 조회하기
+	List<ProductImageVO> productImageSelectAll(String productnum) throws SQLException;
 	
+	// 상품 장바구니에 추가하기 전에 이미 추가한 상품인지 중복 체크하기
+	boolean cartDuplicateCheck(Map<String, String> paraMap) throws SQLException;
 	
+	// 상품 장바구니에 추가하기
+	int addCartProduct(Map<String, String> paraMap) throws SQLException;
 	
+	// tbl_category 테이블에서 카테고리 대분류 번호(cnum), 카테고리코드(code), 카테고리명(cname)을 조회해오기 
+	// VO 를 사용하지 않고 Map 으로 처리해보겠습니다.
+	List<HashMap<String, String>> getCategoryList() throws SQLException;
 	
+	// 최근 주문 정보 알아오기
+	OrderVO selectRecentOrder(String userid) throws SQLException;
 	
-	
-	
+	// 상품 리뷰 알아오기
+	List<PurchaseReviewVO> reviewInfo(String productnum) throws SQLException;
 	
 	
 	
@@ -43,5 +57,21 @@ public interface InterProductDAO {
 
 	// 장바구니 페이지에서 넘어온 cartno 로 주문페이지에 보여줄 아이템 조회해오기
 	ProductVO getOrderItems(String cartno) throws SQLException;
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
 
 }
