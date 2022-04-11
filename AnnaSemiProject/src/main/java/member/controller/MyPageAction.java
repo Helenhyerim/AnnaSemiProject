@@ -41,5 +41,9 @@ public class MyPageAction extends AbstractController {
         
       }
 
+<<<<<<< HEAD
    }
+=======
+	}
+>>>>>>> branch 'product_branch4' of https://github.com/Helenhyerim/AnnaSemiProject.git
 }

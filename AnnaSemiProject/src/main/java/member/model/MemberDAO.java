@@ -191,7 +191,7 @@ public class MemberDAO implements InterMemberDAO {
              pstmt.setString(3, paraMap.get("userid"));
              
              rs = pstmt.executeQuery();
-             
+            
              if(rs.next()) {
                 member = new MemberVO();
                 

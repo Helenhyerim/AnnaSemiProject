@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-
-=======
-
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -170,7 +165,7 @@
 			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Review</a>
 			 </li>
 			 <li class="nav-item">
-			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Cart</a>
+			    <a class="nav-link h6" href="<%= ctxPath %>/product/myCart.an?userid=${sessionScope.loginuser.userid}">Cart</a>
 			 </li>
 			 <li class="nav-item">
 			    <a class="nav-link h6" href="<%= ctxPath %>/member/memberList.jsp">Help</a>
@@ -264,8 +259,4 @@
 
 
 	<!-- 상단 네비게이션 끝 -->
-<<<<<<< HEAD
 
-
-=======
->>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git

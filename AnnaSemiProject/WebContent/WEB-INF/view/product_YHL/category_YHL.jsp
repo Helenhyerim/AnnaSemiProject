@@ -13,6 +13,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
+		
 		// *** select 태그에 대한 이벤트는 click 이 아니라 change 이다. ***//
 		$("select#sizePerPage").bind("change", function(){
 			
@@ -20,16 +21,24 @@
 			frm.action = "categoryClick.an";
 			frm.method = "get";
 			frm.submit();
-			
+			$("select#sort").val("${requestScope.sort}");
 			
 		});
 		
 		$("select#sizePerPage").val("${requestScope.sizePerPage}");
 		
-		
-		
+		// *** select 태그에 대한 이벤트는 click 이 아니라 change 이다. ***//
+		$("select#sort").bind("change", function(){
 			
+			const frm = document.productFrm;
+			frm.action = "categoryClick.an";
+			frm.method = "get";
+			frm.submit();
+			$("select#sizePerPage").val("${requestScope.sizePerPage}");
 		});
+		
+		$("select#sort").val("${requestScope.sort}");
+		
 	});
 	
 	// Function Declaration
@@ -41,9 +50,32 @@
 	<div class="container" style="">
 		<div class="mb-5">
 			<div id="top-container">
-				<h1 class="my-5 text-dark">Necklaces</h1>
+			<h1 class="my-5 text-dark" id="categoryname">
+			<c:set var="categorynum" value="${requestScope.categorynum}" />
+				<c:choose>
+					<c:when test="${categorynum eq 1}">
+		    			Necklaces
+		    		</c:when>
+		    		<c:when test="${categorynum eq 2}">
+		    			Earings
+		    		</c:when>
+		    		<c:when test="${categorynum eq 3}">
+		    			Rings
+		    		</c:when>
+		    		<c:when test="${categorynum eq 4}">
+		    			Bracelets
+		    		</c:when>
+		    		<c:otherwise>
+		    			SALE
+		    		</c:otherwise>
 				
+				</c:choose>
+			
+			</h1>	
 				<form name="productFrm" action="categoryClick.an" method="get" >	
+					
+					<input type="hidden" name="categorynum" value="${requestScope.categorynum}">
+					
 					<span style="color: red; font-weight: bold; font-size: 12pt;">페이지당 제품개수-</span>
 				        <select id="sizePerPage" name="sizePerPage">
 					        <option value="9">9</option>
@@ -53,14 +85,11 @@
 					
 					
 					<div class="dropdown mb-5" style="margin-left: 90%;">
-						<button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-							신상품순
-						</button>
-						<ul class="dropdown-menu " aria-labelledby="dropdownMenuButton">
-							<li class="dropdown-item" href="#">가격높은순</li> 
-							<li class="dropdown-item" href="#">가격낮은순</li> 
-							<li class="dropdown-item" href="#">판매순</li>
-						</ul>
+						<select id="sort" name="sort" class="form-select" aria-label="Default select example">
+						  <option value="1" selected>등록순</option>
+						  <option value="2">가격높은순</option>
+						  <option value="3">가격낮은순</option>
+						</select>
 					</div>
 				</form>
 			</div>
