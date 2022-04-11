@@ -144,6 +144,57 @@ $(document).ready(function(){
 	});// end of $("button#orderSome").click(function(){ -------------------------------------
 
 		
+	// 장바구니 모든상품 주문
+	$("button#orderAll").click(function(){
+		
+	//	console.log( $("input:checkbox[name='cart_check']:checked").length );
+		// 0 1 2 ...
+		
+		if($("input:checkbox[name='cart_check']").length == 0){
+			alert("주문할 상품이 없습니다!");
+			return false;
+		}
+		
+		const cart_check_list = document.getElementsByName("cart_check");
+		let cart_checked = "";
+		let cnt = 0;
+		for(let cart_checkbox of cart_check_list){
+			cnt++;
+			if(cnt > 1){
+				cart_checked += ",";
+			}
+			cart_checked += cart_checkbox.value;
+		//	console.log(cart_checked); cartno 1, 2, ...4
+			
+		}// end of for
+		
+		$("input#cart_checked").val(cart_checked);
+	//	console.log("확인용 cart_checked =>" + cart_checked);
+		
+	const frm = document.cartOrderFrm;
+		frm.action = "myOrder.an";
+		frm.method= "post";
+		frm.submit();
+		
+	});// end of $("button#orderAll").click(function(){ -------------------------------------
+	
+	
+	// 장바구니 개별상품 주문
+	$("button#orderOne").click(function(){
+		
+		const $target = $(event.target);
+		
+		
+	const frm = document.cartOrderFrm;
+		frm.action = "myOrder.an";
+		frm.method= "post";
+		frm.submit();
+		
+	});// end of $("button#orderAll").click(function(){ -------------------------------------
+	
+		
+		
+		
 });
 
 // Function Declaration
@@ -193,7 +244,7 @@ $(document).ready(function(){
 							수량:&nbsp;<input id="quantity_0" type="text" size="1" value="${productvo.cvo.orderqty}">
 						</div>
 						<div id="itemselect" class="col-2">
-							<button type="button" class="btn btn-secondary btn-sm mb-3">주문하기</button>
+							<button id="orderOne" type="button" class="btn btn-secondary btn-sm mb-3">주문하기</button>
 							<button type="button" class="btn btn-secondary btn-sm" >찜하기 </button>
 						</div>
 					</div>
