@@ -115,6 +115,7 @@ $(document).ready(function(){
 		
 		if($("input:checkbox[name='cart_check']:checked").length == 0){
 			alert("주문할 상품을 선택해주세요!");
+			return false;
 		}
 		
 		const cart_check_list = document.getElementsByName("cart_check");

@@ -30,7 +30,13 @@ public class MyCartAction extends AbstractController {
 				
 				// userid 를 받아서 장바구니에 있는 상품 보여주기
 				List<ProductVO> productList = pdao.getCartItemsByUserid(userid);
-			
+				
+				// TBL_PRODUCT_OPTION 에서 옵션명 select 해오기
+				// String optionname = pdao.get
+				// request.setAttribute("optionname", optionname);
+				
+				
+				
 				request.setAttribute("productList", productList);
 				
 				//	super.setRedirect(false);

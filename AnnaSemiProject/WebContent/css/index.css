@@ -1,0 +1,51 @@
+@charset "UTF-8";
+
+.carousel_img {
+	width: 100%;
+	height: 80%;
+}
+
+#img_all {
+	width: 100%;
+	height: 90%;
+}
+
+#img_sale {
+	width: 95%;
+	height: 90%;
+}
+
+#img_necklaces, #img_rings {
+	width: 100%;
+	height: 50%;
+}
+
+#img_top10 {
+	width: 99%;
+	height: 105%;
+}
+
+h4 {
+	padding: 5px 10px;
+	background-color: white;
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate( -50%, -50% );
+}
+
+#text_necklaces {
+	padding: 5px 10px;
+	background-color: white;
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate( -50%, -50% );
+}
+
+
+
+
+

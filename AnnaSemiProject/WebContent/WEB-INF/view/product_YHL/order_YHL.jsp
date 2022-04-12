@@ -288,50 +288,13 @@ $(document).ready(function(){
 	});// end of $("input#D_hp3").blur( --------------			
 			
 			
-			
-	// === orderprice 계산해서 넣기 === //
-	const price_list = document.querySelectorAll("#itemprice > span");
-	const price_arr = Array.from(price_list, item => item.innerText.split(",").join(""));
-	
-	const qty_list = document.querySelectorAll("#itemqnt > input");
-	const qty_arr = Array.from(qty_list, item => item.val());
-	
-	let sum = 0;
-	for(let price of price_arr){
-		sum += Number(price) * Number;
-	}
-	
-	$("span#orderprice").html(sum.toLocaleString('en'));
 	
 	
-	// === totalprice 계산해서 넣기 === //
-	sum = 0;
-	const totalprice_list = $("#itemtotalprice").children();
-	const totalprice_arr = Array.from(totalprice_list, item => item.innerText.split(",").join(""));
-
-	for(let price of totalprice_arr){
-		sum += Number(price);
-	}
 	
-	$("span#totalprice").html(sum.toLocaleString('en'));
-<%--	
-	$("input#purchase").click(function(){
-		const userid = "${sessionScope.loginuser.userid}";
-		if(sum != 0){
-			const url = "<%= request.getContextPath()%>/product/myOrderPayEnd.an?userid="+userid+"&paymentprice="+sum;
-			
-			window.open(url, "paypaypay", 
-						"left=350px, top=100px, width=800px, height=570px");
-		}
-		else{
-			alert("결제할 상품이 없습니다");
-		}
-	});
---%>	
 });// end of $(document).ready(function() --------
 	
 	// Function Declaration
-	function goPurchase() {
+	function goPurchase(paymentprice,totalpaypoint) {
 	
 		// ** 필수입력 사항에 모두 입력이 되었는지 검사한다. ** //
 		let b_FlagNecessaryValue = false;
@@ -348,18 +311,129 @@ $(document).ready(function(){
 		if(b_FlagNecessaryValue){// 필수입력사항 중 입력안된게 있으면 그 다음으로 넘어가지 말고 종료
 			return; // 종료
 		}
-		
+		else {
+			const userid = "${sessionScope.loginuser.userid}";
+			const receivedname = $("input#receivedname").val();
+			const postcode = $("input#postcode").val();
+			const address = $("input#address").val();
+			
+			console.log(receivedname);
+			console.log(postcode);
+			console.log(address);
+			
+			const url = "<%= request.getContextPath()%>/product/myOrderPayEnd.an?userid="+userid+"&paymentprice="+paymentprice+"&totalpaypoint="+totalpaypoint
+					+"&receivedname="+receivedname+"&postcode="+postcode+"&address="+address;
+			
+			window.open(url, "coinPurchaseEnd", 
+						"left=350px, top=100px, width=1000px, height=600px");
+			
+		}
+
+	}// end of function goPurchase()-------------
+	
+	
+	// === DB 상의 tbl_order 테이블에 insert 하는  함수 === //
+	function goPayDB(userid, totalpayprice, totalpaypoint, receivedname, postcode, address ) {
+
 		const frm = document.orderinfo;
-		frm.action = "myOrderPayEnd.an?userid=${sessionScope.loginuser.userid}"; // 결제 페이지로 간다.
+	<%--	
+		frm.userid.value = userid;
+		frm.totalpayprice.value = totalpayprice;
+		frm.totalpaypoint.value = totalpaypoint;
+		frm.receivedname.value = receivedname;
+		frm.postcode.value = postcode;
+		frm.address.value = address;
+	--%>	
+		const allCnt = $("div#orderItems").length;
+	//	console.log("확인용 allCnt =>" + allCnt);    상세주문 1개당 1 카운트
+		
+		const pnumArr = new Array();
+		const oqtyArr = new Array();
+		const cartnoArr = new Array();
+		const totalPriceArr = new Array();
+		const totalPointArr = new Array();
+		
+		for(let i=0; i<allCnt; i++) {
+			pnumArr.push( $("input:hidden[name=productnum]").eq(i).val() );
+			oqtyArr.push( $(".orderqty").eq(i).val() );
+			cartnoArr.push( $(".cartno").eq(i).val() );
+			totalPriceArr.push( $(".totalPrice").eq(i).val() );
+			totalPointArr.push( $(".totalPoint").eq(i).val() );
+		}
+		
+		
+		/*
+		for(let i=0; i<allCnt; i++) {
+			console.log("확인용 제품번호: " + pnumArr[i] + ", 주문량: " + oqtyArr[i] + ", 장바구니번호 : " + cartnoArr[i] + ", 주문금액: " + totalPriceArr[i] + ", 포인트: " + totalPointArr[i]);
+		       확인용 제품번호: 2, 주문량: 2, 장바구니번호 : 35, 주문금액: 690000, 포인트: 0
+			확인용 제품번호: 3, 주문량: 3, 장바구니번호 : 36, 주문금액: 1035000, 포인트: 0
+			확인용 제품번호: 4, 주문량: 4, 장바구니번호 : 37, 주문금액: 1380000, 포인트: 0  
+		}// end of for---------------------------
+		*/
+		
+		
+		const pnumjoin = pnumArr.join();             // "2,3,4"
+		const oqtyjoin = oqtyArr.join();             // "2,3,4"
+		const cartnojoin = cartnoArr.join();         // "35,36,37"
+		const totalPricejoin = totalPriceArr.join(); // "690000,1035000,1380000"
+
+		let sumtotalPrice = 0;
+		for(let i=0; i<totalPriceArr.length; i++) {
+			sumtotalPrice += parseInt(totalPriceArr[i]);
+		}
+
+		let sumtotalPoint = 0;
+		for(let i=0; i<totalPointArr.length; i++) {
+			sumtotalPoint += parseInt(totalPointArr[i]);
+		}
+		
+		/*
+		console.log("확인용 pnumjoin : " + pnumjoin);             // 확인용 pnumjoin : 3,56,59
+		console.log("확인용 oqtyjoin : " + oqtyjoin);             // 확인용 oqtyjoin : 3,2,3
+		console.log("확인용 cartnojoin : " + cartnojoin);         // 확인용 cartnojoin : 14,13,11
+		console.log("확인용 totalPricejoin : " + totalPricejoin); // 확인용 totalPricejoin : 30000,2000000,30000
+		console.log("확인용 sumtotalPrice : " + sumtotalPrice);   // 확인용 sumtotalPrice : 2060000
+		console.log("확인용 sumtotalPoint : " + sumtotalPoint);   // 확인용 sumtotalPoint : 435
+		
+			확인용 pnumjoin : 2,4
+			확인용 oqtyjoin : 2,4
+			확인용 cartnojoin : 35,37
+			확인용 totalPricejoin : 690000,1380000
+			확인용 sumtotalPrice : 2070000
+			확인용 sumtotalPoint : 0
+		*/
+		
+		frm.pnumjoin.value = pnumjoin;
+		frm.oqtyjoin.value = oqtyjoin;
+		frm.cartnojoin.value = cartnojoin;
+		frm.totalPricejoin.value = totalPricejoin;
+		frm.sumtotalPrice.value = sumtotalPrice;
+		frm.sumtotalPoint.value = sumtotalPoint;
+	
+			   
+			   
+		frm.action = "<%= request.getContextPath()%>/product_lsh/orderSuccess.an";
 		frm.method = "post";
 		frm.submit();
-<%--		
-		const frm = document.deliveryinfo;
-		frm.action = " "; // 결제 완료 페이지로 간다.
-		frm.method = "post";
-		frm.submit();
-		--%>
-}
+		
+	}; // end of function goPayDB()---------------
+
+	
+	function sameWithOrderInfo() {
+		
+		const bool = $("#samewithorder").is(":checked");
+		/*
+		   $("#allCheckOrNone").is(":checked"); 은
+		     선택자 $("#allCheckOrNone") 이 체크되어지면 true를 나타내고,
+		     선택자 $("#allCheckOrNone") 이 체크가 해제되어지면 false를 나타내어주는 것이다.
+		*/
+		if(bool){
+			
+		}
+		
+	}// end of function sameWithOrderInfo()-------------------------
+
+	
 </script>
 	<div class="container" style="width: 90%; margin: 20% auto 10% auto;">
 		<h3 class="text-dark text-center">주문내역</h3>
@@ -368,9 +442,12 @@ $(document).ready(function(){
 		<c:forEach var="pvo" items="${requestScope.productList }">
 			<div id="orderItems" >
 				<hr>
-				<div class="row">
+				<div class="row" >
 					<div class="col-2">
 						<a id="imgcontainer" class="col-4 stretched-link" href="">
+							<input type="hidden" name="productnum" value="${pvo.productnum }">
+							<input type="hidden" class="cartno" value="${pvo.cvo.cartno}" /> 
+							
 							<img src="<%=ctxPath %>/images/necklaces/목걸이이미지1.png" class="" alt="..." >
 						</a>
 					</div>
@@ -380,14 +457,16 @@ $(document).ready(function(){
 						<a style="display: inline-block;">[옵션: 14K-로즈골드]</a>
 						<a>[적립금: <span id="point">${pvo.point }</span>원]</a>
 						<fmt:formatNumber value="${pvo.productprice}" pattern="###,###" />원
-						<span >${pvo.productprice}</span>원
+						<input type="hidden" class="totalPrice" value="${pvo.cvo.totalpricebyproduct}" />
+			            <input type="hidden" class="totalPoint" value="${pvo.cvo.totalpointbyproduct}" />
 					</div>
 					<div id="itemqnt" class="col-3">
-						수량:&nbsp;<input id="quantity_0" type="text" size="2" value="${pvo.cvo.orderqty }">
+						수량:&nbsp;<input class="orderqty"  type="text" size="2" value="${pvo.cvo.orderqty }">
 					</div>
 					<div id="itemprice" class="col-2 h4">
-						<span>${pvo.productprice * pvo.cvo.orderqty}</span>원
+						<span id="totalpricebyproduct"><fmt:formatNumber value="${pvo.cvo.totalpricebyproduct}" pattern="###,###" /></span>원
 						
+			               
 					</div>
 				</div>
 				<hr>
@@ -396,7 +475,7 @@ $(document).ready(function(){
 		
 		
 		<div class="mt-5" id="itemtotalprice" >
-			 상품금액 <span id="orderprice"></span> (+옵션 <span id="optionprice">29,000</span>) + 배송비<span id="deliveryprice">0</span> - 상품할인금액 0 = 합계 : <span id="totalprice"></span>원
+			 상품금액 <span id="orderprice"></span> (+옵션 <span id="optionprice">29,000</span>) + 배송비<span id="deliveryprice">0</span> - 상품할인금액 0 = 합계 : <fmt:formatNumber value="${requestScope.sumPrice }" pattern="###,###" />원
 		</div>
 		
 		
@@ -455,12 +534,8 @@ $(document).ready(function(){
 		
 		
 			
-<!--		</form> -->
-		
-		
-<!--		<form name="deliveryinfo" style="padding-top: 200px; width: 90%; margin: 20px auto;">
- -->			<div class="form-check" style="float: right; padding-right: 10px;">
-			  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style="width: 20px; height: 20px; ">
+			<div class="form-check" style="float: right; padding-right: 10px;">
+			  <input class="form-check-input" type="checkbox" onclick="sameWithOrderInfo()" id="samewithorder" style="width: 20px; height: 20px; ">
 			  <label class="form-check-label" for="flexCheckDefault">
 			    주문하시는 분 정보와 동일
 			  </label>
@@ -532,9 +607,16 @@ $(document).ready(function(){
 			    </tr>
 			</table>
 		 	
+		<%-- PG(Payment Gateway 결제)에 결제후 DB상에 주문을 insert 해주는 폼이다. --%>
+		   <input type="hidden" name="pnumjoin" />
+		   <input type="hidden" name="oqtyjoin" />
+		   <input type="hidden" name="cartnojoin" />
+		   <input type="hidden" name="totalPricejoin" />
+		   <input type="hidden" name="sumtotalPrice" />
+		   <input type="hidden" name="sumtotalPoint" />
  		</form> 
 		
-		<input type="button" id="purchase" onclick="goPurchase();" value="결제하기" />
+		<input type="button" id="purchase" onclick="goPurchase(${requestScope.sumPrice },0);" value="결제하기" />
 		<input type="button" id="goBackCart" onclick="javascript:history.back()" value="장바구니로 되돌아가기" />
 		
 			
