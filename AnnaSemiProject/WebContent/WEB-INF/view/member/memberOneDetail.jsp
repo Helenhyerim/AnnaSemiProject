@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  
- <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
     
@@ -9,19 +9,38 @@
 
 
 <style type="text/css">
-div#mvoInfo {
-		width: 60%; 
-		text-align: left;
-		border: solid 0px red;
-		margin-top: 30px; 
-		font-size: 13pt;
-		line-height: 200%;
-	}
+
+.titleArea h2 {
+    font-size: 18px;
+    color: #444;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-family: 'Roboto','Noto Sans KR',sans-serif;
+}
+
+#contents {
+    width: 100%;
+    float: none;
+    padding: 200px 20px 0;
+    box-sizing: border-box;  
+} 
+
+div#mvoInfo  {
+	width: 420px;
+    margin: 0 auto;
+    font-size: 12px;
+	margin-top: 30px; 
+	line-height: 200%;
+	text-align: left;
+}
+
+
 	
 	span.myli {
 		display: inline-block;
-		width: 90px;
+		width: 130px;
 		border: solid 0px blue;
+		margin-right: 20px;
 	}
 	
 /* ============================================= */
@@ -30,12 +49,12 @@ div#mvoInfo {
 		/* border: solid 1px red; */ 
 		overflow: hidden; 
 		width: 50%;
-		padding: 10px 0 10px 80px;
+		padding: 10px 0;
 	}
 	
 	span#smsTitle {
 		display: block;
-		font-size: 13pt;
+		font-size: 13px;
 		font-weight: bold;
 		margin-bottom: 10px;
 	}
@@ -50,7 +69,7 @@ div#mvoInfo {
 		border: none;
 		width: 50px;
 		height: 100px;
-		background-color: navy;
+		background-color: #ddd;
 		color: white;
 	}
 	
@@ -98,7 +117,7 @@ div#mvoInfo {
 		    }
 		    
 		    $.ajax({
-		    	url:"<%= request.getContextPath()%>/member/smsSend.up",
+		    	url:"<%= request.getContextPath()%>/member/smsSend.an",
 		    	type:"POST",
 		    	data:dataObj,
 		    	dataType:"json",
@@ -140,6 +159,7 @@ div#mvoInfo {
 		    <h2 class="w3-left-align mb-5">${requestScope.mvo.name}님의 상세정보</h2>
 		</div>	
 		
+		<div class="mvoinfo">
 		<div id="mvoInfo">
 		   <ol>
 		   	  <li><span class="myli">아이디 : </span>${requestScope.mvo.userid}</li>
@@ -153,8 +173,8 @@ div#mvoInfo {
 			  <li><span class="myli">나이 : </span>${requestScope.mvo.age}세</li>
 			  <li><span class="myli">포인트 : </span><fmt:formatNumber value="${requestScope.mvo.point}" pattern="###,###" /> POINT</li> 
 			  <li><span class="myli">가입일자 : </span>${requestScope.mvo.registerday}</li>
-			  <li><span class="myli">문자수신동의여부 : </span>${requestScope.mvo.sms_status}</li>
-			  <li><span class="myli">이메일수신동의여부 : </span>${requestScope.mvo.email_status}</li>
+			  <li><span class="myli">문자수신동의여부 : </span><c:choose><c:when test="${requestScope.mvo.sms_status eq '1'}">동의</c:when><c:otherwise>비동의</c:otherwise></c:choose></li>
+			  <li><span class="myli">이메일수신동의여부 : </span><c:choose><c:when test="${requestScope.mvo.email_status eq '1'}">동의</c:when><c:otherwise>비동의</c:otherwise></c:choose></li>
 		   </ol>
 		</div>
 	
@@ -169,6 +189,16 @@ div#mvoInfo {
 		  	<div id="smsResult"></div>
 		</div>
 	
+		<div id="sms" align="left">
+		  	<span id="smsTitle">&gt;&gt;메일 보내기 내용 입력란&lt;&lt;</span>
+		  	<div style="margin: 10px 0 20px 0">
+		  		발송예약일&nbsp;<input type="date" id="reservedate" />&nbsp;<input type="time" id="reservetime" />
+		  	</div>
+		  	<textarea rows="4" cols="40" id="smsContent"></textarea>
+		  	<button id="btnSend">전송</button>
+		  	<div id="smsResult"></div>
+		</div>
+		
 	</c:if>
 
 	<div>
@@ -176,7 +206,8 @@ div#mvoInfo {
 		&nbsp;&nbsp;
 		<button style="margin-top: 50px;" type="button" onclick="goMemberList()">회원목록[검색된결과]</button>
 		&nbsp;&nbsp;
-		<button style="margin-top: 50px;" type="button" onclick="javascript:location.href='memberList.up'">회원목록[처음으로]</button> 
+		<button style="margin-top: 50px;" type="button" onclick="javascript:location.href='memberList.an'">회원목록[처음으로]</button> 
+	</div>
 	</div>
 </div>
 <jsp:include page="../common/footer.jsp" /> 

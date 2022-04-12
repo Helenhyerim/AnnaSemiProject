@@ -116,7 +116,7 @@
 
 <div class="contents mx-5" style="margin-top:230px;">
 	<div class="titleArea">
-	    <h2 class="w3-left-align mb-5">MY SHOPPING</h2>
+	    <h2 class="w3-left-align mb-5">MY BOARD</h2>
 	</div>
 	
 	<div class="myshopMain">
