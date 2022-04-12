@@ -3,17 +3,20 @@
     
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 <%
 	String ctxPath = request.getContextPath();
     //     /MyMVC
 %>   
 
 <!-- Font Awesome 5 Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-	
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">	
 
-<jsp:include page="../common/header_login.jsp" />   
+<jsp:include page="../common/header_login.jsp" />  
+
+<!-- 직접 만든 CSS -->
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/pagination_syj.css" />
+ 
 
 <style type="text/css">
 	.titleArea h2 {
@@ -30,10 +33,7 @@
 	    padding: 200px 20px 0;
 	    box-sizing: border-box;  
 	} 
-	.myshopMain {
-	    padding: 50px;
-	    border: 1px solid #ddd;
-    }
+
     
     p.myshopTit {
 	    font-size: 12px;
@@ -101,7 +101,28 @@
 	#myshopMain .shopMain p a {
     	font-size: 12px;
     }
+    table#memberTbl {
+   	 	border: 1px solid #ddd;
+   	 	font-size: 12px;
+    }
     
+    table#memberTbl th, td {
+   		padding: 5px 0;
+   		color: black;
+    	font-weight: 300;
+    	text-align: center;
+   }
+    
+	tr.orderInfo:hover {
+		background-color: #d5d5d5;
+		cursor: pointer;
+	}
+	
+	.pagination {
+		color: black;
+		background-color: #ddd;
+	}
+	
     
 </style>
 
@@ -115,79 +136,91 @@
 </script>
 
 <div class="contents mx-5" style="margin-top:230px;">
+
 	<div class="titleArea">
 	    <h2 class="w3-left-align mb-5">MY POINT</h2>
 	</div>
 	
 	<div class="myshopMain">
 		<div class="orderHistory" style="margin:30px 0;">
-			<p class="myshopTit">ORDER HISTORY</p>
-			<div class="state" >
-            	<ul class="order">
-					<li class="">
-					<strong class="title">총 포인트</strong> <span class="data"><span id="xans_myshop_summary_total_mileage">0원</span>&nbsp;</span>
-					</li>
-					<li class="">
-					<strong class="title">사용가능 포인트</strong> <span class="data"><span id="xans_myshop_summary_avail_mileage">0원</span>&nbsp;</span>
-					</li>
-					<li class="">
-					<strong class="title">사용된 포인트</strong> <span class="data"><span id="xans_myshop_summary_used_mileage">0원</span>&nbsp;</span>
-					</li>
-					<li class="">
-					<strong class="title">미가용 포인트</strong> <span class="data"><span id="xans_myshop_summary_unavail_mileage">0원</span>&nbsp;</span>
-					</li>
-					<li class="">
-					<strong class="title">환불예정 포인트</strong> <span class="data"><span id="xans_myshop_summary_returned_mileage">0원</span>&nbsp;</span>
-					</li>
-            	</ul>
-			</div>
+			<p class="myshopTit">사용 가능 포인트&nbsp;<fmt:formatNumber value="${(sessionScope.loginuser).point}" pattern="###,###" />POINT</span></p>
 			
-			<div class="ec-base-tab">
-        		<ul class="menu">
-					<li class="selected"><a href="/myshop/mileage/historyList.html">적립내역보기</a></li>
-		            <li><a href="/myshop/mileage/unavailList.html">미가용적립내역보기</a></li>
-		            <li><a href="/myshop/mileage/couponList.html">미가용쿠폰/회원등급적립내역</a></li>
-        		</ul>
-			</div>
+		<table id="memberTbl" class="table table-bordered" style="width: 100%; margin-top: 20px;">
+	        <colgroup>
+               <col style="width:11%">
+               <col style="width:13%">
+               <col style="width:40%">
+               <col style="width:8%">
+               <col style="width:10%">
+               <col style="width:8%">
+
+	        <thead>
+	        	<tr>
+	        		<th scope="col">주문날짜</th>
+	        		<th scope="col">주문번호</th>
+	        		<th scope="col">주문제품</th>
+	        		<th scope="col">주문수량</th>
+	        		<th scope="col">주문총액</th>
+	        		<th scope="col">적립포인트</th>
+	        	</tr>
+	        </thead>
+	        
+	        <tbody>
+	        	<c:if test="${empty requestScope.orderList}">
+	            	<tr>
+	            		<td colspan="6" style="text-align: center;">포인트 내역이 없습니다.</td>
+	            	</tr>
+            	</c:if>
+		        <c:if test="${not empty requestScope.orderList}">
+		            <c:forEach var="ordermap" items="${requestScope.orderList}">
+		            	<tr class="orderInfo">
+		            		<td class="orderDate">${ordermap.ORDERDATE}</td>
+		            		
+		            		<td class="orderNum">${ordermap.ORDERNUM}</td>
+		            		
+		            		
+		            		<td class="orderProduct" style="cursor:pointer;" onclick="javascript:location.href='/AnnaDia/shop/prodView.up?productnum=${ordermap.FK_PRODUCTNUM}'">  <%-- === 제품정보 넣기 === --%>	
+								<div style="display: flex; padding-top: 10px; justify-content: space-between;">
+									<div style="width: 44%;">
+									    <img src="/MyMVC/images/${ordermap.PRODUCTIMAGE1}" width="100%" />  
+									</div>
+									<div style="width: 54%;">
+									    <ul class="list-unstyled">
+									       <li>제품번호 : ${ordermap.FK_PRODUCTNUM}</li> 
+									       <li>제품명 : ${ordermap.PRODUCTNAME}</li>   
+									       <li>정&nbsp;가 : <span style="text-decoration: line-through;"><fmt:formatNumber value="${ordermap.PRODUCTPRICE}" pattern="###,###" /></span> 원</li>   <%-- 제품개당 판매정가 --%> 
+									       <li>판매가 : <span class="text-danger font-weight-bold"><fmt:formatNumber value="${ordermap.SALEPRICE}" pattern="###,###" /></span> 원</li> <%-- 제품개당 판매세일가 --%>
+									       <li>포인트 : <span class="text-danger font-weight-bold"><fmt:formatNumber value="${ordermap.POINT}" pattern="###,###" /></span> POINT</li>  <%-- 제품개당 포인트 --%>
+									    </ul>
+								    </div>
+							    </div> 
+							</td>
+		            		
+		            		<td class="orderQty">${ordermap.ORDERQTY}</td>
+		            		
+		            		<td class="orderPrice">
+		            		<fmt:formatNumber value="${ordermap.ORDERPRICE}" pattern="###,###" /> 원
+		            		</td>
+		            		
+		            		<td class="orderTotalPoint">
+		            		<fmt:formatNumber value="${ordermap.POINT}" pattern="###,###" /> P
+		            		</td>	
+		            	</tr>
+		            </c:forEach>
+	            </c:if>
+	            
+
+	        </tbody>
+	    </table>    
 	
-	
-			<div class="ec-base-table typeList">
-            <table border="1" summary="">
-			<caption>포인트 내역</caption>
-                <colgroup>
-					<col style="width:15%">
-					<col style="width:15%">
-					<col style="width:25%">
-					<col style="width:auto">
-					</colgroup>
-					<thead><tr>
-					<th scope="col">주문날짜</th>
-                        <th scope="col">포인트</th>
-                        <th scope="col">관련 주문</th>
-                        <th scope="col">내용</th>
-                    </tr></thead>
-					<tbody class="displaynone center">
-					<tr class="">
-					<td></td>
-                        <td class="right"></td>
-                        <td></td>
-                        <td class="left"></td>
-                    </tr>
-					<tr class="">
-					<td></td>
-                        <td class="right"></td>
-                        <td></td>
-                        <td class="left"></td>
-                    </tr>
-					<tr class="">
-					<td></td>
-                        <td class="right"></td>
-                        <td></td>
-                        <td class="left"></td>
-                    </tr>
-			</tbody>
-			</table>
-			<p class="message ">포인트 내역이 없습니다.</p>
+	    <%-- === 페이지바 === --%>
+		<nav class="my-5">
+	        <div style='display:flex;'>
+	    	   <ul class="pagination" style='margin:auto;'>${requestScope.pageBar}</ul>
+	    	</div>
+	    </nav>
+
+	    	
 		</div>
 	</div>
 </div>
