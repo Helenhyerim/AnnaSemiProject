@@ -14,6 +14,7 @@
 	NoticeDAO dao = new NoticeDAO();
 	/* int result = dao.delete(noticeNo); */
 	pageContext.setAttribute("vo", vo);
+	
 %>
 
 <style type="text/css">
@@ -76,9 +77,6 @@
 		</div>
 		<div style="padding: 20px;">
 			${vo.noticeContents}
-		</div>
-		<div style="text-align: right; padding: 20px;">
-			view : ${vo.cnt}
 		</div>
 		
 		<c:if test="${sessionScope.loginuser.userid eq 'admin'}">

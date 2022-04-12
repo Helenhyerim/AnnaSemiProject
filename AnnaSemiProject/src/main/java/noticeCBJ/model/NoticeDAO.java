@@ -131,10 +131,13 @@ public class NoticeDAO implements InterNoticeDAO {
 			
 		NoticeVO notice = null;
 		
+		int count = 0;
+		
 		try {
 			conn = ds.getConnection();
 			
-			String sql = "select noticeno, fk_userid, noticedate, noticetitle, noticecontents, cnt from tbl_notice where noticeno = ? ";
+			String sql = "select noticeno, fk_userid, noticedate, noticetitle, noticecontents, cnt "
+					   + "from tbl_notice where noticeno = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -148,8 +151,18 @@ public class NoticeDAO implements InterNoticeDAO {
 				notice.setNoticeDate(rs.getString(3));
 				notice.setNoticeTitle(rs.getString(4));
 				notice.setNoticeContents(rs.getString(5));
-				notice.setCnt(rs.getInt(6));
+				count = rs.getInt(6);
+				count++;
 			}
+			
+			String sqlcnt = " update tbl_notice set cnt = ? where noticeno = ? ";
+			
+			pstmt = conn.prepareStatement(sqlcnt);
+			pstmt.setInt(1, count);
+			pstmt.setInt(2, noticeNo);
+			pstmt.executeUpdate();
+			conn.close();
+			
 		} finally {
 			close();
 		}

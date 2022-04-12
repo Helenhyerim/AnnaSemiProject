@@ -130,17 +130,30 @@
 		   <tr>
 		      <th style="width: 60px; ">번호</th>
 		      <th style="width: 1000px;">제목</th>
-		      <th style="width: 130px;">등록일</th>
+		      <th style="width: 130px;">작성자</th>
+		      <th style="width: 130px;">상태</th>
+		      <th style="width: 130px;">등록일</th>		      
 		   </tr>
 		</thead>
 
 		<tbody>
 			<c:if test="${not empty requestScope.qnaList}">
-				<c:forEach var="nvo" items="${requestScope.qnaList}">
+				<c:forEach var="qvo" items="${requestScope.qnaList}">
 					<tr class="qnaInfo" style="font-size: 14px; ">
-						<td class="qnano" style="color:black; font-weight: bold; ">${nvo.qnaNo}</td>
-						<td style="text-align:left; "><a href="<%= ctxPath%>/qnaDetail.an?qnaNo=${nvo.qnaNo}">${nvo.questionTitle}</a></td>
-						<td>${ fn:substring(nvo.questionDate, 0, 10)}</td>
+						<td class="qnano" style="color:black; font-weight: bold; ">${qvo.qnaNo}</td>
+						<td style="text-align:left; "><a href="<%= ctxPath%>/qnaDetail.an?qnaNo=${qvo.qnaNo}">${qvo.questionTitle}</a></td>
+						<td>${qvo.fk_userId}</td>
+						<td>
+							<c:choose>
+								<c:when test="${empty qvo.answerTitle}">
+									<div style="color:black;">대기중</div>
+								</c:when>
+								<c:otherwise>
+									<div style="color:lightgreen; font-weight:bold;">답변완료</div>
+								</c:otherwise>
+							</c:choose>
+						</td>
+						<td>${ fn:substring(qvo.questionDate, 0, 10)}</td>
 					</tr>
 				</c:forEach>
 			</c:if>
@@ -152,9 +165,11 @@
 		</tbody>
 	</table>
 	
-	<div id="regist" style="display:inline-block; float:right; padding:20px;">
-		<a href="<%= ctxPath%>/qnaRegistForm.an"/><button>글등록</button></a>
-	</div>
+	<c:if test="${sessionScope.loginuser.userid ne 'admin'}">
+		<div id="regist" style="display:inline-block; float:right; padding:20px;">
+			<a href="<%= ctxPath%>/questionRegist.an"/><button>질문등록</button></a>
+		</div>
+	</c:if>
 	
 	<form name="qnaFrm" action="qna.an" method="get" style="padding:20px 20px 0 0;">
 		<select id="searchType" name="searchType">

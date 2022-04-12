@@ -10,11 +10,13 @@ public class QnaVO {
 	private String answerTitle;
 	private String answerContents;
 	private String answerDate;
+	private String questionImg;
+	private String answerImg;
 	
 	public QnaVO() {}
 
 	public QnaVO(int qnaNo, String fk_userId, String questionTitle, String questionContents, String questionDate,
-			String answerTitle, String answerContents, String answerDate) {
+			String answerTitle, String answerContents, String answerDate, String questionImg, String answerImg) {
 		super();
 		this.qnaNo = qnaNo;
 		this.fk_userId = fk_userId;
@@ -24,6 +26,8 @@ public class QnaVO {
 		this.answerTitle = answerTitle;
 		this.answerContents = answerContents;
 		this.answerDate = answerDate;
+		this.questionImg = questionImg;
+		this.answerImg = answerImg;
 	}
 
 	public int getQnaNo() {
@@ -89,8 +93,25 @@ public class QnaVO {
 	public void setAnswerDate(String answerDate) {
 		this.answerDate = answerDate;
 	}
+
+	public String getQuestionImg() {
+		return questionImg;
+	}
+
+	public void setQuestionImg(String questionImg) {
+		this.questionImg = questionImg;
+	}
+
+	public String getAnswerImg() {
+		return answerImg;
+	}
+
+	public void setAnswerImg(String answerImg) {
+		this.answerImg = answerImg;
+	}
 	
 	
+
 	
 	
 }

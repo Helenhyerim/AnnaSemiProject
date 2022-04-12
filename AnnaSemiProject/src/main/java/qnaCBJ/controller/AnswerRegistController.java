@@ -1,25 +1,27 @@
-package eventCBJ.controller;
-
+package qnaCBJ.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Date;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import common.controller.AbstractController;
-import eventCBJ.model.*;
+import qnaCBJ.model.QnaDAO;
+import qnaCBJ.model.QnaVO;
+import qnaCBJ.model.InterQnaDAO;
 import member.model.MemberVO;
 
-public class EventEditFormController extends AbstractController {
+public class AnswerRegistController extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+		
 		HttpSession session = request.getSession();
 		
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
@@ -42,7 +44,7 @@ public class EventEditFormController extends AbstractController {
 			if(!"POST".equalsIgnoreCase(method)) { // GET 이라면
 												
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/view/eventCBJ/eventEditForm.jsp");
+				super.setViewPage("/WEB-INF/view/qnaCBJ/answerRegist.jsp");
 				
 			}
 			else {
@@ -59,50 +61,43 @@ public class EventEditFormController extends AbstractController {
 					e.printStackTrace();
 					
 					request.setAttribute("message", "업로드 되어질 경로가 잘못되었거나 또는 최대용량 10MB를 초과했으므로 파일업로드 실패함!!");
-	                request.setAttribute("loc", request.getContextPath()+"/eventEditForm.an"); 
+	                request.setAttribute("loc", request.getContextPath()+"/anwerRegist.an"); 
 	              
 	                super.setViewPage("/WEB-INF/msg.jsp");
 	                return; // 종료
 				}				
 			// ==== 파일을 업로드 해준다. 끝 ==== //
 				
-			// === 첨부 이미지 파일을 올렸으니 그 다음으로 제품정보를 (제품명, 정가, 제품수량,...) DB의 tbl_product 테이블에 update 를 해주어야 한다.  ===
+			// === 첨부 이미지 파일을 올렸으니 그 다음으로 제품정보를 (제품명, 정가, 제품수량,...) DB의 tbl_product 테이블에 insert 를 해주어야 한다.  ===
 				
 				// 새로운 제품 등록시 form 태그에서 입력한 값들을 얻어오기
-				String eventTitle = mtrequest.getParameter("eventTitle");
-				String eventStartdate = mtrequest.getParameter("eventStartdate");
-				String eventEnddate = mtrequest.getParameter("eventEnddate");
-				String thumbNail = mtrequest.getFilesystemName("thumbNail");
-				String eventImg1 = mtrequest.getFilesystemName("eventImg1");
-				String eventImg2 = mtrequest.getFilesystemName("eventImg2");
-				String eventNo = mtrequest.getParameter("eventNo");
+				String answerTitle = mtrequest.getParameter("answerTitle");
+				String answerContents = mtrequest.getParameter("answerContents");
+				String answerImg = mtrequest.getFilesystemName("answerImg");
+				String qnaNo = mtrequest.getParameter("qnaNo");
 				
-				
-				InterEventDAO edao = new EventDAO();
-				
-				EventVO evo = new EventVO();
-				evo.setEventNo(Integer.parseInt(eventNo));
-				evo.setEventTitle(eventTitle);
-				evo.setEventStartdate(eventStartdate);
-				evo.setEventEnddate(eventEnddate);
-				evo.setEventImg1(eventImg1);
-				evo.setEventImg2(eventImg2);
-				evo.setThumbNail(thumbNail);
+				InterQnaDAO qdao = new QnaDAO();			
+								
+				QnaVO qvo = new QnaVO();
+				qvo.setAnswerTitle(answerTitle);
+				qvo.setAnswerContents(answerContents);
+				qvo.setAnswerImg(answerImg);							
+				qvo.setQnaNo(Integer.parseInt(qnaNo));
 				
 				String message = "";
 				String loc = "";
 								
 				try {
-					edao.eventUpdate(evo);
+					qdao.answerInsert(qvo);
 					
-					message = "수정 성공!!";
-					loc = request.getContextPath()+"/event.an";
+					message = "등록 성공!!";
+					loc = request.getContextPath()+"/qna.an";
 					
 				} catch(SQLException e) {
 					e.printStackTrace();
 					
-					message = "수정 실패!!";
-					loc = request.getContextPath()+"/eventEditForm.an";
+					message = "등록 실패!!";
+					loc = request.getContextPath()+"/answerRegist.an";
 				}
 				
 				request.setAttribute("message", message);
