@@ -62,9 +62,10 @@ public interface InterProductDAO {
 	ProductVO getProductDetail(String productnum) throws SQLException;
 
 	// userid 를 받아서 장바구니에 있는 상품 보여주기
-	List<Map<String, String>> getCartItemsByUserid(String userid) throws SQLException;
+	List<ProductVO> getCartItemsByUserid(String userid) throws SQLException;
 
-	
+	// 장바구니 페이지에서 넘어온 cartno 로 주문페이지에 보여줄 아이템 조회해오기
+	ProductVO getOrderItems(String cartno) throws SQLException;
 
 
 

@@ -10,6 +10,7 @@ import common.controller.AbstractController;
 import member.model.MemberVO;
 import product.model_lsh.InterProductDAO;
 import product.model_lsh.ProductDAO;
+import product.model_lsh.ProductVO;
 
 public class MyCartAction extends AbstractController {
 
@@ -17,27 +18,26 @@ public class MyCartAction extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 	
 		// 내 장바구니를 보기 위한 전제조건은 먼저 로그인을 해야하는 것이다
-		if("로그인".equals("로그인")) {// 로그인을 한 경우
+		if(super.checkLogin(request)) {// 로그인을 한 경우
 			
-			// 아직 받아올 userid 는 없지만 일단 적어둔다. 아직은 null
 			String userid = request.getParameter("userid");
 			
 			HttpSession session = request.getSession();
 			MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 
-	//		if(loginuser.getUserid().equals(userid)) {// 로그인 한 사용자가 자신의 장바구니에 접근할 때
+			if(loginuser.getUserid().equals(userid)) {// 로그인 한 사용자가 자신의 장바구니에 접근할 때
 				InterProductDAO pdao = new ProductDAO();
 				
 				// userid 를 받아서 장바구니에 있는 상품 보여주기
-				List<Map<String, String>> cartProductList = pdao.getCartItemsByUserid(userid);
+				List<ProductVO> productList = pdao.getCartItemsByUserid(userid);
 			
-				request.setAttribute("cartProductList", cartProductList);
+				request.setAttribute("productList", productList);
 				
 				//	super.setRedirect(false);
 				super.setViewPage("/WEB-INF/view/product_YHL/cart_YHL.jsp");
 
-	//		}
-	/*		else {// 로그인 한 사용자가 다른 사람의 장바구니에 접근할 때
+			}
+			else {// 로그인 한 사용자가 다른 사람의 장바구니에 접근할 때
 				String message = "다른 사용자의 장바구니는 볼 수 없습니다!";
 				String loc = "javascript:history.back()";
 				
@@ -49,8 +49,8 @@ public class MyCartAction extends AbstractController {
 			}
 	
 		}
-	*/	
-	/*	else {// 로그인을 안한 경우
+		
+		else {// 로그인을 안한 경우
 			String message = "장바구니를 보기 위해서는 먼저 로그인을 하세요!";
 			String loc = "javascript:history.back()";
 			
@@ -59,7 +59,7 @@ public class MyCartAction extends AbstractController {
 			
 			//	super.setRedirect(false);
 			super.setViewPage("/WEB-INF/msg.jsp");
-	*/	}
+		}
 		
 	}
 

@@ -39,7 +39,7 @@ public class MyPageAction extends AbstractController {
            super.setViewPage("/WEB-INF/view/member/myPage.jsp");
            
         
-      }
+     }
 
-   }
+   	}
 }
