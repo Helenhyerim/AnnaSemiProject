@@ -12,12 +12,18 @@
 <!-- 직접 만든 CSS -->
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/productDetail_lsh.css" />
 
+<style type="text/css">
+
+	img.imgcss {border-radius: 5px;}
+
+</style>
+
 <script type="text/javascript">
 
 	$(document).ready(function() {
 		
-		// 대표이미지 변경하기(hover) : 부드럽게 바뀌도록 수정하기
-		$("div#img_list > img").hover(function() {
+		// 대표이미지 변경하기(hover)
+		$("div#img_list img").hover(function() {
 			const $target = $(event.target);
 			const index = $target.index();
 			var imgArr = new Array();
@@ -28,7 +34,7 @@
 				imgArr.push(value);
 			});
 			
-			$("div#cover").html('<img src="../images/' + imgArr[index] + '">');
+			$("div#cover").html('<img class="imgcss" src="../images/' + imgArr[index] + '">');
 		});
 		
 		// 옵션 선택
@@ -345,12 +351,8 @@
 	
 	// 리뷰 작성
 	function writeReview() {
-		
-	}
-	
-	// Q&A 작성
-	function writeQNA() {
-		
+		// 로그인 중인 사용자가 해당 상품을 구매한 이력이 있는지 조회하기 true라면 리뷰작성페이지로 이동
+		alert("리뷰 작성을 클릭하셨군요?");
 	}
 	
 </script>
@@ -367,10 +369,10 @@
 	<div id="main_content">
 		<div id="top_content" class="row">
 			<div id="product_cover" class="col-md-7">
-				<div id="cover"><img src="../images/${requestScope.pvo.productimage1}"></div>
+				<div id="cover"><img class="imgcss" src="../images/${requestScope.pvo.productimage1}"></div>
 				<div id="img_list">
 					<c:forEach var="pimg" items="${requestScope.imgList}" end="4">
-						<img src="../images/${pimg.imagefilename}">
+						<img class="imgcss" src="../images/${pimg.imagefilename}">
 					</c:forEach>
 				</div>
 			</div>
@@ -452,14 +454,13 @@
 			</div>
 			
 			<div id="review_board">
-				<h5>리뷰</h5>
-				<table class="table" id="tbl_review">
-			    	<thead class="thead-light">
+				<table class="table" id="tbl_review" style="width: 80%; margin: 0 auto;" >
+					<caption style="caption-side: initial; font-weight: bold; font-size: 14pt;">리뷰</caption>
+					<thead class="thead-light">
 			      		<tr>
 			        		<th>No.</th>
 			        		<th>글제목</th>
 			        		<th>닉네임</th>
-			        		<th>조회수</th>
 			      		</tr>
 			    	</thead>
 			    	<tbody>
@@ -469,67 +470,34 @@
 				      				<td>${status.count}</td>
 				      				<td>${review.reviewtitle}</td>
 				      				<td>${review.userid}</td>
-				      				<td>0</td>
 				      			</tr>
 				      			<tr class="reviewContents">
-				      				<td colspan="4" align=center style="font-size: 10pt;">${review.reviewcontents}</td>
+				      				<td colspan="3" align=center style="font-size: 10pt;">${review.reviewcontents}</td>
 				      			</tr>
 				      		</c:forEach>
 			      		</c:if>
 			      		<c:if test="${empty requestScope.reviewList}">
 			      			<tr>
-			      				<td colspan="4" align=center>게시물이 없습니다.</td>
+			      				<td colspan="3" align=center>게시물이 없습니다.</td>
 			      			</tr>
 			      		</c:if>
 			    	</tbody>
 			    	<tfoot>
 			    		<tr>
-			    			<td colspan="4" align=right>
+			    			<td colspan="3" align=right>
 			    			<c:if test="${not empty sessionScope.loginuser}">
-		    					<button type="button" onclick="writeReview()">리뷰 작성</button>
+		    					<button type="button" class="btn btn-secondary" onclick="writeReview()">리뷰 작성</button>
 			    			</c:if>
 			    			</td>
 			    		</tr>
 			    	</tfoot>
 			  	</table>
 			</div>
-			
-			<div id="QnA_board">
-				<h5>Q&A</h5>
-				<table class="table">
-			    	<thead class="thead-light">
-			      		<tr>
-			        		<th>No.</th>
-			        		<th>글제목</th>
-			        		<th>닉네임</th>
-			        		<th>조회수</th>
-			      		</tr>
-			    	</thead>
-			    	<tbody>
-			      		<tr>
-			        		<td>1</td>
-			        		<td>Q&A1</td>
-			        		<td>닉네임1</td>
-			        		<td>1</td>
-			      		</tr>
-			      		<tr>
-			        		<td>2</td>
-			        		<td>Q&A2</td>
-			        		<td>닉네임2</td>
-			        		<td>2</td>
-			      		</tr>
-			    	</tbody>
-			    	<tfoot>
-			    		<tr>
-			    			<td colspan="4" align=right>
-			    			<c:if test="${not empty sessionScope.loginuser}">
-		    					<button type="button" onclick="writeQNA()">Q&A 작성</button>
-			    			</c:if>
-			    			</td>
-			    		</tr>
-			    	</tfoot>
-			  	</table>
-			</div>
+			<nav class="my-5">
+		        <div style="display: flex; width: 100%;" align=center>
+		       	    <ul class="pagination" style='margin:auto;'>${requestScope.pageBar}</ul>
+		    	</div>
+		    </nav>
 		</div>
 	</div>
 </div>

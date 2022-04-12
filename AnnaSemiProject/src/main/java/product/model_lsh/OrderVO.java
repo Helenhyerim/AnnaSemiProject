@@ -1,5 +1,7 @@
 package product.model_lsh;
 
+import member.model.MemberVO;
+
 public class OrderVO {
 
 	private String ordernum;		// 주문 번호
@@ -11,11 +13,19 @@ public class OrderVO {
 	private String name_receiver;	// 수신인 이름
 	private String zipcode;			// 우편 번호
 	private String address;			// 배송지
-
+	private int orderstatus;		// 주문상태
+	
+	private OrderDetailVO odvo;
+	private ProductVO pvo;
+	private MemberVO mvo;
+	
+	
 	public OrderVO() {}
-
+	
 	public OrderVO(String ordernum, String userid, int ordertotalprice, int ordertotalpoint, String orderdate,
-				   int paymethod, String name_receiver, String zipcode, String address) {
+			int paymethod, String name_receiver, String zipcode, String address, int orderstatus, OrderDetailVO odvo,
+			ProductVO pvo, MemberVO mvo) {
+		super();
 		this.ordernum = ordernum;
 		this.userid = userid;
 		this.ordertotalprice = ordertotalprice;
@@ -25,7 +35,12 @@ public class OrderVO {
 		this.name_receiver = name_receiver;
 		this.zipcode = zipcode;
 		this.address = address;
+		this.orderstatus = orderstatus;
+		this.odvo = odvo;
+		this.pvo = pvo;
+		this.mvo = mvo;
 	}
+
 
 	public String getOrdernum() {
 		return ordernum;
@@ -98,6 +113,37 @@ public class OrderVO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
+
+	public OrderDetailVO getOdvo() {
+		return odvo;
+	}
+
+	public void setOdvo(OrderDetailVO odvo) {
+		this.odvo = odvo;
+	}
+
+	public ProductVO getPvo() {
+		return pvo;
+	}
+
+	public void setPvo(ProductVO pvo) {
+		this.pvo = pvo;
+	}
+
+	public int getOrderstatus() {
+		return orderstatus;
+	}
+
+	public void setOrderstatus(int orderstatus) {
+		this.orderstatus = orderstatus;
+	}
+
+	public MemberVO getMvo() {
+		return mvo;
+	}
+
+	public void setMvo(MemberVO mvo) {
+		this.mvo = mvo;
+	}
 	
 }

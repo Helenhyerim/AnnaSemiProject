@@ -1,18 +1,21 @@
 package product.controller_lsh;
 
-import java.util.List;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+
 import common.controller.AbstractController;
 import member.model.MemberVO;
 import product.model_lsh.InterProductDAO;
-import product.model_lsh.OrderVO;
 import product.model_lsh.ProductDAO;
 
-public class OrderSuccessAction extends AbstractController {
+public class OrderCancelAction extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -20,39 +23,35 @@ public class OrderSuccessAction extends AbstractController {
 		// 로그인 유무 검사하기
 		boolean isLogin = super.checkLogin(request);
 		
-		if(isLogin) { // 로그인을 한 경우
+		if(isLogin) {
 			
 			String method = request.getMethod();
 			
-		//	if("POST".equalsIgnoreCase(method)) { // POST 방식으로 접근한 경우
-		
-				HttpSession session = request.getSession();
-				MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+			if("POST".equalsIgnoreCase(method)) { // POST 방식으로 접근한 경우
 				
-				String userid = loginuser.getUserid();
+				String ordernum = request.getParameter("ordernum");
 				
 				InterProductDAO pdao = new ProductDAO();
 				
-				// 로그인 중인 사용자의 아이디로 최근 주문 코드 조회하기
-				String ordernum = pdao.selectRecentOrdernum(userid);
+				// 주문번호로 해당 주문을 취소하기(update)
+				int n = pdao.cancelOrder(ordernum);
 				
-				// 주문 번호로 주문 상세 정보 알아오기
-				List<OrderVO> orderList = pdao.selectOrderInfo(ordernum);
-				
-				request.setAttribute("orderList", orderList);
-				
-				int totalPrice_origin = 0; // 총 주문금액(정가기준)
-				for(OrderVO order : orderList) {
-					totalPrice_origin += order.getPvo().getProductprice() * order.getOdvo().getOrderqty();
+				boolean isCancel = false;
+				if(n == 1) {
+					isCancel = true;
 				}
 				
-				request.setAttribute("totalPrice_origin", totalPrice_origin);
-			
-			//	super.setRedirect(false);
-				super.setViewPage("/WEB-INF/product_lsh/orderSuccess.jsp");
-		//	}
-		/*	else { // GET 방식으로 접근한 경우
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("isCancel", isCancel);
 				
+				String json = jsonObj.toString();
+				
+				request.setAttribute("json", json);
+				
+				super.setViewPage("/WEB-INF/jsonview.jsp");
+				
+			}
+			else { // GET 방식으로 접근한 경우
 				String message = "잘못된 접근 경로입니다.";
 	            String loc = "javascript:history.back()";
 	               
@@ -61,8 +60,8 @@ public class OrderSuccessAction extends AbstractController {
 	              
 	        //  super.setRedirect(false);   
 	            super.setViewPage("/WEB-INF/msg.jsp");
-			} */
-		}	
+			}
+		}
 		else { // 로그인을 하지 않은 경우
 			request.setAttribute("message", "로그인 후 이용할 수 있습니다.");
 			request.setAttribute("loc", request.getContextPath() + "/login/login.an");
@@ -72,6 +71,7 @@ public class OrderSuccessAction extends AbstractController {
 					
 			return;
 		}
+		
 	}
 
 }

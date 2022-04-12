@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <jsp:include page="../view/common/header_login.jsp"/>
 
@@ -17,17 +19,33 @@
 		width: 100%;
 	}
 	
-	table > tbody > tr:first-child {
+	table#tbl_order > tbody > tr:first-child {
 		border-top: solid 1px lightgray;
 	}
 	
-	table > tbody > tr {
+	table#tbl_order > tbody > tr {
 		border-bottom: solid 1px lightgray;
 	}
 	
-	table tr td:first-child {
+	table#tbl_order tr td:first-child {
 		width: 5%;
 		text-align: center;
+	}
+	
+	table#tbl_deliveryInfo tbody tr, table#tbl_payInfo tbody tr, table#tbl_orderInfo tbody tr {
+		border-top: solid 1px lightgray;
+		border-bottom: solid 1px lightgray;
+	}
+	
+	td.title {
+		background-color: #F8F8F8;
+		border-right: solid 1px lightgray;
+		width: 25%;
+		padding-left: 10px;
+	}
+	
+	td.content {
+		padding-left: 10px;
 	}
 	
 </style>
@@ -36,107 +54,134 @@
 
 	$(document).ready(function() {
 
-		// 체크박스 전체 선택/해제
-		$("input#checkAll").click(function() {
-			if($("input#checkAll").prop("checked")) {
-				$("input.product").prop("checked", true);
-			}
-			else {
-				$("input.product").prop("checked", false);
-			}
-		});
 		
-		$("input.product").click(function() {
-			if($("input[name='product']:checked").length == 5) {
-				$("input#checkAll").prop("checked", true);
-			}
-			else {
-				$("input#checkAll").prop("checked", false);
-			}
-		});
 
 	}); // end of $(document).ready(function() {})
 	
 	
-	// 선택 주문 취소
-	function selOrderCancel() {
-		alert("선택 주문 취소를 클릭하셨군요");
-	}
-	
-	
 	// 전체 주문 취소
 	function allOrderCancel() {
-		alert("전체 주문 취소를 클릭하셨군요");
+		
+		var orderCancelConfirm = confirm("주문을 취소하시겠습니까?");
+		
+		console.log(orderCancelConfirm);
+
+		if(orderCancelConfirm) {
+			$.ajax({
+				url:"<%= request.getContextPath() %>/product_lsh/orderCancel.an",
+				data:{"ordernum":"${requestScope.orderList[0].ordernum}"},
+				type:"post",
+				dataType:"json",
+				success:function(json) {
+					alert("주문이 취소되었습니다.");
+					location.href="javascript:location.reload(true)";
+				},
+				error:function(request, status, error) {
+	    			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+	    		}
+			});
+		}
 	}
 	
 </script>
 
 <div id="container">
-	<div>
-		<table id="tbl_order">
+	<div align=center class="mb-6">
+		<h4 style="font-weight: bold;">상세 주문 내역</h4>
+	</div>
+
+	<div class="my-5" style="width: 50%;">
+		<table id="tbl_orderInfo">
 			<thead>
 				<tr>
-					<th style="text-align: center;"><input type="checkbox" id="checkAll"></th>
-					<th colspan="2" style="text-align: center; font-size: 16pt;">상세 주문 내역</th>
+					<th colspan="2" style="font-weight: bold;">주문정보</th>
 				</tr>
 			</thead>
-			
 			<tbody>
-			<%--	<c:forEach var="order" items="orderList">	--%>
-					<tr>	<%-- 주문 개수만큼 반복(each) --%>
-						<td><input type="checkbox" class="product" name="product"></td>
-						<td style="width: 20%;"><img src="../images/p1.png" style="width: 80%;"></td>
-						<td>
-							<ul style="list-style: none; padding: 0; line-height: 35px;">
-								<li><label>상품명</label></li>
-								<li><label>가격/수량</label></li>
-								<li><label>옵션명</label></li>
+				<tr>
+					<td class="title">주문번호</td>
+					<td class="content">${requestScope.orderList[0].ordernum}</td>				
+				</tr>
+				<tr>
+					<td class="title">주문일자</td>
+					<td class="content">${requestScope.orderList[0].orderdate}</td>				
+				</tr>
+				<tr>
+					<td class="title">주문자</td>
+					<td class="content">${requestScope.orderList[0].mvo.name}</td>				
+				</tr>
+				<tr>
+					<td class="title">주문처리상태</td>
+					<td class="content">
+						<c:choose><c:when test="${requestScope.orderList[0].orderstatus eq 1}">결제완료</c:when><c:otherwise>주문취소</c:otherwise></c:choose>
+					</td>				
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div>
+		<table id="tbl_order">
+			<tbody>
+				<c:forEach var="order" items="${requestScope.orderList}">
+					<tr>
+						<td style="width: 10%;">
+							<img src="../images/${order.pvo.productimage1}" style="max-width: 100%; border-radius: 5px;">
+						</td>
+						<td style="width: 30%;">
+							<ul style="list-style: none; padding: 0;">
+								<li><label style="font-weight: bold;">${order.pvo.productname}</label></li>
+								<li><label>[옵션]</label></li>
+								<li>옵션1 (2개)</li>
+								<li>옵션2 (1개)</li>
 							</ul>
 						</td>
+						<td style="width: 20%;" align=center>
+							${order.odvo.orderqty}
+						</td>
+						<td style="width: 20%;" align=center>
+							<label><fmt:formatNumber value="${order.odvo.orderprice * order.odvo.orderqty}" pattern="#,###,###"/>&nbsp;원</label>	
+						</td>
 					</tr>
-			<%--	</c:forEach>	--%>
+				</c:forEach>
 			</tbody>
-			<tfoot style="text-align: right;">
+			<c:if test="${requestScope.orderList[0].orderstatus eq 1}">
+			<tfoot>
 				<tr>
-					<td></td>
-					<td></td>
-					<td>
-						<button type="button" class="btn btn-light" onclick='selOrderCancel()'>선택 주문 취소</button>
+					<td colspan="4" style="text-align: right;">
 						<button type="button" class="btn btn-secondary" onclick='allOrderCancel()'>전체 주문 취소</button>
 					</td>
 				<tr>
 			</tfoot>
+			</c:if>
 		</table>
 	</div>
 	
-	<div class="row" style="width: 100%; margin: 10px auto;">
+	<div class="row my-5" style="width: 100%; margin: 10px auto;">
 		<div class="col-md-6">
 			<table id="tbl_deliveryInfo"> 
 				<thead>
 					<tr>
-						<th colspan="2">배송지 정보</th>
+						<th colspan="2" style="font-weight: bold;">배송지 정보</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<th>받으시는 분</th>
-						<td>${requestScope.ovo.name_receiver}</td>
+						<td class="title">받으시는 분</td>
+						<td class="content">${requestScope.orderList[0].name_receiver}</td>
 					</tr>
 					<tr>
-						<th>우편번호</th>
-						<td>${requestScope.ovo.zipcode}</td>
+						<td class="title">우편번호</td>
+						<td class="content">${requestScope.orderList[0].zipcode}</td>
 					</tr>
 					<tr>
-						<th>주소</th>
-						<td>${requestScope.ovo.address}</td>
+						<td class="title">주소</td>
+						<td class="content">${requestScope.orderList[0].address}</td>
 					</tr>
 					<tr>
-						<th>휴대전화</th>
-						<td></td>
-					</tr>
-					<tr>
-						<th>배송메시지</th>
-						<td></td>
+						<c:set var="mobile" value="${requestScope.orderList[0].mvo.mobile}"/>
+						<td class="title">휴대전화</td>
+						<td class="content">${fn:substring(mobile, 0, 3)}-${fn:substring(mobile, 3, 7)}-${fn:substring(mobile, 7, 11)}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -145,21 +190,17 @@
 			<table id="tbl_payInfo"> 
 				<thead>
 					<tr>
-						<th colspan="2">결제 정보</th>
+						<th colspan="2" style="font-weight: bold;">결제 정보</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<th>금액</th>
-						<td>${requestScope.ovo.ordertotalprice}</td>
+						<td class="title">금액</td>
+						<td class="content"><fmt:formatNumber value="${requestScope.orderList[0].ordertotalprice}" pattern="#,###,###"/>&nbsp;원</td>
 					</tr>
 					<tr>
-						<th>적립 포인트</th>
-						<td>${requestScope.ovo.ordertotalpoint}</td>
-					</tr>
-					<tr>
-						<th>결제수단</th>
-						<td>신용카드</td>
+						<td class="title">적립 포인트</td>
+						<td class="content"><fmt:formatNumber value="${requestScope.orderList[0].ordertotalpoint}" pattern="#,###,###"/></td>
 					</tr>
 				</tbody>
 			</table>

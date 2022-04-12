@@ -31,11 +31,20 @@ public interface InterProductDAO {
 	// VO 를 사용하지 않고 Map 으로 처리해보겠습니다.
 	List<HashMap<String, String>> getCategoryList() throws SQLException;
 	
-	// 최근 주문 정보 알아오기
-	OrderVO selectRecentOrder(String userid) throws SQLException;
-	
 	// 상품 리뷰 알아오기
 	List<PurchaseReviewVO> reviewInfo(String productnum) throws SQLException;
+	
+	// 사용자 아이디로 최근 주문 번호 알아오기
+	String selectRecentOrdernum(String ordernum) throws SQLException;
+	
+	// 주문번호로 주문 정보 알아오기(orderDetail)
+	List<OrderVO> selectOrderInfo(String ordernum) throws SQLException;
+	
+	// 주문번호로 해당 주문 취소상태로 변경하기(update)
+	int cancelOrder(String ordernum) throws SQLException;	
+	
+	// 페이징 처리가 되어진 모든 리뷰 보여주기
+	List<PurchaseReviewVO> selectPagingReview(Map<String, String> paraMap) throws SQLException;
 	
 	
 	
@@ -54,6 +63,14 @@ public interface InterProductDAO {
 
 	// userid 를 받아서 장바구니에 있는 상품 보여주기
 	List<Map<String, String>> getCartItemsByUserid(String userid) throws SQLException;
+
+	
+
+
+
+	
+
+	
 
 	
 
