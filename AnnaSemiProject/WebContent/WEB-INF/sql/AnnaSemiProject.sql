@@ -8,7 +8,7 @@ grant connect, resource, create view, unlimited tablespace to SEMIORAUSER2;
 select *
 from tbl_member
 order by registerday desc;
-
+commit
 
 update tbl_member set pwd = '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382'
                     , email = 'TydU2C+Xay1SxjpsL1yhxw=='
@@ -146,6 +146,8 @@ CREATE TABLE tbl_spec (
 	specnum NUMBER(8) NOT NULL, /* 스펙번호 */
 	specname VARCHAR2(100) NOT NULL /* 스펙명 */
 );
+select *
+from tbl_spec
 
 CREATE UNIQUE INDEX PK_tbl_spec
 	ON tbl_spec (
@@ -441,7 +443,8 @@ CREATE TABLE tbl_order (
 	zipcode VARCHAR2(100), /* 우편번호 */
 	address VARCHAR2(200) /* 배송지주소 */
 );
-
+select *
+from tbl_dibs
 CREATE UNIQUE INDEX PK_tbl_order
 	ON tbl_order (
 		ordernum ASC
@@ -2671,3 +2674,33 @@ commit
 >>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 >>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
 >>>>>>> branch 'main' of https://github.com/Helenhyerim/AnnaSemiProject.git
+
+
+
+
+
+
+
+
+
+select productnum, categorynum, productname, productimage1, productqty, productprice, fk_specnum, productcontent, point, userid
+from
+(
+    select row_number() over(order by P.productnum desc)as RNO, productnum, categorynum, productname, productimage1, productqty, productprice, fk_specnum, productcontent, point, D.fk_userid as userid
+    from tbl_product P
+    JOIN tbl_dibs D
+    ON P.productnum = D.fk_productnum
+    where D.fk_userid = 'simyj'
+) V
+where V.RNO between 5 and 8;
+
+select count(*)
+from tbl_dibs
+where fk_userid = 'simyj'
+
+select *
+from tbl_dibs
+
+select *
+from tbl_product
+

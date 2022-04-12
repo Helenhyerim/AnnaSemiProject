@@ -42,5 +42,33 @@ public interface InterProductDAO {
 	List<Map<String, String>> getCartItemsByUserid(String userid) throws SQLException;
 
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	////////////////////////////////////////////////////////////////////
+	// 이두현 찜목록 받아서 보여주기 위한 메소드
+	List<ProductVO> selectByWishList(Map<String, String> paraMap) throws SQLException;
 
+	// 이두현 찜목록의 페이징을 위해서 해당유저의 id값을 매개변수로 하여 찜목록의 전체 카운트를 반환받기위한 메소드
+	int totalWishListCount(String userid) throws SQLException;
+
+	// 멤버의 위시리스트에서 삭제 버튼을 눌렀을 경우 userid와 productnum을 받아와 위시리스트에서 삭제해주는 메소드
+	int removeWishProduct_DH(Map<String, String> paraMap) throws SQLException;
+
+	
+	////////////////////////////////////////////////////////////////////
 }

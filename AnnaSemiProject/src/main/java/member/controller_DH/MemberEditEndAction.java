@@ -17,7 +17,7 @@ public class MemberEditEndAction extends AbstractController {
 		
 		if("GET".equalsIgnoreCase(method)) {
 			// *** POST 방식으로 넘어온 것이 아니라면
-			String message = "비정상적인 경로를 통해 들어왔습니다.!!";
+			String message = "비정상적인 경로를 통해 들어왔습니다.";
 	        String loc = "javascript:history.back()";
 	         
 	        request.setAttribute("message", message);
@@ -57,7 +57,7 @@ public class MemberEditEndAction extends AbstractController {
 			
 			if(n == 1) {
 	        	
-	        	// !!! session 에 저장된 loginuser를 변경된 사용자의 정보값으로 변경해주어야 한다. !! //
+	        	//session 에 저장된 loginuser를 변경된 사용자의 정보값으로 변경해주어야 한다 //
 	        	HttpSession session = request.getSession();
 	        	
 	        	MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");

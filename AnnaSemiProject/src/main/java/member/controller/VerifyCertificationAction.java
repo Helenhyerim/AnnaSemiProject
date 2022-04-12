@@ -35,6 +35,7 @@ public class VerifyCertificationAction extends AbstractController {
 	         message = "인증성공 되었습니다.";
 	         // super.setRedirect(false);
 	         loc = request.getContextPath()+"/login/pwdUpdateEnd.an?userid="+userid;
+	        
 	      }
 	      else {
 	         message = "발급된 인증코드가 아닙니다. 인증코드를 다시 발급받으세요!!";
