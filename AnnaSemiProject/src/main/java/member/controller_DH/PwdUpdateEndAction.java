@@ -33,15 +33,25 @@ public class PwdUpdateEndAction extends AbstractController {
 			
 			request.setAttribute("n", n);
 			
+			request.setAttribute("userid", userid);
+			
+			request.setAttribute("method", method);
+			
+			// super.setRedirect(false);
+
+			super.setViewPage("/WEB-INF/view/login/pwdUpdateEnd.jsp");
+			
 		}
-
-		request.setAttribute("userid", userid);
+		else {
+			String message = "잘못된 경로입니다.";
+			String loc = "javascript:history.back()";
+			request.setAttribute("message", message);
+			request.setAttribute("loc", loc);
+			
+			super.setRedirect(false);
+			super.setViewPage("/WEB-INF/msg.jsp");
+		}
 		
-		request.setAttribute("method", method);
-		
-		// super.setRedirect(false);
-
-		super.setViewPage("/WEB-INF/view/login/pwdUpdateEnd.jsp");
 		
 	}
 

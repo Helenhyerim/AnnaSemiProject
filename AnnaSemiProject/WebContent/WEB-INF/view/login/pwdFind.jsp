@@ -23,12 +23,41 @@ div.row > div{
 	text-align: left;
 }
 
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #999;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  margin:0 auto;
+}
 
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 </style>
 <script type = "text/javascript">
  
 $(document).ready(function(){
-		
+	
+	$('div#fixloader').hide();
+	
+	const center_left = ( $(window).scrollLeft() + ($(window).width() - 120) / 2 );<%-- 정수로 만듦 --%>
+	const center_top =( $(window).scrollTop() + ($(window).height() - 120) / 2 );<%-- 정수로 만듦 --%>
+	
+	$('div#fixloader').css({'position':'absolute', 'top':center_top,'left':center_left});
+	
+	console.log(center_left);
+	console.log(center_top);
 	$("input#email").bind("keydown", function(event){
 		if(event.keyCode == 13) { // 이메일입력란에 엔터를 했을 경우 
 			goPwdFind(); // 아이디 찾기를 시도한다.
@@ -39,7 +68,7 @@ $(document).ready(function(){
 
 // 유효성검사를 한뒤에 post 형식으로 보내준다.
 function goPwdFind(){
-	
+	$('div#fixloader').show();
 	const name = $("input#name").val().trim();
 	const regExp = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i); 
 	const userid = $("input#userid").val().trim();
@@ -60,7 +89,7 @@ function goPwdFind(){
 	
 	const frm = document.pwdFindfrm;
 	frm.action = "<%= request.getContextPath()%>/login/pwdFind.an";
-	frm.method = "post";
+	frm.method = "POST";
 	frm.submit();
 	
 }
@@ -70,7 +99,7 @@ function goCheckCode(){
 	const frm = document.codeCheckfrm;
 	
 	frm.action = "<%= request.getContextPath()%>/login/verifyCertification.an";
-	frm.method = "post";
+	frm.method = "POST";
 	frm.submit();
 
 	
@@ -125,6 +154,7 @@ function goCancel(){
 						<button class = "login_element w-100 btn btn-light btn-lg text-center" type = "button" onclick = "goCancel();" >취소하기</button>
 					</div>
 			    </form>
+			    <div class="loader " id = "fixloader"></div>
 			</c:if>		   
 		    <c:if test="${requestScope.method == 'POST' && requestScope.sendMailSuccess == true && requestScope.isUserExist == true}">
 		   		<form name = "codeCheckfrm" style = "margin-bottom: 200px;" class = "text-center">

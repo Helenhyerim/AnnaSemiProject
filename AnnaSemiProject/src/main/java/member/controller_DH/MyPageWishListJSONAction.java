@@ -30,6 +30,8 @@ public class MyPageWishListJSONAction extends AbstractController {
 		paraMap.put("start", start); // start "1"  "5"  "9"  "13"  "17"
 		paraMap.put("userid", userid);
 		
+		System.out.println(start);
+		System.out.println(len);
 		String end = String.valueOf( (Integer.parseInt(start) + Integer.parseInt(len) - 1) );
 									 // end => start + len - 1;  
 									 // end "4"  "8"  "12"  "16"  "20"
