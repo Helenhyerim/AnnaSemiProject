@@ -111,7 +111,7 @@
 					<td colspan="2" align="center" style="border-left: hidden; border-bottom: hidden; border-right: hidden;">
 						<input type="button" value="수정" id="btnEditer" style="width: 80px;" /> 
 						&nbsp;
-						<input type="reset" value="취소" id="btnCancel" style="width: 80px;" />   
+						<input type="reset" value="취소" id="btnCancel" style="width: 80px;" onclick="location.href='<%= request.getContextPath()%>/qna.an'"/>   
 					</td>
 				</tr>
 			</tbody>

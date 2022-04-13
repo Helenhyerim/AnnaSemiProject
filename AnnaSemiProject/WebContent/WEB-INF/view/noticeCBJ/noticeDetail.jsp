@@ -68,7 +68,9 @@
 				</div>
 				&nbsp;				
 				<div id="noitceinfo" style="float: right; ">
-					<button type="button" id=menu class="btn btn-default btn-lg" aria-label="Left Align" onclick="location.href='<%= ctxPath %>/notice.an'">
+					<button type="button" id=menu class="btn btn-default btn-lg" 
+							aria-label="Left Align" 
+							onclick="location.href='<%= ctxPath %>/notice.an'">
 						<i class="fas fa-bars"></i>
 					</button>
 				</div>
@@ -82,7 +84,9 @@
 		<c:if test="${sessionScope.loginuser.userid eq 'admin'}">
 			<div style="float: right; padding: 20px;">
 				<a href="<%=ctxPath %>/noticeEditForm.an?noticeNo=${vo.noticeNo}"><button id="modify">수정</button></a>
-				<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="<%=ctxPath %>/noticeDelete.an?noticeNo=${vo.noticeNo}"><button id="delete">삭제</button></a>
+				<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="<%=ctxPath %>/noticeDelete.an?noticeNo=${vo.noticeNo}">
+					<button id="delete">삭제</button>
+				</a>
 			</div>
 		</c:if>
 	</div>		

@@ -222,7 +222,9 @@ public class QnaDAO implements InterQnaDAO {
 			try {
 				conn = ds.getConnection();
 				
-				String sql = " select qnano, fk_userid, questiontitle, questiontitle, questiondate, answertitle, answercontents, answerdate, questionimg, answerimg "
+				String sql = " select qnano, fk_userid, questiontitle, "
+						   + " questionContents, questiondate, answertitle, "
+						   + " answercontents, answerdate, questionimg, answerimg "
 						   + " from tbl_qna where qnano = ? ";
 				
 				pstmt = conn.prepareStatement(sql);
