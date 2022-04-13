@@ -797,5 +797,103 @@ public class ProductDAO implements InterProductDAO {
 		
 		return pvo;
 	}// end of public List<ProductVO> getOrderItems(String cart_checked)----------
+
+
+	// 구매 이력 조회
+	@Override
+	public boolean isPurchaseCheck(Map<String, String> paraMap) throws SQLException {
+	
+		boolean isPurchase = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			// 해당 상품 구매 이력 조회
+			String sql = "select * "
+					   + "from tbl_order O "
+					   + "JOIN tbl_orderdetail D "
+					   + "ON o.ordernum = d.ordernum "
+					   + "where o.fk_userid = ? and d.fk_productnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("productnum"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) { // 구매 이력이 있는 경우
+				isPurchase = true;
+			}
+		
+		} finally {
+			close();
+		}
+		
+		return isPurchase;
+	}
+
+
+	// 특정 상품 리뷰 작성 이력 조회
+	@Override
+	public boolean isWriteReviewCheck(Map<String, String> paraMap) throws SQLException {
+		
+		boolean isWriteReview = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			// 사용자가 해당 상품에 리뷰를 작성한 적이 있는지 조회
+			String sql = "select * "
+					   + "from tbl_purchase_reviews "
+					   + "where fk_userid = ? and fk_productnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("productnum"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) { // 리뷰 작성 이력이 있는 경우
+				isWriteReview = true;
+			}
+		
+		} finally {
+			close();
+		}
+		
+		return isWriteReview;
+	}
+
+
+	// 특정 상품 리뷰에 대한 총페이지 알아오기
+	@Override
+	public int getReviewTotalPage(Map<String, String> paraMap) throws SQLException {
+		int totalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select ceil(count(*)/?) "
+					   + "from tbl_purchase_reviews "
+					   + "where fk_productnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("sizePerPage"));
+			pstmt.setString(2, paraMap.get("productnum"));
+			
+			rs = pstmt.executeQuery();
+			
+			// 결과는 무조건 나온다. 없으면 0 이라도.
+			rs.next();
+			
+			totalPage = rs.getInt(1);
+			
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;
+	}
 	
 }

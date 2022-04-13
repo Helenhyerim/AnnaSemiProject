@@ -46,6 +46,18 @@ public interface InterProductDAO {
 	// 페이징 처리가 되어진 모든 리뷰 보여주기
 	List<PurchaseReviewVO> selectPagingReview(Map<String, String> paraMap) throws SQLException;
 	
+	// 구매 이력 조회
+	boolean isPurchaseCheck(Map<String, String> paraMap) throws SQLException;
+	
+	// 특정 상품 리뷰 작성 이력 조회
+	boolean isWriteReviewCheck(Map<String, String> paraMap) throws SQLException;
+	
+	// 특정 상품 리뷰에 대한 총페이지 알아오기
+	int getReviewTotalPage(Map<String, String> paraMap) throws SQLException;
+
+	
+	
+	
 	
 	
 	// 유혜림
@@ -66,6 +78,13 @@ public interface InterProductDAO {
 
 	// 장바구니 페이지에서 넘어온 cartno 로 주문페이지에 보여줄 아이템 조회해오기
 	ProductVO getOrderItems(String cartno) throws SQLException;
+
+	
+
+	
+
+	
+	
 
 
 

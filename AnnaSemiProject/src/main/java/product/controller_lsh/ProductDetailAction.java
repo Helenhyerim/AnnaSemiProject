@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import common.controller.AbstractController;
-import my.util.MyUtil;
 import product.model_lsh.InterProductDAO;
 import product.model_lsh.ProductDAO;
 import product.model_lsh.ProductImageVO;
@@ -78,9 +77,10 @@ public class ProductDetailAction extends AbstractController {
 			}
 			
 			paraMap.put("sizePerPage", sizePerPage);
+			paraMap.put("productnum", productnum);
 			
 			// 페이징 처리를 위해 전체 리뷰에 대한 총페이지 알아오기
-			int totalPage = pdao.getTotalPage(paraMap);
+			int totalPage = pdao.getReviewTotalPage(paraMap);
 			
 			// === GET 방식이므로 사용자가 웹브라우저 주소창에서 currentShowPageNo 에 
 			//     토탈페이지수 보다 큰 값을 입력하여 장난친 경우라면 currentShowPageNo 는 1 페이지로 만들도록 한다. ==== // 
@@ -89,7 +89,6 @@ public class ProductDetailAction extends AbstractController {
 			}
 			
 			paraMap.put("currentShowPageNo", currentShowPageNo);
-			paraMap.put("productnum", productnum);
 			
 			List<PurchaseReviewVO> reviewList = pdao.selectPagingReview(paraMap);
 			
@@ -135,6 +134,7 @@ public class ProductDetailAction extends AbstractController {
 			}
 			
 			request.setAttribute("pageBar", pageBar);
+			request.setAttribute("totalPage", totalPage);
 // 페이지바 끝			
 			
 			if(pvo != null) {

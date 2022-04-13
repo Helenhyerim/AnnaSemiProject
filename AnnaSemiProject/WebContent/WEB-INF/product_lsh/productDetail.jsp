@@ -244,6 +244,10 @@
 			$(this).next("tr.reviewContents").toggle();
 		});
 		
+		
+		// 리뷰 테이블 페이지 이동시 스크롤 고정
+		
+				
 	}); // end of $(document).ready(function() {})
 	
 	
@@ -352,7 +356,44 @@
 	// 리뷰 작성
 	function writeReview() {
 		// 로그인 중인 사용자가 해당 상품을 구매한 이력이 있는지 조회하기 true라면 리뷰작성페이지로 이동
-		alert("리뷰 작성을 클릭하셨군요?");
+		if(${not empty sessionScope.loginuser}) {
+			$.ajax({
+				url:"<%= ctxPath %>/product_lsh/writeReviewCheck.an",
+				data:{"productnum":"${requestScope.pvo.productnum}",
+					  "userid":"${sessionScope.loginuser.userid}"},
+				type:"post",
+				dataType:"json",
+				async:false,
+				success:function(json) {
+					if(!json.isPurchase) {
+						alert("해당 상품을 구매한 후 리뷰를 작성하실 수 있습니다.");
+					}
+					
+					if(json.isWriteReview) {
+						alert("이미 해당 상품의 리뷰를 작성하셨습니다.");
+					}
+					
+					if(json.isPurchase && !json.isWriteReview) {
+						var writeReviewConfirm = confirm("리뷰를 작성하시겠습니까?");
+						
+						// form으로 데이터 전송(userid, productnum)
+						if(writeReviewConfirm) {
+							const frm = document.sendWriteReviewFrm;
+							frm.action = "<%= ctxPath %>/product_lsh/writeReview.an";
+		                    frm.method = "post";
+		                    frm.submit();
+						}
+					}
+					
+				},
+				error:function(request, status, error) {
+	    			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+	    		}
+			}); // end of $.ajax({})
+		}
+		else {
+			goLoginPage();
+		}
 	}
 	
 </script>
@@ -467,7 +508,7 @@
 			    		<c:if test="${not empty requestScope.reviewList}">
 				      		<c:forEach var="review" items="${requestScope.reviewList}" varStatus="status">
 				      			<tr class="reviewTitle">
-				      				<td>${status.count}</td>
+				      				<td>${review.review_no}</td>
 				      				<td>${review.reviewtitle}</td>
 				      				<td>${review.userid}</td>
 				      			</tr>
@@ -493,11 +534,14 @@
 			    	</tfoot>
 			  	</table>
 			</div>
-			<nav class="my-5">
-		        <div style="display: flex; width: 100%;" align=center>
-		       	    <ul class="pagination" style='margin:auto;'>${requestScope.pageBar}</ul>
-		    	</div>
-		    </nav>
+			
+			<c:if test="${not empty requestScope.reviewList && requestScope.totalPage ne 1}">
+				<nav class="my-5">
+			        <div style="display: flex; width: 100%;" align=center>
+			       	    <ul class="pagination" style='margin:auto;'>${requestScope.pageBar}</ul>
+			    	</div>
+			    </nav>
+		    </c:if>
 		</div>
 	</div>
 </div>
@@ -515,6 +559,12 @@
 	<div id="opListInput"></div>
 	<div id="qtyListInput"></div>
 	<input type="hidden" name="pprice" value="${requestScope.pvo.saleprice}"/>
+</form>
+
+<%-- 리뷰 작성을 위한 데이터 전송 form --%>
+<form name="sendWriteReviewFrm">
+	<input type="hidden" name="userid" value="${sessionScope.loginuser.userid}"/>
+	<input type="hidden" name="productnum" value="${requestScope.pvo.productnum}" />
 </form>
 
 <jsp:include page="../view/common/footer.jsp"/>
