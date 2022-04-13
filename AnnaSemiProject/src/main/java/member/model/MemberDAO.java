@@ -658,6 +658,48 @@ public class MemberDAO implements InterMemberDAO {
 	      
 	      return orderList;
 	   }
+
+	
+	// 게시글에 대한 페이징 처리를 위해 자신이 작성한 게시글 갯수 알아오기
+	@Override
+	public int getTotalCountBoard(String userid) throws SQLException {
+		int totalCountBoard = 0;
+		
+		try {
+			 conn = ds.getConnection();
+			 
+			 String sql = "select count(*) "+
+					 "from tbl_order A join tbl_orderdetail B "+
+					 "on A.ordernum = B.ordernum ";
+			 
+			 if("admin".equalsIgnoreCase(userid)) {
+				 pstmt = conn.prepareStatement(sql);
+			 }
+			 else {
+				 // 관리자가 아닌 일반사용자로 로그인한 경우
+				 sql += " where A.fk_userid = ? " ;
+				 
+				 pstmt = conn.prepareStatement(sql);
+				 pstmt.setString(1, userid);
+			 }
+
+			 rs = pstmt.executeQuery();
+			 
+			 rs.next();
+				
+			 totalCountBoard = rs.getInt(1);
+		} finally {
+			close();
+		}
+		
+		return totalCountBoard;
+	}
+
+	@Override
+	public List<MemberVO> getMemberBoard(Map<String, String> paraMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

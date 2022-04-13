@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
+import member.controller.GoogleMail;
 import member.model.InterMemberDAO;
 import member.model.MemberDAO;
 import member.model.MemberVO;
@@ -42,8 +43,11 @@ public class MemberOneDetailAction extends AbstractController {
 			
 			request.setAttribute("mvo", mvo);
 			
+			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/view/member/memberOneDetail.jsp");
+			
+			
 		}
 	}
 
