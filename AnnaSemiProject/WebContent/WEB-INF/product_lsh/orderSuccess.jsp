@@ -75,7 +75,7 @@
 					<c:forEach var="order" items="${requestScope.orderList}">
 						<tr style="border-bottom: solid 1px lightgray;">
 							<td style="width: 10%;">
-								<img src="../images/${order.pvo.productimage1}" style="max-width: 100%; border-radius: 5px;">
+								<img src="../images/product/${order.pvo.productimage1}" style="max-width: 100%; border-radius: 5px;">
 							</td>
 							<td style="width: 30%;">
 								<ul style="list-style: none; padding: 0;">

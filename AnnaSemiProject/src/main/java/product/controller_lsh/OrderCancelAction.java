@@ -1,17 +1,11 @@
 package product.controller_lsh;
 
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
 import common.controller.AbstractController;
-import member.model.MemberVO;
 import product.model_lsh.InterProductDAO;
 import product.model_lsh.ProductDAO;
 

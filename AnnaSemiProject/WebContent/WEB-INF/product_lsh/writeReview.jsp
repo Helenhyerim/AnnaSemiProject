@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:include page="../view/common/header_login.jsp"/>
 
@@ -52,13 +54,13 @@
 	<div id="productInfo">
 		<table id="tbl_productInfo">
 			<tr>
-				<td style="width: 20%;">
-					<img src="../images/p1.png" style="max-width: 100%; border-radius: 5px;">
+				<td style="width: 15%;">
+					<img src="../images/product/${requestScope.pvo.productimage1}" style="max-width: 100%; border-radius: 5px;">
 				</td>
 				<td>
 					<ul class="ml-2" style="list-style: none; padding: 0; line-height: 40px;">
-						<li>상품명</li>
-						<li>상품가격</li>
+						<li style="font-weight: bold;">${requestScope.pvo.productname}</li>
+						<li><fmt:formatNumber value="${requestScope.pvo.productprice}" pattern="#,###,###"/>&nbsp;원</li>
 					</ul>
 				</td>
 			</tr>
@@ -83,6 +85,7 @@
 				</table>
 			</div>
 			<textarea cols="50" rows="10" style="resize: none; width: 100%;" name="reviewContents"></textarea>
+			<input type="hidden" name="productnum" value="${requestScope.pvo.productnum}" />
 		</form>
 		<div align=right>
 			<button type="button" onclick="javascript:history.back()">취소</button>

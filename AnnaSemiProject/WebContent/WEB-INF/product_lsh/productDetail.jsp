@@ -34,7 +34,7 @@
 				imgArr.push(value);
 			});
 			
-			$("div#cover").html('<img class="imgcss" src="../images/' + imgArr[index] + '">');
+			$("div#cover").html('<img class="imgcss" src="../images/product/' + imgArr[index] + '">');
 		});
 		
 		// 옵션 선택
@@ -50,7 +50,7 @@
 			
 			if($("select#reqOption").val() != "") {
 				if(isExistOption == 0) {
-					let html = '<li style="margin: 10px 0;">'
+					let html = '<li style="margin: 20px 0;">'
 							 + '	<label style="width: 150px;" id="pname">' + productName + '</label>'
 							 + '	<input class="mr-3" type="text" name="productqty" value="1" readonly style="width: 40px; text-align: center;"/>'
 						 	 + '	<img onclick="addQty()" src="../images/plus.png" style="width: 20px;">'
@@ -80,7 +80,7 @@
 					const selOptionName = $("select#selOption option:selected").text();
 				
 					let html = '<li>'
-						 	 + '	<label id="pname">' + selOptionName + '</label>'
+						 	 + '	<label id="pname" style="margin-right: 178px;">' + selOptionName + '</label>'
 						 	 + ' 	<img onclick="delOption()" src="../images/cancel.png" style="width: 20px;">'
 						 	 + '</li>';
 				
@@ -410,26 +410,26 @@
 	<div id="main_content">
 		<div id="top_content" class="row">
 			<div id="product_cover" class="col-md-7">
-				<div id="cover"><img class="imgcss" src="../images/${requestScope.pvo.productimage1}"></div>
-				<div id="img_list">
+				<div id="cover" style="width: 90%; margin: 0px auto;" align=center><img class="imgcss" src="../images/product/${requestScope.pvo.productimage1}"></div>
+				<div id="img_list" align=center>
 					<c:forEach var="pimg" items="${requestScope.imgList}" end="4">
-						<img class="imgcss" src="../images/${pimg.imagefilename}">
+						<img class="imgcss" src="../images/product/${pimg.imagefilename}">
 					</c:forEach>
 				</div>
 			</div>
 			<div id="product_option" class="col-md-5">
-				<h5 class="mb-3">${requestScope.pvo.productname}</h5>
+				<h5 class="mb-4" style="font-weight: bold;">${requestScope.pvo.productname}</h5>
 				
-				<div style="line-height: 40px;">
-					판매가 : <fmt:formatNumber value="${requestScope.pvo.productprice}" pattern="###,###"/><br>
-					회원가 : <fmt:formatNumber value="${requestScope.pvo.saleprice}" pattern="###,###"/>&nbsp;(<fmt:formatNumber value="${requestScope.discountPrice}" pattern="##,###"/>원 할인)
+				<div style="line-height: 45px;">
+					판매가 : <fmt:formatNumber value="${requestScope.pvo.productprice}" pattern="###,###"/>원<br>
+					회원가 : <fmt:formatNumber value="${requestScope.pvo.saleprice}" pattern="###,###"/>원&nbsp;(<fmt:formatNumber value="${requestScope.discountPrice}" pattern="##,###"/>원 할인)
 				</div>
 				<input type="hidden" name="productprice" value="${requestScope.pvo.productprice}"/>
 				<input type="hidden" name="saleprice" value="${requestScope.pvo.saleprice}"/>
 				
-				<hr style="border: solid 1px lightgray">
+				<hr class="my-4" style="border: solid 1px lightgray">
 				
-				<ul id="ul_option" style="list-style: none; line-height: 50px; padding-left: 0; margin: 10px 0; width: 100%;">
+				<ul id="ul_option" style="list-style: none; line-height: 50px; padding-left: 0; width: 100%;">
 					<li>
 						<label style="width: 150px;">필수 옵션</label>
 						<select id="reqOption" style="width: 300px;">
@@ -457,7 +457,7 @@
 					</li>
 				</ul>
 				
-				<ul id="ul_reqOptionResult" style="list-style: none; padding: 0;"></ul>
+				<ul class="mt-5" id="ul_reqOptionResult" style="list-style: none; padding: 0;"></ul>
 				<ul id="ul_selOptionResult" style="list-style: none; padding: 0;"></ul>
 				
 				<hr style="border: solid 1px lightgray">
@@ -490,7 +490,7 @@
 			</div>
 			<div id="productDetailImg">
 				<c:forEach var="pdimg" items="${requestScope.imgList}" begin="4">
-					<img src="../images/${pdimg.imagefilename}" style="width: 90%; margin: 0 auto;"/>
+					<img src="../images/product/${pdimg.imagefilename}" style="width: 90%; margin: 0 auto;"/>
 				</c:forEach>
 			</div>
 			
@@ -506,14 +506,15 @@
 			    	</thead>
 			    	<tbody>
 			    		<c:if test="${not empty requestScope.reviewList}">
+			    			<c:set var="reviewNo" value="${requestScope.totalReviewCnt}"/>
 				      		<c:forEach var="review" items="${requestScope.reviewList}" varStatus="status">
 				      			<tr class="reviewTitle">
-				      				<td>${review.review_no}</td>
+				      				<td>${reviewNo - status.index}</td> <%-- ${review.review_no} --%>
 				      				<td>${review.reviewtitle}</td>
 				      				<td>${review.userid}</td>
 				      			</tr>
 				      			<tr class="reviewContents">
-				      				<td colspan="3" align=center style="font-size: 10pt;">${review.reviewcontents}</td>
+				      				<td colspan="3" style="font-size: 12pt; height: 100px;">${review.reviewcontents}</td>
 				      			</tr>
 				      		</c:forEach>
 			      		</c:if>

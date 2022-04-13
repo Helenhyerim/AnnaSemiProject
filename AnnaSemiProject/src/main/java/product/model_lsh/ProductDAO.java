@@ -895,5 +895,33 @@ public class ProductDAO implements InterProductDAO {
 		
 		return totalPage;
 	}
+
+
+	// 리뷰 등록하기(insert)
+	@Override
+	public int insertReview(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "insert into TBL_PURCHASE_REVIEWS(review_no, fk_userid, fk_productnum, reviewcontents, reviewdate, reviewtitle) "
+					   + "values(SEQ_REVIEW_NO.nextval, ?, ?, ?, sysdate, ?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setInt(2, Integer.parseInt(paraMap.get("productnum")));
+			pstmt.setString(3, paraMap.get("reviewContents"));
+			pstmt.setString(4, paraMap.get("reviewTitle"));
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
 	
 }

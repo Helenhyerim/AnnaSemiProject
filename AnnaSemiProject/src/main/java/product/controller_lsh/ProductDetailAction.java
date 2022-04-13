@@ -92,7 +92,10 @@ public class ProductDetailAction extends AbstractController {
 			
 			List<PurchaseReviewVO> reviewList = pdao.selectPagingReview(paraMap);
 			
+			int totalReviewCnt = reviewList.size();
+			
 			request.setAttribute("reviewList", reviewList);
+			request.setAttribute("totalReviewCnt", totalReviewCnt);
 			paraMap.put("sizePerPage", sizePerPage);
 			
 			String pageBar = "";
