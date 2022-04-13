@@ -705,8 +705,6 @@ function goRegister() {
 	               <option value ="31">31</option>
 	               --%>
 	            </select> &nbsp;일
-	            <span class="gIndent20 " style="padding-left:10px;"><input id="is_solar_calendar0" name="is_solar_calendar"  value="T" type="radio" checked="checked"><label for="is_solar_calendar0">양력</label>
-				<input id="is_solar_calendar1" name="is_solar_calendar"  value="F" type="radio"><label for="is_solar_calendar1">음력</label></span>
 	         </td>
 	      </tr>
 	      </tbody>
