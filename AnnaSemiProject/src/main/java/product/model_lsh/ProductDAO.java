@@ -819,8 +819,6 @@ public class ProductDAO implements InterProductDAO {
 		return pvo;
 	}// end of public List<ProductVO> getOrderItems(String cart_checked)----------
 
-<<<<<<< HEAD
-
 	// 구매 이력 조회
 	@Override
 	public boolean isPurchaseCheck(Map<String, String> paraMap) throws SQLException {
@@ -981,7 +979,7 @@ public class ProductDAO implements InterProductDAO {
 		}
 		
 		return optionList;
-=======
+	}
 	
 	// 주문한 상품에 대한 총 주문금액과 총포인트 알아오기
 	@Override
@@ -1210,7 +1208,6 @@ public class ProductDAO implements InterProductDAO {
 	      }
 	      
 	      return isSuccess;
->>>>>>> branch 'product_branch4' of https://github.com/Helenhyerim/AnnaSemiProject.git
 	}
 	
 }
