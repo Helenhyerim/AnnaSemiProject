@@ -1296,5 +1296,33 @@ public class ProductDAO implements InterProductDAO {
 		
 		return prodList;
 	}// end of public List<ProductVO> selectBySpecName(Map<String, String> paraMap) ---------- 
+
+	// index 페이지에서 보여줄 BEST 상품의 개수
+	@Override
+	public int totalPspecCount(String fk_snum) throws SQLException {
+		int totalCount = 0;
+		
+		try {
+			 conn = ds.getConnection();
+			 
+			 String sql = " select count(*) "+
+					      " from tbl_product "+
+					      " where fk_specnum = ? ";
+			 
+			 pstmt = conn.prepareStatement(sql);
+			 pstmt.setString(1, fk_snum);
+			 
+			 rs = pstmt.executeQuery();
+			 
+			 rs.next();
+			 
+			 totalCount = rs.getInt(1);
+			 
+		} finally {
+			close();
+		}
+		
+		return totalCount;
+	}
 	
 }

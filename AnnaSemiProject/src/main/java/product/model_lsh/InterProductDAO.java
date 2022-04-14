@@ -112,6 +112,9 @@ public interface InterProductDAO {
 	// index 페이지에서 보여줄 BEST 상품 select 해오기
 	List<ProductVO> selectBySpecName(Map<String, String> paraMap) throws SQLException;
 
+	// index 페이지에서 보여줄 BEST 상품의 개수
+	int totalPspecCount(String string) throws SQLException;
+
 	
 
 	
