@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%
 	String ctxPath = request.getContextPath();
@@ -12,70 +12,68 @@
 
 <style type="text/css">
 
-button.accordion {
-	background-color: white;
-	border:none;
-	width: 100%;
-	font-size:14px; 
-	transition: 0.5s;
-	vertical-align: top;
+	button.accordion {
+		background-color: white;
+		border:none;
+		width: 100%;
+		font-size:14px; 
+		transition: 0.5s;
+		vertical-align: top;
+		
+	}
 	
-}
-
-button.accordion.active{
-	font-weight:bold;
-	color : #000;
+	button.accordion.active{
+		font-weight:bold;
+		color : #000;
+		
+	}
 	
-}
-
-
-div.card-header {
-	background-color : white;
-	height:50px;
 	
-}
-
-button.accordion:hover {    
-    font-weight: bold;
-    
-}
-
-div#contents {
-	float:left; 
-	text-align: left; 
-	color: black;
-	transition: ease-out;
-}
+	div.card-header {
+		background-color : white;
+		height:50px;
+		
+	}
 	
-button#regist {
-	background-color: black;
-	color: white;
-	border-line: solid 1px black;
-	font-size: 14px;
-	width: 100px;
-}
+	button.accordion:hover {    
+	    font-weight: bold;
+	    
+	}
 	
-a {
-	padding-right: 10px;
-	padding-left: 10px;
-}
-
-ul.pagination a {
-	border: none;
-	font-weight: bold;
-}
-
-button#modify,#delete {
-	background-color: black;
-	color: white;
-	border-line: solid 1px black;
-	font-size: 14px;
-	width: 100px;
-}
+	div#contents {
+		float:left; 
+		text-align: left; 
+		color: black;
+		transition: ease-out;
+	}
+		
+	button#regist {
+		background-color: black;
+		color: white;
+		border-line: solid 1px black;
+		font-size: 14px;
+		width: 100px;
+	}
+		
+	a {
+		padding-right: 10px;
+		padding-left: 10px;
+	}
+	
+	ul.pagination a {
+		border: none;
+		font-weight: bold;
+	}
+	
+	button#modify,#delete {
+		background-color: black;
+		color: white;
+		border-line: solid 1px black;
+		font-size: 14px;
+		width: 100px;
+	}
 	
 </style>
-
-
 
 <script type="text/javascript">
 
@@ -89,12 +87,13 @@ button#modify,#delete {
 
 <div class="container">
   <div style="margin: 20% auto;">
-  
-  
+
+
 	<h2 style="color: black; font-weight: bold;">FaQ</h2>
-	  	<jsp:include page="faqCategoryList.jsp"></jsp:include><br/><br/><br/>
 		
+  		<%@ include file="/WEB-INF/view/faqCBJ/faqCategoryList.jsp" %><br/><br/>
 		<table>
+			
 			<c:forEach var="faq" items="${requestScope.faqList}">
 				<div class="accordion" id="accordion">
 					<div class="card" style="border-left: none; border-right: none; " >
@@ -135,7 +134,5 @@ button#modify,#delete {
 		
   </div>		
 </div>
-
-
 
 <jsp:include page="../common/footer.jsp"></jsp:include>

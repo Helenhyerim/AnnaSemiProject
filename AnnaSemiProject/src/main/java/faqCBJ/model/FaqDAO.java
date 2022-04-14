@@ -87,7 +87,7 @@ public class FaqDAO implements InterFaqDAO {
 
 	// 조건 조회(R)
 	@Override
-	public FaqVO selectOne(int faqno) throws SQLException {
+	public FaqVO selectOne(int faqNo) throws SQLException {
 			
 		FaqVO faq = null;
 		
@@ -99,7 +99,7 @@ public class FaqDAO implements InterFaqDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setInt(1, faqno);
+			pstmt.setInt(1, faqNo);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
@@ -271,6 +271,91 @@ public class FaqDAO implements InterFaqDAO {
 		return result;
 	}
 
+	
+	@Override
+	public int faqUpdate(FaqVO fvo) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_faq set faqtitle = ?, faqimg = ? "
+						+ " where faqno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, fvo.getFaqTitle());
+			pstmt.setString(2, fvo.getFaqImg());
+			pstmt.setInt(3, fvo.getFaqNo());
+			
+	        result = pstmt.executeUpdate();
+	        
+		} finally {
+			close();		
+		}
+		return result;
+	}
+
+	@Override
+	public List<Object> selectFaqByCategory(Map<String, String> paraMap) throws SQLException {
+
+		List<Object> faqList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select cname, faqno, fk_userid, faqtitle, faqimg, fk_cnum "
+					   + " from "
+					   + " ( "
+					   + "    select rownum as rno, cname, faqno, fk_userid, faqtitle, faqimg, fk_cnum "
+					   + "    from "
+					   + "    ( "
+					   + "        select c.cname, faqno, fk_userid, faqtitle, faqimg, fk_cnum "
+					   + "        from "
+					   + "        ( "
+					   + "            select faqno, fk_userid, faqtitle, faqimg, fk_cnum "
+					   + "            from tbl_faq "
+					   + "            where fk_cnum = ? "
+					   + "            order by faqno desc "
+					   + "        ) F "
+					   + "        join tbl_faqcategory C "
+					   + "        on f.fk_cnum = c.cnum "
+					   + "    ) V "
+					   + " ) T "
+					   + " where T.rno between ? and ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage = 10;
+			
+			pstmt.setString(1, paraMap.get("cnum"));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+			pstmt.setInt(3, (currentShowPageNo * sizePerPage));
+			
+			rs = pstmt.executeQuery();
+			
+			while( rs.next() ) {
+				
+				Map<String, String> map = new HashMap<>();
+				map.put("faqno", Integer.toString(rs.getInt("faqno")));
+				map.put("faqtitle", rs.getString("faqtitle"));
+				map.put("faqimg", rs.getString("faqimg"));
+				map.put("fk_cnum", Integer.toString(rs.getInt("fk_cnum")));
+				map.put("cname", rs.getString("cname"));
+				
+				faqList.add(map);
+				
+			}
+		} finally {
+			close();
+		}
+		
+		return faqList;
+		
+	}
+
 	@Override
 	public List<HashMap<String, String>> getFaqCategoryList() throws SQLException {
 
@@ -303,27 +388,31 @@ public class FaqDAO implements InterFaqDAO {
 	}
 
 	@Override
-	public int faqUpdate(FaqVO fvo) throws SQLException {
+	public int getTotalPage(String cnum) throws SQLException {
 
-		int result = 0;
+		int totalPage = 0;
 		
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " update tbl_faq set faqtitle = ?, faqimg = ? "
-						+ " where faqno = ? ";
+			String sql = " select ceil( count(*)/10 ) "
+					   + " from tbl_faq "
+					   + " where fk_cnum = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, fvo.getFaqTitle());
-			pstmt.setString(2, fvo.getFaqImg());
-			pstmt.setInt(3, fvo.getFaqNo());
+			pstmt.setString(1, cnum);
 			
-	        result = pstmt.executeUpdate();
-	        
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalPage = rs.getInt(1);							
+			
 		} finally {
-			close();		
+			close();
 		}
-		return result;
+		
+		return totalPage;
 	}
 }

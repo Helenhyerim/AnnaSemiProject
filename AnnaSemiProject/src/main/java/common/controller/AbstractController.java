@@ -69,8 +69,8 @@ public abstract class AbstractController implements InterCommand {
 	// ***** 카테고리목록(FaqCategory)을 보여줄 메소드 생성하기 ***** //
 	public void getFaqCategoryList(HttpServletRequest request) throws SQLException {
 		
-		InterFaqDAO pdao = new FaqDAO();
-		List<HashMap<String, String>> faqCategoryList = pdao.getFaqCategoryList();
+		InterFaqDAO fdao = new FaqDAO();
+		List<HashMap<String, String>> faqCategoryList = fdao.getFaqCategoryList();
 		
 		request.setAttribute("faqCategoryList", faqCategoryList);
 	}

@@ -22,11 +22,16 @@ public interface InterFaqDAO {
 
 	int faqInsert(FaqVO evo) throws SQLException;
 
-	List<HashMap<String, String>> getFaqCategoryList() throws SQLException;
-
-	FaqVO selectOne(int faqno) throws SQLException;
+	FaqVO selectOne(int faqNo) throws SQLException;
 
 	int faqUpdate(FaqVO fvo) throws SQLException;
+
+	List<Object> selectFaqByCategory(Map<String, String> paraMap) throws SQLException;
+
+	List<HashMap<String, String>> getFaqCategoryList() throws SQLException;
+
+	int getTotalPage(String cnum) throws SQLException;
+
 
 
 }
