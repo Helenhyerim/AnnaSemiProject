@@ -91,34 +91,32 @@
 
 	<h2 style="color: black; font-weight: bold;">FaQ</h2>
 		
-  		<%@ include file="/WEB-INF/view/faqCBJ/faqCategoryList.jsp" %><br/><br/>
-		<table>
+  		<jsp:include page="faqCategoryList.jsp"></jsp:include><br/><br/>
 			
 			<c:forEach var="faq" items="${requestScope.faqList}">
 				<div class="accordion" id="accordion">
 					<div class="card" style="border-left: none; border-right: none; " >
-					  <div class="card-header" id="heading${faq.faqNo}">
+					  <div class="card-header" id="heading${faq.faqno}">
 					    <h2 class="accordion-header" >
-					      <button class="accordion" type="button" data-toggle="collapse" data-target="#panel${faq.faqNo}" aria-expanded="true" aria-controls="panel${faq.faqNo}">
+					      <button class="accordion" type="button" data-toggle="collapse" data-target="#panel${faq.faqno}" aria-expanded="true" aria-controls="panel${faq.faqno}">
 					        <div id=contents style="width: 100px; font-weight: bold;">${faq.cname}</div>
 					        <div id=contents style="width: 800px;">&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${faq.faqtitle}</div>
 					      </button>
 					    </h2>
 					</div>
-				    <div id="panel${faq.faqNo}" class="accordion-collapse collapse" aria-labelledby="headingOne${faq.faqNo}" data-parent="#accordion">
+				    <div id="panel${faq.faqno}" class="accordion-collapse collapse" aria-labelledby="headingOne${faq.faqno}" data-parent="#accordion">
 				      <div class="accordion-body">
 				        <img src="/AnnaSemiProject/imagesCBJ/${faq.faqimg}"/>
 				        <c:if test="${sessionScope.loginuser.userid eq 'admin'}">
 							<div style="float: right; padding: 20px;">
-								<a href="<%=ctxPath %>/faqEditForm.an?faqNo=${faq.faqimg}"><button id="modify">수정</button></a>
-								<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="<%=ctxPath %>/faqDelete.an?faqNo=${faq.faqNo}"><button id="delete">삭제</button></a>
+								<a href="<%=ctxPath %>/faqEditForm.an?faqno=${faq.faqimg}"><button id="modify">수정</button></a>
+								<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="<%=ctxPath %>/faqDelete.an?faqno=${faq.faqno}"><button id="delete">삭제</button></a>
 							</div> 
 						</c:if>
 				      </div>
 				    </div>
 				  </div>
 			</c:forEach>
-		</table>
 		
 		<c:if test="${sessionScope.loginuser.userid eq 'admin'}">
 			<div id="regist" style="display:inline-block; float:right; padding:20px;"">
