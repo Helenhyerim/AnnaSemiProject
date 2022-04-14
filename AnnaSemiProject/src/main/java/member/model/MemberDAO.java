@@ -492,39 +492,7 @@ public class MemberDAO implements InterMemberDAO {
 	}
 
 	
-	 //  주문정보 가져오기
-	@Override
-	public List<MemberVO> selectOrderList(Map<String, String> paraMap) throws SQLException {
-		
-		List<MemberVO> orderList = new ArrayList<>();
-		/*
-		try {
-			 conn = ds.getConnection();
-			 
-			 String sql = " ";
-			 
-			 pstmt = conn.prepareStatement(sql);
 
-			 
-			 rs = pstmt.executeQuery();
-			 
-			 while(rs.next()) {
-				 
-				
-	             
-	             MemberVO ordervo = new MemberVO(); 
-	             
-	             orderList.add(ordervo);
-	             
-				
-			 }// end of while(rs.next())-------------------------------
-			 
-		} finally {
-			close();
-		}
-		*/
-		return orderList;
-	}
 
 	// 주문내역 페이징 처리를 위해 자신이 주문한 갯수 알아오기
 	@Override
@@ -669,15 +637,14 @@ public class MemberDAO implements InterMemberDAO {
 			 conn = ds.getConnection();
 			 
 			 String sql = "select count(*) "+
-					 "from tbl_order A join tbl_orderdetail B "+
-					 "on A.ordernum = B.ordernum ";
+					 "from tbl_qna ";
 			 
 			 if("admin".equalsIgnoreCase(userid)) {
 				 pstmt = conn.prepareStatement(sql);
 			 }
 			 else {
 				 // 관리자가 아닌 일반사용자로 로그인한 경우
-				 sql += " where A.fk_userid = ? " ;
+				 sql += " where fk_userid = ? " ;
 				 
 				 pstmt = conn.prepareStatement(sql);
 				 pstmt.setString(1, userid);
@@ -695,14 +662,107 @@ public class MemberDAO implements InterMemberDAO {
 		return totalCountBoard;
 	}
 
+	
 	@Override
-	public List<MemberVO> getMemberBoard(Map<String, String> paraMap) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String, String>> getMemberBoard(String userid, String searchKey, String searchWord, int currentShowPageNo, int sizePerPage) throws SQLException {
+	
+		List<Map<String, String>> boardList = new ArrayList<>();
+		String colname = searchKey;
+		
+        try {
+           conn = ds.getConnection();
+           
+           String sql = 
+        		   " select qnano, questiontitle, questioncontents, questiondate, answertitle, name"
+        		   + "from "
+        		   + "( "
+        		   + " select row_number() over (order by A.qnano desc, A.qnano desc) AS RNO"
+        		   + ", A.qnano, A.questiontitle, A.questioncontents "
+           		   + " , to_char(A.questiondate, 'yyyy-mm-dd') AS questiondate, A.answertitle, B.name "
+           		   + "from tbl_qna A join tbl_member B\n"
+           		   + "on A.fk_userid = B.userid ";
+			
+           if(!"admin".equals(userid)) { 
+	             // 관리자가 아닌 일반사용자로 로그인 한 경우 
+	             sql += " where A.fk_userid = ? ";
+	             if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+	 				// 검색한 경우 
+	            	 sql += " and "+colname+" like '%'|| ? ||'%' ";
+	 			}
+	        } else {
+	             // 관리자로 로그인한 경우 
+	        	 if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+	        		 // 검색한 경우	
+	        		 sql += " where "+colname+" like '%'|| ? ||'%' ";
+	        	 }
+	        } // end of else	 
+
+			sql += " order by questiondate desc "
+					+ " ) V "
+		            + " where RNO between ? and ? ";
+			
+           pstmt = conn.prepareStatement(sql);
+        
+	       if(!"admin".equals(userid)) { 
+	             // 관리자가 아닌 일반사용자로 로그인 한 경우 
+	             pstmt.setString(1, userid);
+	             
+	             if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+		 				pstmt.setString(2, searchWord);	
+		 				pstmt.setInt(3, (currentShowPageNo*sizePerPage)-(sizePerPage-1) ); // 공식
+					    pstmt.setInt(4, currentShowPageNo*sizePerPage ); // 공식
+	             }		
+	             else {
+		            	 pstmt.setInt(2, (currentShowPageNo*sizePerPage)-(sizePerPage-1) ); // 공식
+					     pstmt.setInt(3, currentShowPageNo*sizePerPage ); // 공식
+	             }
+	          } else {
+	        	  //관리자로 로그인한 경우 
+	        	  if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+		 				pstmt.setString(1, searchWord);	
+		 				pstmt.setInt(2, (currentShowPageNo*sizePerPage)-(sizePerPage-1) ); // 공식
+					    pstmt.setInt(3, currentShowPageNo*sizePerPage ); // 공식
+	        	  }      
+	        	  else {
+	        		   pstmt.setInt(1, (currentShowPageNo*sizePerPage)-(sizePerPage-1) ); // 공식
+	 			       pstmt.setInt(2, currentShowPageNo*sizePerPage ); // 공식
+	        	  }
+	          } // end of else
+
+
+           rs = pstmt.executeQuery();
+           
+           while(rs.next()) {
+              
+        	     String qnano = rs.getString("qnano");
+		         String questiontitle = rs.getString("questiontitle");
+		         String questioncontents = rs.getString("questioncontents");
+		         String questiondate = rs.getString("questiondate");
+		         String answertitle = rs.getString("answertitle");
+		         String name = rs.getString("name");
+		           
+	             
+	             Map<String, String> boardmap = new HashMap<>();
+	             boardmap.put("QNANO", qnano);
+	             boardmap.put("QUESTIONTITLE", questiontitle);
+	             boardmap.put("QUESTIONCONTENTS", questioncontents);
+	             boardmap.put("QUESTIONDATE", questiondate);
+	             boardmap.put("ANSERTITLE", answertitle);
+	             boardmap.put("NAME", name);
+	       
+
+	             boardList.add(boardmap);
+
+           }// end of while--------------------------------
+        
+
+
+		} finally {
+           close();
+        }
+        
+        return boardList;
 	}
 	
-	
-	
+}    
       
-      
-}

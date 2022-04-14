@@ -34,9 +34,6 @@ public interface InterMemberDAO {
       // userid 정보를 받아와서 회원에 대한 상세정보 알아오기
       MemberVO memberOneDetail(String userid) throws SQLException;
 
-    //  주문정보 가져오기
-	List<MemberVO> selectOrderList(Map<String, String> paraMap) throws SQLException;
-
 	// 주문내역에 대한 페이징 처리를 위해 자신이 주문한 갯수 알아오기
 	int getTotalCountOrder(String userid) throws SQLException;
 
@@ -47,7 +44,8 @@ public interface InterMemberDAO {
 	int getTotalCountBoard(String userid) throws SQLException;
 	
 	 // 게시글 페이징 처리하여 조회 해오기
-	List<MemberVO> getMemberBoard(Map<String, String> paraMap);
+	List<Map<String, String>> getMemberBoard(String userid, String searchKey, String searchWord, int currentShowPageNo, int sizePerPage) throws SQLException;
+    
 
 	
       

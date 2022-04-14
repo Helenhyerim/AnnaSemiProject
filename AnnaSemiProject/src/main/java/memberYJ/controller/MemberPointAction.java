@@ -53,7 +53,7 @@ public class MemberPointAction extends AbstractController {
     	  int totalCountOrder = mdao.getTotalCountOrder(userid);
   	  
     	  totalPage = (int) Math.ceil( (double)totalCountOrder/sizePerPage );
-    	  System.out.println("~~~ 확인용 totalPage : " + totalPage);
+    	//  System.out.println("~~~ 확인용 totalPage : " + totalPage);
   	  
   	   // 조회하고자 하는 페이지번호를 받아오기
         String str_currentShowPageNo = request.getParameter("currentShowPageNo"); 
@@ -80,7 +80,7 @@ public class MemberPointAction extends AbstractController {
         
         
         //  페이지바 만들기 
-        String url = "orderList.up";
+        String url = "memberPoint.an";
         int blockSize = 10;
         //  blockSize 는 1개 블럭(토막)당 보여지는 페이지번호의 갯수.
                  
