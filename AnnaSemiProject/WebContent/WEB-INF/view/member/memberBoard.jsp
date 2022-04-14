@@ -99,7 +99,7 @@
 
 		
 		$("form[name='memberboardFrm']").submit(function(){
-			if($("select#searchKey").val() == "") {
+			if($("select#searchType").val() == "") {
 				alert("검색대상을 선택하세요!!");
 				return false; // return false; 는 submit을 하지말라는 것이다.
 			}
@@ -118,8 +118,8 @@
 			}
 		});
 		
-		if("${requestScope.searchKey}" != "") { 
-			$("select#searchKey").val("${requestScope.searchKey}");
+		if("${requestScope.searchType}" != "") { 
+			$("select#searchType").val("${requestScope.searchType}");
 			$("input#searchWord").val("${requestScope.searchWord}");
 	    }
 		
@@ -141,7 +141,7 @@
 	// Function Declaration
 	function goSearch() {
 		
-		if($("select#searchKey").val() == "") {
+		if($("select#searchType").val() == "") {
 			alert("검색대상을 선택하세요.");
 			return; // return; 는 goSearch() 함수 종료이다.
 		}
@@ -166,7 +166,7 @@
 	
 	<div class="memberboardFrm">
 	    <form name="memberboardFrm" action="memberBoard.an" method="get">
-	    	<select id="searchKey" name="searchKey">
+	    	<select id="searchType" name="searchType">
 	    		<option value="">게시물검색</option>
 	    		<option value="subject">제목</option>
 	    		<option value="content">내용</option>

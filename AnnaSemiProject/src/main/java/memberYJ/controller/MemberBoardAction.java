@@ -38,7 +38,7 @@ public class MemberBoardAction extends AbstractController {
 			// 로그인 한 경우
 			
 		// 검색이 있을 경우
-		String searchKey = request.getParameter("searchKey");
+		String searchType = request.getParameter("searchType");
 		String searchWord = request.getParameter("searchWord");
 	
 		InterMemberDAO mdao = new MemberDAO();
@@ -82,7 +82,7 @@ public class MemberBoardAction extends AbstractController {
 		
    	  	 
         // 글 쓴 내역 페이징 처리하여 조회 해오기
-        List<Map<String,String>> boardList = mdao.getMemberBoard(userid, searchKey,searchWord, currentShowPageNo, sizePerPage);
+        List<Map<String,String>> boardList = mdao.getMemberBoard(userid, searchType,searchWord, currentShowPageNo, sizePerPage);
        
        
         

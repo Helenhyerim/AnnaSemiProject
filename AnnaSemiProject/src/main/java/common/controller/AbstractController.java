@@ -1,10 +1,14 @@
 package common.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
 
-import member.model.MemberVO;
-import my.util.MyUtil;
+import javax.servlet.http.HttpServletRequest;
+
+import faqCBJ.model.*;
+import myshop.model.InterProductDAO;
+import myshop.model.ProductDAO;
 
 public abstract class AbstractController implements InterCommand {
 // AbstractController 클래스는 미완성(추상) 부모클래스로 사용된다. 
@@ -81,5 +85,14 @@ public abstract class AbstractController implements InterCommand {
 			
 		}
 	
+	///////////////////////////////////////////////////////////////////////////////////////
+	// ***** 카테고리목록(FaqCategory)을 보여줄 메소드 생성하기 ***** //
+	public void getFaqCategoryList(HttpServletRequest request) throws SQLException {
+		
+		InterFaqDAO pdao = new FaqDAO();
+		List<HashMap<String, String>> faqCategoryList = pdao.getFaqCategoryList();
+		
+		request.setAttribute("faqCategoryList", faqCategoryList);
+	}
 	
 }

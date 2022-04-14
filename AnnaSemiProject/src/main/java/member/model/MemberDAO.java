@@ -664,10 +664,10 @@ public class MemberDAO implements InterMemberDAO {
 
 	
 	@Override
-	public List<Map<String, String>> getMemberBoard(String userid, String searchKey, String searchWord, int currentShowPageNo, int sizePerPage) throws SQLException {
+	public List<Map<String, String>> getMemberBoard(String userid, String searchType, String searchWord, int currentShowPageNo, int sizePerPage) throws SQLException {
 	
 		List<Map<String, String>> boardList = new ArrayList<>();
-		String colname = searchKey;
+		String colname = searchType;
 		
         try {
            conn = ds.getConnection();
@@ -682,6 +682,7 @@ public class MemberDAO implements InterMemberDAO {
            		   + "from tbl_qna A join tbl_member B\n"
            		   + "on A.fk_userid = B.userid ";
 			
+           
            if(!"admin".equals(userid)) { 
 	             // 관리자가 아닌 일반사용자로 로그인 한 경우 
 	             sql += " where A.fk_userid = ? ";

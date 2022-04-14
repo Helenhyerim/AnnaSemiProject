@@ -68,29 +68,6 @@ public class NoticeDAO implements InterNoticeDAO {
 		return result;
 	}
 	
-	@Override
-	public int update(NoticeVO vo) throws SQLException {
-		
-		int result = 0;
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " update tbl_notice set noticetitle = ?, noticecontents = ? where noticeno = ? ";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, vo.getNoticeTitle());
-			pstmt.setString(2, vo.getNoticeContents());
-			pstmt.setInt(3, vo.getNoticeNo());
-			result = pstmt.executeUpdate();
-			
-		} finally {
-			close();
-		}
-		
-		return result;
-	}
-	
 	// 조회(R)
 	@Override
 	public ArrayList<NoticeVO> selectAll() throws SQLException {
@@ -122,6 +99,31 @@ public class NoticeDAO implements InterNoticeDAO {
 		}
 		return noticeList;
 	}
+
+	// 수정(U)
+	@Override
+	public int update(NoticeVO vo) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_notice set noticetitle = ?, noticecontents = ? where noticeno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getNoticeTitle());
+			pstmt.setString(2, vo.getNoticeContents());
+			pstmt.setInt(3, vo.getNoticeNo());
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
+	
 	
 	// 조건 조회(R)
 	@Override
@@ -129,10 +131,13 @@ public class NoticeDAO implements InterNoticeDAO {
 			
 		NoticeVO notice = null;
 		
+		int count = 0;
+		
 		try {
 			conn = ds.getConnection();
 			
-			String sql = "select noticeno, fk_userid, noticedate, noticetitle, noticecontents, cnt from tbl_notice where noticeno = ? ";
+			String sql = "select noticeno, fk_userid, noticedate, noticetitle, noticecontents, cnt "
+					   + "from tbl_notice where noticeno = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -146,8 +151,18 @@ public class NoticeDAO implements InterNoticeDAO {
 				notice.setNoticeDate(rs.getString(3));
 				notice.setNoticeTitle(rs.getString(4));
 				notice.setNoticeContents(rs.getString(5));
-				notice.setCnt(rs.getInt(6));
+				count = rs.getInt(6);
+				count++;
 			}
+			
+			String sqlcnt = " update tbl_notice set cnt = ? where noticeno = ? ";
+			
+			pstmt = conn.prepareStatement(sqlcnt);
+			pstmt.setInt(1, count);
+			pstmt.setInt(2, noticeNo);
+			pstmt.executeUpdate();
+			conn.close();
+			
 		} finally {
 			close();
 		}
@@ -203,7 +218,7 @@ public class NoticeDAO implements InterNoticeDAO {
 	}
 
 	@Override
-	public List<NoticeVO> noticeSelectPagingMember(Map<String, String> paraMap) throws SQLException {
+	public List<NoticeVO> selectPagingNotice(Map<String, String> paraMap) throws SQLException {
 		
 		List<NoticeVO> noticeList = new ArrayList<>();
 
@@ -212,25 +227,44 @@ public class NoticeDAO implements InterNoticeDAO {
 			
 			String sql = " select noticeno, noticedate, noticetitle, cnt "
 					+ " from "
-					+ " ("
-					+ " select rownum AS rno, noticeno, noticedate, noticetitle, cnt "
-					+ " from "
 					+ " ( "
-					+ " select noticeno, noticedate, noticetitle, cnt "
-					+ " from tbl_notice "
-					+ " where fk_userid = 'admin' "
-					+ " order by noticedate desc "
-					+ " ) V "
-					+ " ) T "
-					+ " where rno between ? and ? ";
+					+ " 	select rownum AS rno, noticeno, noticedate, noticetitle, cnt "
+					+ " 	from "
+					+ " 	( "
+					+ " 		select noticeno, noticedate, noticetitle, cnt "
+					+ " 		from tbl_notice "
+					+ " 		where fk_userid = 'admin' ";
+					
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+				
+				sql += " and "+colname+" like '%'|| ? ||'%' ";
+			
+			}
+			
+			sql += " 		order by noticeno desc "
+				+ " 	) V "
+				+ " ) T "
+				+ " where rno between ? and ? ";
+			
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			int noticeCurrentShowPageNo = Integer.parseInt(paraMap.get("noticeCurrentShowPageNo"));
-			int noticeSizePerPage = Integer.parseInt(paraMap.get("noticeSizePerPage"));
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
 			
-			pstmt.setInt(1, (noticeCurrentShowPageNo * noticeSizePerPage) -(noticeSizePerPage - 1));
-			pstmt.setInt(2, (noticeCurrentShowPageNo * noticeSizePerPage));
+			if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+		 		
+				pstmt.setString(1, searchWord);						
+		 		pstmt.setInt(2, (currentShowPageNo * sizePerPage) -(sizePerPage - 1));
+				pstmt.setInt(3, (currentShowPageNo * sizePerPage));
+		 	}
+		 	else {
+		 		pstmt.setInt(1, (currentShowPageNo * sizePerPage) -(sizePerPage - 1));
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage));
+		 	}
 			
 			rs = pstmt.executeQuery();
 			
@@ -253,7 +287,7 @@ public class NoticeDAO implements InterNoticeDAO {
 	}
 
 	@Override
-	public int noticeGetTotalPage(Map<String, String> paraMap) throws SQLException {
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
 		
 		int totalPage = 0;
 		
@@ -264,8 +298,23 @@ public class NoticeDAO implements InterNoticeDAO {
 					   + " from tbl_notice "
 					   + " where fk_userid = 'admin' ";
 			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+				
+				sql += " and "+colname+" like '%'|| ? ||'%' ";
+			
+			}
+			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, paraMap.get("noticeSizePerPage"));
+			pstmt.setString(1, paraMap.get("sizePerPage"));
+			
+			if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+				
+				pstmt.setString(2, paraMap.get("searchWord")); // 암호화를 안한 것
+				
+			}
 			
 			rs = pstmt.executeQuery();
 			

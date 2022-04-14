@@ -44,7 +44,7 @@ public interface InterMemberDAO {
 	int getTotalCountBoard(String userid) throws SQLException;
 	
 	 // 게시글 페이징 처리하여 조회 해오기
-	List<Map<String, String>> getMemberBoard(String userid, String searchKey, String searchWord, int currentShowPageNo, int sizePerPage) throws SQLException;
+	List<Map<String, String>> getMemberBoard(String userid, String searchType, String searchWord, int currentShowPageNo, int sizePerPage) throws SQLException;
     
 
 	
