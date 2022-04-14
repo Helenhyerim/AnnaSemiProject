@@ -1,14 +1,15 @@
 package common.controller;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import faqCBJ.model.*;
-import myshop.model.InterProductDAO;
-import myshop.model.ProductDAO;
+import member.model.MemberVO;
+import my.util.MyUtil;
+import myshop.model.*;
 
 public abstract class AbstractController implements InterCommand {
 // AbstractController 클래스는 미완성(추상) 부모클래스로 사용된다. 
