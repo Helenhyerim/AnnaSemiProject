@@ -14,8 +14,9 @@ public class MemberOneDetailAction extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// TODO Auto-generated method stub
 		
+		// 로그인 또는 로그아웃을 하면 시작페이지로 가는 것이 아니라 방금 보았떤 페이지로 간다.
+		super.goBackURL(request);
 		
 		// == 관리자(admin)로 로그인 했을 때만 조회가 가능하도록 해야 한다. == //
 		HttpSession session = request.getSession();
@@ -42,8 +43,8 @@ public class MemberOneDetailAction extends AbstractController {
 			MemberVO mvo = mdao.memberOneDetail(userid);
 			
 			request.setAttribute("mvo", mvo);
-			
-			
+						
+						
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/view/member/memberOneDetail.jsp");
 			

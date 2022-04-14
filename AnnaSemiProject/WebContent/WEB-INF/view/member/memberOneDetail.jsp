@@ -25,55 +25,63 @@
     box-sizing: border-box;  
 } 
 
-div#mvoInfo  {
+div.mvoInfo {
 	width: 420px;
     margin: 0 auto;
     font-size: 12px;
 	margin-top: 30px; 
 	line-height: 200%;
 	text-align: left;
+	border: solid 1px gray;
+	padding: 15px 0;
 }
 
 
-	
 	span.myli {
 		display: inline-block;
 		width: 130px;
 		border: solid 0px blue;
+		margin-top: 5px;
 		margin-right: 20px;
 	}
 	
 /* ============================================= */
-	div#sms {
+	div#sms, #email {
 		margin: 0 auto; 
-		/* border: solid 1px red; */ 
+	/*	border: solid 1px red; */
 		overflow: hidden; 
-		width: 50%;
+		width: 100%;
 		padding: 10px 0;
+		text-align: center;
 	}
 	
-	span#smsTitle {
+	
+	span#smsTitle, #emailTitle {
 		display: block;
-		font-size: 13px;
-		font-weight: bold;
+		font-size: 12px;
 		margin-bottom: 10px;
 	}
 	
-	textarea#smsContent {
-		float: left;
+	
+	textarea#smsContent, #emailContent {
 		height: 100px;
+		justify-content: center;
+		display: inline-block;
 	}
 	
-	button#btnSend {
-		float: left;
+	button#btnSendSms, #btnSendMail {
+		justify-content: center;
 		border: none;
 		width: 50px;
 		height: 100px;
 		background-color: #ddd;
 		color: white;
+		display: inline-block;
 	}
 	
-	div#smsResult {
+	textarea,button {vertical-align: middle;}	
+
+	div#smsResult, #emailResult {
 		clear: both;
 		color: red;
 		padding: 20px;
@@ -152,48 +160,25 @@ div#mvoInfo  {
 		$("button#btnSendMail").click( ()=>{
 			
 			if (${requestScope.mvo.email_status eq '0'}){
-				alert("문자 수신 동의를 받지 않아 메일을 보낼 수 없습니다.");
+				alert("메일 수신 동의를 받지 않아 메일을 보낼 수 없습니다.");
 				return;  // 종료 
 			}
-			
-			let reservedate = $("input#reservedate").val();
-		    reservedate = reservedate.split("-").join("");
-		    
-		    let reservetime = $("input#reservetime").val();
-		    reservetime = reservetime.split(":").join("");
-		    
-		    const datetime = reservedate + reservetime;
-		    
-		 // console.log(datetime);
-		 // 202204051120
-		    
-		    let dataObj;
-		 
-		    if( reservedate == "" || reservetime == "" ) {
-		    	dataObj = {"email":"${requestScope.mvo.email}", 
-		    				"name":"${requestScope.mvo.name}",
-		    			   "emailContent":$("textarea#emailContent").val()};
-		    }
-		    else {
-		    	dataObj = {"email":"${requestScope.mvo.email}", 
-		    			"name":"${requestScope.mvo.name}",
-		    			   "emailContent":$("textarea#emailContent").val(),
-		    			   "datetime":datetime};
-		    }
-		    
+		   
 	
 			 $.ajax({
 			    	url:"<%= request.getContextPath()%>/member/emailSend.an",
-			    	type:"GET",
-			    	data:dataObj,
+			    	type:"POST",
+			    	data:{"email":"${requestScope.mvo.email}", 
+	    				"name":"${requestScope.mvo.name}",
+		    			   "emailContent":$("textarea#emailContent").val()},
 			    	dataType:"json",
 			    	success:function(json) {
 			    		//json은 {"group_id":"R2GsmEtz5JwaJQF4","success_count":1,"error_count":0} 처럼 된다.
 			    		
-			    		if(json.success_count == 1) {
+			    		if(json.sendMailSuccess == true) {
 			    			$("div#emailResult").html("이메일전송이 성공되었습니다.");
 			    		}
-			    		else if(json.error_count == 1) {
+			    		else if(json.sendMailSuccess == false) {
 			    			$("div#emailResult").html("이메일전송이 실패하였습니다.");
 			    		}
 			    		
@@ -211,7 +196,7 @@ div#mvoInfo  {
 		
 </script>  
 <div class="contents mx-5" style="margin-top:230px;">
-
+	
 	<c:if test="${empty requestScope.mvo}">
 		존재하지 않는 회원입니다.<br>
 	</c:if>
@@ -223,7 +208,7 @@ div#mvoInfo  {
 		    <h2 class="w3-left-align mb-5">${requestScope.mvo.name}님의 상세정보</h2>
 		</div>	
 		
-		<div class="mvoinfo">
+		<div class="mvoInfo">
 			<div id="mvoInfo">
 			   <ol>
 			   	  <li><span class="myli">아이디 : </span>${requestScope.mvo.userid}</li>
@@ -244,10 +229,11 @@ div#mvoInfo  {
 	
 			<%-- ==== 휴대폰 SMS(문자) 보내기 ==== --%>
 			<div id="sms" align="left">
-			  	<span id="smsTitle">&gt;&gt;휴대폰 SMS(문자) 보내기 내용 입력란&lt;&lt;</span>
+			  	<span id="smsTitle">&gt;&gt;문자 보내기&lt;&lt;</span>
 			  	<div style="margin: 10px 0 20px 0">
-			  		발송예약일&nbsp;<input type="date" id="reservedate" />&nbsp;<input type="time" id="reservetime" />
+			  		발송예약일&nbsp;&nbsp;<input type="date" id="reservedate" />&nbsp;<input type="time" id="reservetime" />
 			  	</div>
+
 			  	<textarea rows="4" cols="40" id="smsContent"></textarea>
 			  	<button id="btnSendSms">전송</button>
 			  	<div id="smsResult"></div>
@@ -255,21 +241,20 @@ div#mvoInfo  {
 	
 			<%-- ==== 이메일 보내기 ==== --%>
 			<div id="email" align="left">
-			  	<span id="emailTitle">&gt;&gt;메일 보내기 내용 입력란&lt;&lt;</span>
+			  	<span id="emailTitle">&gt;&gt;메일 보내기&lt;&lt;</span>
 			  	<div style="margin: 10px 0 20px 0">
-			  		발송예약일&nbsp;<input type="date" id="reservedate" />&nbsp;<input type="time" id="reservetime" />
+			  		발송예약일&nbsp;&nbsp;<input type="date" id="reservedate" />&nbsp;<input type="time" id="reservetime" />
 			  	</div>
+			
 			  	<textarea rows="4" cols="40" id="emailContent"></textarea>
 			  	<button id="btnSendMail">전송</button>
 			  	<div id="emailResult"></div>
+			
 			</div>
-		
-	</c:if>
+	</div>
+</c:if>	
 
-	<div>
-		<button style="margin-top: 50px;" type="button" onclick="goMemberList()">회원목록[이전으로]</button>
-		&nbsp;&nbsp;
-	</div>
-	</div>
+
 </div>
+
 <jsp:include page="../common/footer.jsp" /> 
