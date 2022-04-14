@@ -31,17 +31,42 @@ public interface InterProductDAO {
 	// VO 를 사용하지 않고 Map 으로 처리해보겠습니다.
 	List<HashMap<String, String>> getCategoryList() throws SQLException;
 	
-	// 최근 주문 정보 알아오기
-	OrderVO selectRecentOrder(String userid) throws SQLException;
-	
 	// 상품 리뷰 알아오기
 	List<PurchaseReviewVO> reviewInfo(String productnum) throws SQLException;
+	
+	// 사용자 아이디로 최근 주문 번호 알아오기
+	String selectRecentOrdernum(String ordernum) throws SQLException;
+	
+	// 주문번호로 주문 정보 알아오기(orderDetail)
+	List<OrderVO> selectOrderInfo(String ordernum) throws SQLException;
+	
+	// 주문번호로 해당 주문 취소상태로 변경하기(update)
+	int cancelOrder(String ordernum) throws SQLException;	
+	
+	// 페이징 처리가 되어진 모든 리뷰 보여주기
+	List<PurchaseReviewVO> selectPagingReview(Map<String, String> paraMap) throws SQLException;
+	
+	// 구매 이력 조회
+	boolean isPurchaseCheck(Map<String, String> paraMap) throws SQLException;
+	
+	// 특정 상품 리뷰 작성 이력 조회
+	boolean isWriteReviewCheck(Map<String, String> paraMap) throws SQLException;
+	
+	// 특정 상품 리뷰에 대한 총페이지 알아오기
+	int getReviewTotalPage(Map<String, String> paraMap) throws SQLException;
+
+	// 리뷰 등록하기(insert)
+	int insertReview(Map<String, String> paraMap) throws SQLException;
+	
+	// tbl_product_option 테이블에서 optionnum, fk_productnum, optionname을 조회해오기
+	// VO를 사용하지 않고 Map으로 처리해보겠습니다.
+	List<HashMap<String, String>> getOptionList(String productnum) throws SQLException;
+	
+	
 	
 	
 	
 	// 유혜림
-	
-	
 	
 	// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 전체회원에 대한 총페이지 알아오기
 	int getTotalPage(Map<String, String> paraMap) throws SQLException;
@@ -86,6 +111,25 @@ public interface InterProductDAO {
 
 	// index 페이지에서 보여줄 BEST 상품 select 해오기
 	List<ProductVO> selectBySpecName(Map<String, String> paraMap) throws SQLException;
+
+	
+
+	
+
+	
+
+	
+
+	
+	
+
+
+
+	
+
+	
+
+	
 
 	
 

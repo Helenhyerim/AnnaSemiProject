@@ -1,5 +1,7 @@
 package product.model_lsh;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,8 +16,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import cart.model.CartVO;
 import member.model.MemberVO;
+import util.security.AES256;
+import util.security.SecretMyKey;
+import cart.model.CartVO;
 
 
 
@@ -26,6 +30,7 @@ public class ProductDAO implements InterProductDAO {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	
+	private AES256 aes;
 	
 	// 기본생성자
 	public ProductDAO() {
@@ -34,7 +39,12 @@ public class ProductDAO implements InterProductDAO {
 			Context envContext = (Context)initContext.lookup("java:/comp/env");
 			ds = (DataSource)envContext.lookup("jdbc/anna_oracle");
 			
+			aes = new AES256(SecretMyKey.KEY);
+		    // SecretMyKey.KEY 은 우리가 만든 비밀키이다.
+			
 		} catch(NamingException e) {
+			e.printStackTrace();
+		} catch(UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 	}
@@ -385,20 +395,37 @@ public class ProductDAO implements InterProductDAO {
 		
 		int result = 0;
 		int productnum = Integer.parseInt(paraMap.get("productnum"));
-		int orderqty = Integer.parseInt(paraMap.get("orderqty"));
+	//	int orderqty = Integer.parseInt(paraMap.get("orderqty"));
+		String[] optionList = paraMap.get("optionList").split(",");
+		String[] quantityList = paraMap.get("quantityList").split(",");
 		
 		try {
 			conn = ds.getConnection();
 			
-			String sql = "insert into tbl_cart(cartno, fk_userid, fk_productnum, orderqty) "
-					   + "values(seq_cartno.nextval, ?, ?, ?) ";
+			for(int i = 0; i < optionList.length; i++) {
+				String sql = "insert into tbl_cart(cartno, fk_userid, fk_productnum, orderqty, fk_optionnum) "
+						   + "values(seq_cartno.nextval, ?, ?, ?, ?) ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paraMap.get("userid"));
+				pstmt.setInt(2, productnum);
+				pstmt.setInt(3, Integer.parseInt(quantityList[i]));
+				pstmt.setInt(4, Integer.parseInt(optionList[i]));
+				
+				result = pstmt.executeUpdate();
+			}
 			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, paraMap.get("userid"));
-			pstmt.setInt(2, productnum);
-			pstmt.setInt(3, orderqty);
-			
-			result = pstmt.executeUpdate();
+			/*
+			 	String sql = "insert into tbl_cart(cartno, fk_userid, fk_productnum, orderqty, optionlist, quantitylist) "
+			        	   + "values(seq_cartno.nextval, ?, ?, ?, ?, ?) ";
+			        	   
+			    pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paraMap.get("userid"));
+				pstmt.setInt(2, productnum);
+				pstmt.setInt(3, orderqty);
+				pstmt.setString(4, paraMap.get("optionList"));
+				pstmt.setString(5, paraMap.get("quantityList"));
+			*/
 			
 		} finally {
 			close();
@@ -501,53 +528,6 @@ public class ProductDAO implements InterProductDAO {
 	}
 
 
-	// 최근 주문 정보 알아오기
-	@Override
-	public OrderVO selectRecentOrder(String userid) throws SQLException {
-
-		OrderVO ovo = null;
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = "select ordernum, ordertotalprice, ordertotalpoint, to_char(orderdate, 'yyyy-mm-dd hh24:mi:ss'), paymethod, name_receiver, zipcode, address "
-					   + "from tbl_order "
-					   + "where fk_userid = ? "
-					   + "order by sysdate desc ";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userid);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				String ordernum = rs.getString(1);
-				int ordertotalprice = rs.getInt(2);
-				int ordertotalpoint = rs.getInt(3);
-				String orderdate = rs.getString(4);
-				String name_receiver = rs.getString(5);
-				String zipcode = rs.getString(6);
-				String address = rs.getString(7);
-				
-				ovo = new OrderVO();
-				
-				ovo.setOrdernum(ordernum);
-				ovo.setOrdertotalprice(ordertotalprice);
-				ovo.setOrdertotalpoint(ordertotalpoint);
-				ovo.setOrderdate(orderdate);
-				ovo.setName_receiver(name_receiver);
-				ovo.setZipcode(zipcode);
-				ovo.setAddress(address);
-			}
-			
-		} finally {
-			close();
-		}
-		
-		return ovo;
-	}
-
-
 	// 상품 리뷰 알아오기
 	@Override
 	public List<PurchaseReviewVO> reviewInfo(String productnum) throws SQLException {
@@ -595,6 +575,202 @@ public class ProductDAO implements InterProductDAO {
 	}
 
 
+	// 사용자 아이디로 최근 주문 번호 알아오기
+	@Override
+	public String selectRecentOrdernum(String userid) throws SQLException {
+		
+		String ordernum = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select ordernum "
+					   + "from tbl_order "
+					   + "where fk_userid = ? "
+					   + "order by orderdate desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				ordernum = rs.getString(1);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return ordernum;
+	}
+
+
+	// 주문번호로 상세주문정보 알아오기(OrderDetail)
+	@Override
+	public List<OrderVO> selectOrderInfo(String ordernum) throws SQLException {
+		
+		List<OrderVO> orderList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select m.name, m.mobile, o.ordernum, to_char(o.orderdate, 'yyyy-mm-dd hh24:mi:ss'), "
+					   + "o.name_receiver, o.orderstatus, o.ordertotalprice, o.ordertotalpoint, o.zipcode, "
+					   + "o.address, d.orderprice, d.orderqty, p.productnum, p.productname, p.productprice, "
+					   + "p.productimage1 "
+					   + "from tbl_member M "
+					   + "JOIN tbl_order O "
+					   + "ON m.userid = o.fk_userid "
+					   + "JOIN tbl_orderdetail D "
+					   + "ON o.ordernum = d.ordernum "
+					   + "JOIN tbl_product P "
+					   + "ON d.fk_productnum = p.productnum "
+					   + "where o.ordernum = ? "
+					   + "order by p.productnum asc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, ordernum);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String name = rs.getString(1);
+				String mobile = aes.decrypt(rs.getString(2));
+				String onum = rs.getString(3);
+				String orderdate = rs.getString(4);
+				String name_receiver = rs.getString(5);
+				int orderstatus = rs.getInt(6);
+				int ordertotalprice = rs.getInt(7);
+				int ordertotalpoint = rs.getInt(8);
+				String zipcode = rs.getString(9);
+				String address = rs.getString(10);
+				int orderprice = rs.getInt(11);
+				int orderqty = rs.getInt(12);
+				int productnum = rs.getInt(13);
+				String productname = rs.getString(14);
+				int productprice = rs.getInt(15);
+				String productimage1 = rs.getString(16);
+
+				OrderVO ordervo = new OrderVO();
+				
+				ordervo.setOrdernum(onum);
+				ordervo.setOrderdate(orderdate);
+				ordervo.setName_receiver(name_receiver);
+				ordervo.setOrderstatus(orderstatus);
+				ordervo.setOrdertotalprice(ordertotalprice);
+				ordervo.setOrdertotalpoint(ordertotalpoint);
+				ordervo.setZipcode(zipcode);
+				ordervo.setAddress(address);
+				
+				MemberVO mvo = new MemberVO();
+				mvo.setName(name);
+				mvo.setMobile(mobile);
+				ordervo.setMvo(mvo);
+				
+				OrderDetailVO odvo = new OrderDetailVO();
+				
+				odvo.setOrderprice(orderprice);
+				odvo.setOrderqty(orderqty);
+				ordervo.setOdvo(odvo);
+				
+				ProductVO pvo = new ProductVO();
+				
+				pvo.setProductnum(productnum);
+				pvo.setProductname(productname);
+				pvo.setProductprice(productprice);
+				pvo.setProductimage1(productimage1);
+				ordervo.setPvo(pvo);
+				
+				orderList.add(ordervo);
+			}
+			
+		} catch(GeneralSecurityException | UnsupportedEncodingException e) { 
+		    e.printStackTrace();
+	    } finally {
+			close();
+		}
+		
+		return orderList;
+	}
+
+
+	// 주문번호로 해당 주문 취소상태로 변경하기(update)
+	@Override
+	public int cancelOrder(String ordernum) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "update tbl_order "
+					   + "set orderstatus = 0 "
+					   + "where ordernum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, ordernum);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
+
+
+	// 페이징 처리가 되어진 모든 리뷰 보여주기
+	@Override
+	public List<PurchaseReviewVO> selectPagingReview(Map<String, String> paraMap) throws SQLException {
+		
+		List<PurchaseReviewVO> reviewList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select rno, reviewtitle, fk_userid, reviewcontents "
+					   + "from "
+					   + "( "
+					   + "    select rownum AS rno, reviewtitle, fk_userid, reviewcontents "
+					   + "    from "
+					   + "    ( "
+					   + "    select REVIEWTITLE, FK_USERID, reviewcontents "
+					   + "    from tbl_purchase_reviews "
+					   + "    where FK_PRODUCTNUM = ? "
+					   + "    order by REVIEWDATE desc "
+					   + "    ) V "
+					   + ") T "
+					   + "where rno between ? and ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
+			
+			pstmt.setString(1, paraMap.get("productnum"));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+			pstmt.setInt(3, (currentShowPageNo * sizePerPage));
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				PurchaseReviewVO rvo = new PurchaseReviewVO();
+				rvo.setReview_no(rs.getInt(1));
+				rvo.setReviewtitle(rs.getString(2));
+				rvo.setUserid(rs.getString(3));
+				rvo.setReviewcontents(rs.getString(4));
+				
+				reviewList.add(rvo);
+			}
+		} finally {
+			close();
+		}
+		
+		return reviewList;
+	}
+
 	// 장바구니 페이지에서 넘어온 cartno 로 주문페이지에 보여줄 아이템 조회해오기
 	@Override
 	public ProductVO getOrderItems(String cartno) throws SQLException {
@@ -614,7 +790,6 @@ public class ProductDAO implements InterProductDAO {
 					 " JOIN tbl_product_option O "+
 					 " ON C.fk_optionnum = O.optionnum "+
 					 " where C.cartno = ?  ";
-			
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, cartno);
@@ -653,6 +828,167 @@ public class ProductDAO implements InterProductDAO {
 		return pvo;
 	}// end of public List<ProductVO> getOrderItems(String cart_checked)----------
 
+	// 구매 이력 조회
+	@Override
+	public boolean isPurchaseCheck(Map<String, String> paraMap) throws SQLException {
+	
+		boolean isPurchase = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			// 해당 상품 구매 이력 조회
+			String sql = "select * "
+					   + "from tbl_order O "
+					   + "JOIN tbl_orderdetail D "
+					   + "ON o.ordernum = d.ordernum "
+					   + "where o.fk_userid = ? and d.fk_productnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("productnum"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) { // 구매 이력이 있는 경우
+				isPurchase = true;
+			}
+		
+		} finally {
+			close();
+		}
+		
+		return isPurchase;
+	}
+
+
+	// 특정 상품 리뷰 작성 이력 조회
+	@Override
+	public boolean isWriteReviewCheck(Map<String, String> paraMap) throws SQLException {
+		
+		boolean isWriteReview = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			// 사용자가 해당 상품에 리뷰를 작성한 적이 있는지 조회
+			String sql = "select * "
+					   + "from tbl_purchase_reviews "
+					   + "where fk_userid = ? and fk_productnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("productnum"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) { // 리뷰 작성 이력이 있는 경우
+				isWriteReview = true;
+			}
+		
+		} finally {
+			close();
+		}
+		
+		return isWriteReview;
+	}
+
+
+	// 특정 상품 리뷰에 대한 총페이지 알아오기
+	@Override
+	public int getReviewTotalPage(Map<String, String> paraMap) throws SQLException {
+		int totalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select ceil(count(*)/?) "
+					   + "from tbl_purchase_reviews "
+					   + "where fk_productnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("sizePerPage"));
+			pstmt.setString(2, paraMap.get("productnum"));
+			
+			rs = pstmt.executeQuery();
+			
+			// 결과는 무조건 나온다. 없으면 0 이라도.
+			rs.next();
+			
+			totalPage = rs.getInt(1);
+			
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;
+	}
+
+
+	// 리뷰 등록하기(insert)
+	@Override
+	public int insertReview(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "insert into TBL_PURCHASE_REVIEWS(review_no, fk_userid, fk_productnum, reviewcontents, reviewdate, reviewtitle) "
+					   + "values(SEQ_REVIEW_NO.nextval, ?, ?, ?, sysdate, ?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setInt(2, Integer.parseInt(paraMap.get("productnum")));
+			pstmt.setString(3, paraMap.get("reviewContents"));
+			pstmt.setString(4, paraMap.get("reviewTitle"));
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
+
+
+	// tbl_product_option 테이블에서 optionnum, fk_productnum, optionname을 조회해오기
+	// VO를 사용하지 않고 Map으로 처리해보겠습니다.
+	@Override
+	public List<HashMap<String, String>> getOptionList(String productnum) throws SQLException {
+
+		List<HashMap<String, String>> optionList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "select optionnum, fk_productnum, optionname "
+					   + "from tbl_product_option "
+					   + "where fk_productnum = ? "
+					   + "order by optionnum asc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, productnum);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				HashMap<String, String> map = new HashMap<>();
+				map.put("optionnum", rs.getString(1));
+				map.put("productnum", rs.getString(2));
+				map.put("optionname", rs.getString(3));
+				
+				optionList.add(map);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return optionList;
+	}
 	
 	// 주문한 상품에 대한 총 주문금액과 총포인트 알아오기
 	@Override
