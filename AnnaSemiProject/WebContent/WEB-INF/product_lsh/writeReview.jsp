@@ -88,8 +88,8 @@
 			<input type="hidden" name="productnum" value="${requestScope.pvo.productnum}" />
 		</form>
 		<div align=right>
-			<button type="button" onclick="javascript:history.back()">취소</button>
-			<button type="button" onclick="goInsertReview()">등록</button>
+			<button type="button" class="btn btn-light" onclick="javascript:history.back()">취소</button>
+			<button type="button" class="btn btn-dark" onclick="goInsertReview()">등록</button>
 		</div>
 	</div>
 </div>

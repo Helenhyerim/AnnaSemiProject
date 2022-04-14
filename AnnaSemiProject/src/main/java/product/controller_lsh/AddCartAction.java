@@ -43,11 +43,16 @@ public class AddCartAction extends AbstractController {
 					orderqty = orderqty + Integer.parseInt(qty);
 				}
 				
+				String optionList = String.join(",", opList);
+				String quantityList = String.join(",", qtyList);
+				
 				Map<String, String> paraMap = new HashMap<>();
 				
 				paraMap.put("userid", userid);
 				paraMap.put("productnum", productnum);
 				paraMap.put("orderqty", String.valueOf(orderqty));
+				paraMap.put("optionList", optionList);
+				paraMap.put("quantityList", quantityList);
 				
 				try {
 					InterProductDAO pdao = new ProductDAO();

@@ -38,7 +38,6 @@ public class OrderSuccessAction extends AbstractController {
 				
 				// 주문 번호로 주문 상세 정보 알아오기
 				List<OrderVO> orderList = pdao.selectOrderInfo(ordernum);
-				
 				request.setAttribute("orderList", orderList);
 				
 				int totalPrice_origin = 0; // 총 주문금액(정가기준)

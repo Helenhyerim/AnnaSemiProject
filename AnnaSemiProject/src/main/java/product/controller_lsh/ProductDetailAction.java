@@ -1,5 +1,6 @@
 package product.controller_lsh;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +47,6 @@ public class ProductDetailAction extends AbstractController {
 			// 상품 정보 조회(select)
 			InterProductDAO pdao = new ProductDAO();
 			ProductVO pvo = pdao.productInfo(productnum);
-			
-			// 리뷰 정보 조회(select)
-			List<PurchaseReviewVO> rList = pdao.reviewInfo(productnum);
 			
 // 페이지바 시작
 			Map<String, String> paraMap = new HashMap<>();
@@ -142,9 +140,17 @@ public class ProductDetailAction extends AbstractController {
 			
 			if(pvo != null) {
 				request.setAttribute("pvo", pvo);
+				
+				// 리뷰 정보 조회(select)
+				List<PurchaseReviewVO> rList = pdao.reviewInfo(productnum);
 				request.setAttribute("rList", rList);
 				
-				// 할인 가격
+				// *** 옵션목록(Product_option)을 보여줄 메소드 생성하기 *** //
+				// VO를 사용하지 않고 Map으로 처리해보겠습니다.
+				List<HashMap<String, String>> optionList = pdao.getOptionList(productnum);
+				request.setAttribute("optionList", optionList);
+	
+				// 할인 가격(정가 - 회원가)
 				String discountPrice = String.valueOf(pvo.getProductprice() - pvo.getSaleprice());
 				request.setAttribute("discountPrice", discountPrice);
 				

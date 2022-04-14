@@ -9,11 +9,13 @@ public class OrderDetailVO {
 	private int orderprice;		// 주문가격
 	private int deliverstatus;	// 배송상태
 	private String deliverdate;	// 배송일자
+	private String optionlist;	// 선택한 옵션 문자열(optionname이 문자열로 저장되어 있음)
+	private String quantitylist;// 선택한 옵션의 수량 문자열(qty가 문자열로 저장되어 있음)
 	
 	public OrderDetailVO() {}
 	
 	public OrderDetailVO(int orderseqnum, int productnum, String ordernum, int orderqty, int orderprice,
-			int deliverstatus, String deliverdate) {
+			int deliverstatus, String deliverdate, String optionlist, String quantitylist) {
 		super();
 		this.orderseqnum = orderseqnum;
 		this.productnum = productnum;
@@ -22,6 +24,8 @@ public class OrderDetailVO {
 		this.orderprice = orderprice;
 		this.deliverstatus = deliverstatus;
 		this.deliverdate = deliverdate;
+		this.optionlist = optionlist;
+		this.quantitylist = quantitylist;
 	}
 
 	public int getOrderseqnum() {
@@ -79,5 +83,21 @@ public class OrderDetailVO {
 	public void setDeliverdate(String deliverdate) {
 		this.deliverdate = deliverdate;
 	}
-	
+
+	public String getOptionlist() {
+		return optionlist;
+	}
+
+	public void setOptionlist(String optionlist) {
+		this.optionlist = optionlist;
+	}
+
+	public String getQuantitylist() {
+		return quantitylist;
+	}
+
+	public void setQuantitylist(String quantitylist) {
+		this.quantitylist = quantitylist;
+	}
+
 }

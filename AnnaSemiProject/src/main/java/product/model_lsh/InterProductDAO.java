@@ -58,12 +58,15 @@ public interface InterProductDAO {
 	// 리뷰 등록하기(insert)
 	int insertReview(Map<String, String> paraMap) throws SQLException;
 	
+	// tbl_product_option 테이블에서 optionnum, fk_productnum, optionname을 조회해오기
+	// VO를 사용하지 않고 Map으로 처리해보겠습니다.
+	List<HashMap<String, String>> getOptionList(String productnum) throws SQLException;
+	
+	
 	
 	
 	
 	// 유혜림
-	
-	
 	
 	// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 전체회원에 대한 총페이지 알아오기
 	int getTotalPage(Map<String, String> paraMap) throws SQLException;
@@ -79,6 +82,8 @@ public interface InterProductDAO {
 
 	// 장바구니 페이지에서 넘어온 cartno 로 주문페이지에 보여줄 아이템 조회해오기
 	ProductVO getOrderItems(String cartno) throws SQLException;
+
+	
 
 	
 

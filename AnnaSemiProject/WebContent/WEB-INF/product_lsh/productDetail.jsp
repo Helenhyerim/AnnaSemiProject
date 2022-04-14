@@ -37,11 +37,11 @@
 			$("div#cover").html('<img class="imgcss" src="../images/product/' + imgArr[index] + '">');
 		});
 		
-		// 옵션 선택
-		// 필수 옵션
+		// 필수 옵션 선택
 		$("select#reqOption").change(function() {
 
 			const index = $("option:selected").index();	// 선택한 옵션의 인덱스
+			const opval = $("option:selected").val();	// 선택한 옵션의 value
 			
 			const productName = $("option:eq("+index+")").text();
 		//	const productName = $("select#reqOption option:selected").text();	
@@ -55,7 +55,8 @@
 							 + '	<input class="mr-3" type="text" name="productqty" value="1" readonly style="width: 40px; text-align: center;"/>'
 						 	 + '	<img onclick="addQty()" src="../images/plus.png" style="width: 20px;">'
 						 	 + '	<img onclick="subQty()" src="../images/minus.png" style="width: 20px;">'
-						 	 + '	<img onclick="delOption()" src="../images/cancel.png" style="width: 20px;">'
+						 	 + '	<img onclick="delOption()" src="../images/cancel.png" style="width: 20px;">'	
+						 	 + '	<input type="hidden" name="optionValue" value="' + opval + '"/>'
 						 	 + '</li>';
 						  
 					$("ul#ul_reqOptionResult").append(html);
@@ -66,32 +67,6 @@
 				}
 			}
 		});
-		
-		// 선택 옵션
-		$("select#selOption").change(function() {
-			
-			if($("ul#ul_reqOptionResult > li").length == 0) {
-				alert("필수 옵션 선택 후 선택 가능한 옵션입니다.");
-				return; // 다시 "[선택] 옵션을 선택해주세요"로 변경하고 싶음.
-			}
-			
-			if($("select#selOption").val() != "") {
-				if($("ul#ul_selOptionResult > li").length == 0) {
-					const selOptionName = $("select#selOption option:selected").text();
-				
-					let html = '<li>'
-						 	 + '	<label id="pname" style="margin-right: 178px;">' + selOptionName + '</label>'
-						 	 + ' 	<img onclick="delOption()" src="../images/cancel.png" style="width: 20px;">'
-						 	 + '</li>';
-				
-					$("ul#ul_selOptionResult").append(html);
-					optionResult();
-				}
-				else {
-					alert("이미 선택한 옵션입니다.");					
-				}
-			}
-		}); // end of $("select#selOption").change(function(){})
 		
 
 		// 구매하기 클릭
@@ -115,10 +90,6 @@
 			
 						qtyList.push(value);
 					});
-					
-					if($("ul#ul_selOptionResult li").length != 0) { // 선택 옵션이 선택되어 있는 경우
-						qtyList.push('1');
-					}
 				}
 				else {	// 필수 옵션이 선택되어 있지 않은 경우
 					alert("옵션을 선택해주세요.");
@@ -147,28 +118,24 @@
 				if($("ul#ul_reqOptionResult li").length != 0) { // 필수 옵션이 선택되어 있는 경우
 					
 					// 선택된 옵션별 옵션명을 알아오는 반복문
-					$("label#pname").each(function(){
-						var pname = $(this).text();
+					$("input[name='optionValue']").each(function(){
+						var optionValue = $(this).val();
 						
-						opList.push(pname);
+						opList.push(optionValue);
 					});
-					
+				
 					// 선택된 옵션별 수량을 알아오는 반복문
 					$("ul#ul_reqOptionResult li input[name=productqty]").each(function() {
 						var value = $(this).val();
 			
 						qtyList.push(value);
 					});
-					
-					if($("ul#ul_selOptionResult li").length != 0) { // 선택 옵션이 선택되어 있는 경우
-						qtyList.push('1');
-					}
 				}
 				else {
 					alert("옵션을 선택해주세요.");
 					return;
 				}
-				
+					
 				$.ajax({
 					url:"<%= ctxPath %>/product_lsh/cartDuplicateCheck.an",
 					data:{"userid":"${sessionScope.loginuser.userid}",
@@ -273,7 +240,7 @@
        	let qty = Number($target.siblings("input").val());
        	
        	if(qty < 20) {
-       		$target.siblings("input").val(qty + 1);
+       		$target.siblings("input[name=productqty]").val(qty + 1);
        		optionResult();
        	}
        	else {
@@ -287,7 +254,7 @@
 		let qty = Number($target.siblings("input").val());
        	
        	if(qty > 1) {
-       		$target.siblings("input").val(qty - 1);
+       		$target.siblings("input[name=productqty]").val(qty - 1);
        		optionResult();
        	}
        	else {
@@ -304,7 +271,7 @@
 	}
 	
 	
-	// ul_reqOptionResult, ul_selOptionResult에 변동이 생길 때마다 호출되는 함수(totalPrice, totalQty 계산)
+	// ul_reqOptionResult에 변동이 생길 때마다 호출되는 함수(totalPrice, totalQty 계산)
    	function optionResult() {
 
 		let qty = 0;
@@ -315,6 +282,7 @@
 		else { price = $("input[name=productprice]").val(); }	// 345000
 		
 		if($("ul#ul_reqOptionResult li").length != 0) { // 필수 옵션이 선택되어 있는 경우
+			
 			// 선택된 옵션별 수량을 알아오는 반복문
 			$("ul#ul_reqOptionResult li input[name=productqty]").each(function(idx) {
 				var value = $(this).val();
@@ -322,13 +290,7 @@
 				qty = qty + Number(value);
 			});
 			
-			if($("ul#ul_selOptionResult li").length != 0) { // 선택 옵션이 선택되어 있는 경우
-				price = (Number(price) * Number(qty)) + 3000;
-				qty = qty + 1;
-			}
-			else {
-				price = Number(price) * Number(qty);
-			}
+			price = Number(price) * Number(qty);
 			
 			$("span#totalResult").text(price.toLocaleString('en') + "원 (" + qty + "개)");
 			$("span#totalResult").show();
@@ -434,31 +396,14 @@
 						<label style="width: 150px;">필수 옵션</label>
 						<select id="reqOption" style="width: 300px;">
 							<option value="">[필수] 옵션을 선택해주세요</option>
-							<option>14K 로즈골드 5호</option>
-							<option>14K 로즈골드 6호</option>
-							<option>14K 로즈골드 7호</option>
-							<option>14K 옐로우골드 5호</option>
-							<option>14K 옐로우골드 6호</option>
-							<option>14K 옐로우골드 7호</option>
-							<option>18K 로즈골드 5호</option>
-							<option>18K 로즈골드 6호</option>
-							<option>18K 로즈골드 7호</option>
-							<option>18K 옐로우골드 5호</option>
-							<option>18K 옐로우골드 6호</option>
-							<option>18K 옐로우골드 7호</option>
+							<c:forEach var="option" items="${requestScope.optionList}">
+								<option value="${option.optionnum}">${option.optionname}</option>							
+							</c:forEach>
 						</select>
-					</li>
-					<li>
-						<label style="width: 150px;">선택 옵션</label>						
-						<select id="selOption" style="width: 300px;">
-							<option value="">[선택] 옵션을 선택해주세요</option>
-							<option>선물용 포장</option>
-						</select>		
 					</li>
 				</ul>
 				
 				<ul class="mt-5" id="ul_reqOptionResult" style="list-style: none; padding: 0;"></ul>
-				<ul id="ul_selOptionResult" style="list-style: none; padding: 0;"></ul>
 				
 				<hr style="border: solid 1px lightgray">
 				
@@ -488,9 +433,9 @@
 					<li>Special Note : 주말 및 공휴일을 제외한 4~6일의 제작기간이 필요한 제품입니다.</li>
 				</ul>
 			</div>
-			<div id="productDetailImg">
+			<div id="productDetailImg" align=center>
 				<c:forEach var="pdimg" items="${requestScope.imgList}" begin="4">
-					<img src="../images/product/${pdimg.imagefilename}" style="width: 90%; margin: 0 auto;"/>
+					<img src="../images/product/${pdimg.imagefilename}" class="mb-5" style="width: 80%; margin: 0 auto;"/>
 				</c:forEach>
 			</div>
 			

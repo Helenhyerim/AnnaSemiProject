@@ -136,7 +136,7 @@ span.spanbtn {
 	text-align: center;
 }
 
-div#bottom_content {width: 90%;}
+div#bottom_content {width: 100%;}
 
 div#productInfo {
 	margin-top: 50px;
@@ -151,7 +151,7 @@ div#productInfo > ul {
 
 div#productDetailImg {
 	text-align: center;
-	margin-bottom: 250px;
+	margin-bottom: 100px;
 }
 
 div#productDetailImg > img {
@@ -160,4 +160,4 @@ div#productDetailImg > img {
 
 div#productDetailImg > img:first-child {margin-bottom: 200px;}
 
-div#review_board, div#QnA_board {margin: 50px auto;}
+div#review_board {margin: 50px auto;}

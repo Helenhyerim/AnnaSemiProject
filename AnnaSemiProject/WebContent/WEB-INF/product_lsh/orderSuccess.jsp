@@ -72,7 +72,7 @@
 				</thead>
 				
 				<tbody>
-					<c:forEach var="order" items="${requestScope.orderList}">
+					<c:forEach var="order" items="${requestScope.orderList}" varStatus="status">
 						<tr style="border-bottom: solid 1px lightgray;">
 							<td style="width: 10%;">
 								<img src="../images/product/${order.pvo.productimage1}" style="max-width: 100%; border-radius: 5px;">
@@ -81,8 +81,7 @@
 								<ul style="list-style: none; padding: 0;">
 									<li><label style="font-weight: bold;">${order.pvo.productname}</label></li>
 									<li><label>[옵션]</label></li>
-									<li>옵션1 (2개)</li>
-									<li>옵션2 (1개)</li>
+									<li><label>옵션명&nbsp;(개)</label></li>
 								</ul>
 							</td>
 							<td style="width: 20%;" align=center>

@@ -123,7 +123,7 @@
 	<div>
 		<table id="tbl_order">
 			<tbody>
-				<c:forEach var="order" items="${requestScope.orderList}">
+				<c:forEach var="order" items="${requestScope.orderList}" varStatus="status">
 					<tr>
 						<td style="width: 10%;">
 							<img src="../images/product/${order.pvo.productimage1}" style="max-width: 100%; border-radius: 5px;">
