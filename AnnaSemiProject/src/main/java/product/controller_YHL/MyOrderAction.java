@@ -53,13 +53,10 @@ public class MyOrderAction extends AbstractController {
 				InterProductDAO pdao = new ProductDAO();
 				
 				String cart_checked = request.getParameter("cart_checked");
-			//	System.out.println("~~~ 확인용 cart_checked =>" + cart_checked);
-				// 31, 32,,,
 				
 				List<ProductVO> productList = new ArrayList<ProductVO>();
 				
 				String[] cartnoList = cart_checked.split(",");
-				
 				
 				for(String cartno : cartnoList) {
 					
@@ -77,16 +74,21 @@ public class MyOrderAction extends AbstractController {
 				request.setAttribute("productList", productList);
 				
 				int sumPrice = 0;
+				int sumPoint = 0;
 				// 주문한 상품에 대한 총 주문금액과 총포인트 알아오기
 				for(String cartno : cartnoList) {
 					
 					Map<String, Integer> totalpricepointMap = pdao.getTotalPricePoint(cartno);
 					
 					sumPrice += totalpricepointMap.get("sumPrice");
+					sumPoint += totalpricepointMap.get("sumPoint");
 					
 				}
 			
 				request.setAttribute("sumPrice", sumPrice);
+			//	System.out.println("sumPrice =>" + sumPrice);
+				request.setAttribute("discountedsumPrice", sumPrice*0.95);
+				request.setAttribute("sumPoint", sumPoint);
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/view/product_YHL/order_YHL.jsp");

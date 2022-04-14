@@ -11,7 +11,7 @@
 
 #itemdetail {
 	display: inline-block;
-	padding: 40px 0 ;
+	padding: 40px 0  40px 30px;
 }
 
 #itemdetail > a,strong {
@@ -55,7 +55,7 @@
 #itemtotalprice {
 	
 	width: 100%; 
-	height: 80px; 
+	height: 100px; 
 	background-color: #bfbfbf; 
 	color: black; 
 	font-size: 16pt; 

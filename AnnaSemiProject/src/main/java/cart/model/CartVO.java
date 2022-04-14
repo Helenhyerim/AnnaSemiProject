@@ -6,7 +6,8 @@ public class CartVO {
 	private int fk_productnum ; 	/* 제품번호 */
 	private int orderqty ; 			/* 주문량 */
 	private String registerday ; 	/* 입력일자 */
-	
+	private int fk_optionnum;		/* 옵션넘버 */
+	private String optionname;		/* 옵션이름 */
 	private int totalpricebyproduct;
 	private int totalpointbyproduct;
 	//////////////////////////////////////////////////////////////////
@@ -52,6 +53,19 @@ public class CartVO {
 	public void setTotalpointbyproduct(int totalpointbyproduct) {
 		this.totalpointbyproduct = totalpointbyproduct;
 	}
+	public int getFk_optionnum() {
+		return fk_optionnum;
+	}
+	public void setFk_optionnum(int fk_optionnum) {
+		this.fk_optionnum = fk_optionnum;
+	}
+	public String getOptionname() {
+		return optionname;
+	}
+	public void setOptionname(String optionname) {
+		this.optionname = optionname;
+	}
+	
 	/////////////////////////////////////////////////////////////
 	
 	public CartVO() {}
@@ -64,7 +78,6 @@ public class CartVO {
 		this.orderqty = orderqty;
 		this.registerday = registerday;
 	}
-	
 	
 	
 	

@@ -295,7 +295,7 @@ $(document).ready(function(){
 	
 	// Function Declaration
 	function goPurchase(paymentprice,totalpaypoint) {
-	
+		
 		// ** 필수입력 사항에 모두 입력이 되었는지 검사한다. ** //
 		let b_FlagNecessaryValue = false;
 		
@@ -316,11 +316,11 @@ $(document).ready(function(){
 			const receivedname = $("input#receivedname").val();
 			const postcode = $("input#postcode").val();
 			const address = $("input#address").val();
-			
+		/*	
 			console.log(receivedname);
 			console.log(postcode);
 			console.log(address);
-			
+		*/	
 			const url = "<%= request.getContextPath()%>/product/myOrderPayEnd.an?userid="+userid+"&paymentprice="+paymentprice+"&totalpaypoint="+totalpaypoint
 					+"&receivedname="+receivedname+"&postcode="+postcode+"&address="+address;
 			
@@ -428,7 +428,31 @@ $(document).ready(function(){
 		     선택자 $("#allCheckOrNone") 이 체크가 해제되어지면 false를 나타내어주는 것이다.
 		*/
 		if(bool){
+			const orderedname = $("input#orderedname").val();
+			const homenum1 = $("input#homenum1").val();
+			const homenum2 = $("input#homenum2").val();
+			const homenum3 = $("input#homenum3").val();
+			const hp1 = $("input#hp1").val();
+			const hp2 = $("input#hp2").val();
+			const hp3 = $("input#hp3").val();
 			
+			$("input#receivedname").val(orderedname);
+			$("input#D_homenum1").val(homenum1);
+			$("input#D_homenum2").val(homenum2);
+			$("input#D_homenum3").val(homenum3);
+			$("input#D_hp1").val(hp1);
+			$("input#D_hp2").val(hp2);
+			$("input#D_hp3").val(hp3);
+			
+			
+		}else if(!bool){
+			$("input#receivedname").val("");
+			$("input#D_homenum1").val("");
+			$("input#D_homenum2").val("");
+			$("input#D_homenum3").val("");
+			$("input#D_hp1").val("");
+			$("input#D_hp2").val("");
+			$("input#D_hp3").val("");
 		}
 		
 	}// end of function sameWithOrderInfo()-------------------------
@@ -454,8 +478,8 @@ $(document).ready(function(){
 					<div class="col-5" id="itemdetail">
 						<a id="itemName">${pvo.productname }</a>
 						<!-- <span>구매가격(할인후)</span> -->
-						<a style="display: inline-block;">[옵션: 14K-로즈골드]</a>
-						<a>[적립금: <span id="point">${pvo.point }</span>원]</a>
+						<a style="display: inline-block;">[옵션: ${pvo.cvo.optionname}]</a>
+						<a>[적립금: <fmt:formatNumber value="${pvo.point }" pattern="###,###"/>원]</a>
 						<fmt:formatNumber value="${pvo.productprice}" pattern="###,###" />원
 						<input type="hidden" class="totalPrice" value="${pvo.cvo.totalpricebyproduct}" />
 			            <input type="hidden" class="totalPoint" value="${pvo.cvo.totalpointbyproduct}" />
@@ -464,7 +488,8 @@ $(document).ready(function(){
 						수량:&nbsp;<input class="orderqty"  type="text" size="2" value="${pvo.cvo.orderqty }">
 					</div>
 					<div id="itemprice" class="col-2 h4">
-						<span id="totalpricebyproduct"><fmt:formatNumber value="${pvo.cvo.totalpricebyproduct}" pattern="###,###" /></span>원
+						<strike><span id="totalpricebyproduct"><fmt:formatNumber value="${pvo.cvo.totalpricebyproduct}" pattern="###,###" /></span></strike>원
+						<br><fmt:formatNumber value="${pvo.cvo.totalpricebyproduct }" pattern="###,###" />원
 						
 			               
 					</div>
@@ -475,13 +500,15 @@ $(document).ready(function(){
 		
 		
 		<div class="mt-5" id="itemtotalprice" >
-			 상품금액 <span id="orderprice"></span> (+옵션 <span id="optionprice">29,000</span>) + 배송비<span id="deliveryprice">0</span> - 상품할인금액 0 = 합계 : <fmt:formatNumber value="${requestScope.sumPrice }" pattern="###,###" />원
+			 상품금액 <fmt:formatNumber value="${requestScope.sumPrice }" pattern="###,###" /> + 배송비 무료 - 상품할인금액 <fmt:formatNumber value="${requestScope.sumPrice * 0.05}" pattern="###,###" /> = 합계 : <fmt:formatNumber value="${requestScope.discountedsumPrice }" pattern="###,###" />원
+			<br>
+			총 적립금 : <fmt:formatNumber value="${requestScope.sumPoint }" pattern="###,###" />
 		</div>
 		
 		
 		<form name="orderinfo" style="padding-top: 200px; width: 90%; margin: 20px auto;">
-		
-			<h4 class="mb-3">주문 정보</h4>
+		<div style="margin-bottom: 200px;">
+			<h4 class="mb-3" >주문 정보</h4>
 			<table class="table table-bordered" >
 			    <tr>
 			      <th>주문하시는 분<span class="star">*</span></th>
@@ -495,11 +522,11 @@ $(document).ready(function(){
 			      <th>일반전화</th>
 			      <td>
 			      	<div class="input-group mb-3">
-			      	<input name="homenum1" style="display: inline;" type="text" class="form-control" placeholder="02">
+			      	<input name="homenum1" id="homenum1" style="display: inline;" type="text" class="form-control" placeholder="02">
   					<span style="display: inline;" class="input-group-text">-</span>
-  					<input name="homenum2" style="display: inline;" type="text" class="form-control" >
+  					<input name="homenum2" id="homenum2" style="display: inline;" type="text" class="form-control" >
   					<span style="display: inline;" class="input-group-text">-</span>
-  					<input name="homenum3" style="display: inline;" type="text" class="form-control" >
+  					<input name="homenum3" id="homenum3" style="display: inline;" type="text" class="form-control" >
   					</div>
 				  </td>
 			    </tr>
@@ -531,7 +558,7 @@ $(document).ready(function(){
   				  </td>
 			    </tr>
 			</table>
-		
+		</div>
 		
 			
 			<div class="form-check" style="float: right; padding-right: 10px;">
@@ -574,11 +601,11 @@ $(document).ready(function(){
 			      <th>일반전화</th>
 			      <td>
 			      	<div class="input-group mb-3">
-			      	<input name="D_homenum1" style="display: inline;" type="text" class="form-control" placeholder="02" >
+			      	<input name="D_homenum1" id="D_homenum1" style="display: inline;" type="text" class="form-control" placeholder="02" >
   					<span style="display: inline;" class="input-group-text">-</span>
-  					<input name="D_homenum2" style="display: inline;" type="text" class="form-control" >
+  					<input name="D_homenum2" id="D_homenum2" style="display: inline;" type="text" class="form-control" >
   					<span style="display: inline;" class="input-group-text">-</span>
-  					<input name="D_homenum3" style="display: inline;" type="text" class="form-control" >
+  					<input name="D_homenum3" id="D_homenum3" style="display: inline;" type="text" class="form-control" >
   					</div>
 				  </td>
 			    </tr>
@@ -616,9 +643,10 @@ $(document).ready(function(){
 		   <input type="hidden" name="sumtotalPoint" />
  		</form> 
 		
-		<input type="button" id="purchase" onclick="goPurchase(${requestScope.sumPrice },0);" value="결제하기" />
-		<input type="button" id="goBackCart" onclick="javascript:history.back()" value="장바구니로 되돌아가기" />
-		
+		<div style="text-align: center; margin-top: 50px;">
+			<input type="button" id="purchase" onclick="goPurchase(${requestScope.discountedsumPrice },${requestScope.sumPoint });" value="결제하기" />
+			<input type="button" id="goBackCart" onclick="javascript:history.back()" value="장바구니로 되돌아가기" />
+		</div>
 			
 	</div>
 

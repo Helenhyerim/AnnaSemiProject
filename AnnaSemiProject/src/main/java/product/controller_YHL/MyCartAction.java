@@ -36,7 +36,7 @@ public class MyCartAction extends AbstractController {
 				// request.setAttribute("optionname", optionname);
 				
 				
-				
+				request.setAttribute("userid", userid);
 				request.setAttribute("productList", productList);
 				
 				//	super.setRedirect(false);

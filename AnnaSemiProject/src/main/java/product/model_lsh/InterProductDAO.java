@@ -81,6 +81,12 @@ public interface InterProductDAO {
     // === 주문이 완료되었을시 주문이 완료되었다라는 email 보내주기  === //
 	int orderAdd(Map<String, Object> paraMap) throws SQLException;
 
+	// 장바구니 테이블에서 특정제품을 수량을 변경하기
+	int updateCart(Map<String, String> paraMap) throws SQLException;
+
+	// index 페이지에서 보여줄 BEST 상품 select 해오기
+	List<ProductVO> selectBySpecName(Map<String, String> paraMap) throws SQLException;
+
 	
 
 	

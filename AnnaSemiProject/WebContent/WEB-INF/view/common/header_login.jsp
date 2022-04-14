@@ -142,7 +142,7 @@
 	<!-- 상단 네비게이션 시작 -->
 	<nav class="navbar-expand-lg  bg-white navbar-light fixed-top" id = "first-nav" >
 		<!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
-		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img class="mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
+		<a class="d-flex justify-content-center mr-0" href="<%= ctxPath %>/index.an" style="margin-right: 10%;"><img class="mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
 		
 		<!-- 아코디언 같은 Navigation Bar 만들기 -->
 	    <button class="navbar-toggler " type="button"onclick="openNav()">

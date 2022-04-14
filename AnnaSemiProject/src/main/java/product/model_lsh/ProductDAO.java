@@ -18,6 +18,7 @@ import cart.model.CartVO;
 import member.model.MemberVO;
 
 
+
 public class ProductDAO implements InterProductDAO {
 
 	private DataSource ds;	// DataSource ds는 아파치톰캣이 제공하는 DBCP(DB Connection Pool)이다.
@@ -416,13 +417,15 @@ public class ProductDAO implements InterProductDAO {
 			conn = ds.getConnection();
 			
 			String sql =" select C.FK_PRODUCTNUM, C.ORDERQTY, " + 
-					"        P.PRODUCTNAME, P.PRODUCTIMAGE1, P.PRODUCTQTY, P.PRODUCTPRICE, P.SALEPRICE, P.POINT, " +
-					"		 C.cartno, C.fk_optionnum " +
-					" from tbl_product P " + 
-					" JOIN tbl_cart C " + 
-					" ON P.productnum = C.fk_productnum " + 
-					" JOIN tbl_member M " + 
+					" P.PRODUCTNAME, P.PRODUCTIMAGE1, P.PRODUCTQTY, P.PRODUCTPRICE, P.SALEPRICE, P.POINT,  " + 
+					" C.cartno, O.optionnum, O.optionname " + 
+					" from tbl_product P   " + 
+					" JOIN tbl_cart C  " + 
+					" ON P.productnum = C.fk_productnum  " + 
+					" JOIN tbl_member M  " + 
 					" ON M.userid = C.fk_userid " + 
+					" JOIN tbl_product_option O " + 
+					" ON C.fk_optionnum = O.optionnum " + 
 					" where M.userid = ? " + 
 					" order by C.fk_productnum asc ";
 			
@@ -448,7 +451,8 @@ public class ProductDAO implements InterProductDAO {
 				pvo.setPoint(rs.getInt(8));
 								
 				cvo.setCartno(rs.getInt(9));
-			//	cvo.setFk_productnum(rs.getInt(10)); 성희랑 cvo 합치고 수정
+				cvo.setFk_optionnum(rs.getInt(10));
+				cvo.setOptionname(rs.getString(11));
 				pvo.setCvo(cvo); // 장바구니
 				
 				productList.add(pvo);
@@ -600,13 +604,16 @@ public class ProductDAO implements InterProductDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql =" select P.productnum, P.productname, P.productcompany, P.productimage1 " + 
-					"     , P.productprice, P.saleprice, P.point  " + 
-					"     , C.ORDERQTY, P.productprice*C.ORDERQTY as Totalpricebyproduct , P.point*C.ORDERQTY as Totalpointbyproduct " +
-					"	  , C.cartno	" +	
-					" from tbl_product P JOIN tbl_cart C " + 
-					" ON P.productnum = C.fk_productnum " + 
-					" where C.cartno = ? ";
+			 String sql = " select P.productnum, P.productname, P.productcompany, P.productimage1 "+
+					 " , P.productprice, P.saleprice, P.point  "+
+					 " , C.ORDERQTY, P.productprice*C.ORDERQTY as Totalpricebyproduct , P.point*C.ORDERQTY as Totalpointbyproduct "+
+					 " , C.cartno, O.optionnum, O.optionname	"+
+					 " from tbl_product P "+
+					 " JOIN tbl_cart C "+
+					 " ON P.productnum = C.fk_productnum "+
+					 " JOIN tbl_product_option O "+
+					 " ON C.fk_optionnum = O.optionnum "+
+					 " where C.cartno = ?  ";
 			
 			
 			pstmt = conn.prepareStatement(sql);
@@ -629,6 +636,8 @@ public class ProductDAO implements InterProductDAO {
 				cvo.setTotalpricebyproduct(rs.getInt(9));
 				cvo.setTotalpointbyproduct(rs.getInt(10));
 				cvo.setCartno(rs.getInt(11));
+				cvo.setFk_optionnum(rs.getInt(12));
+				cvo.setOptionname(rs.getString(13));
 				
 				pvo.setCvo(cvo); // 장바구니
 				
@@ -656,7 +665,8 @@ public class ProductDAO implements InterProductDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql =" select C.orderqty * P.productprice as totalprice " + 
+			String sql =" select C.orderqty * P.productprice as totalprice, " + 
+					" C.orderqty * P.point as totalpoint " +
 					" from tbl_cart C JOIN tbl_product P " + 
 					" on C.fk_productnum = P.productnum " + 
 					" where C.cartno = ? ";
@@ -669,7 +679,8 @@ public class ProductDAO implements InterProductDAO {
 			
 			if(rs.next()) {
 				totalpricepointMap.put("sumPrice", rs.getInt(1));				
-				// 포인트도 똑같이 한다
+				totalpricepointMap.put("sumPoint", rs.getInt(2));				
+				
 						
 			}// end of if(rs.next()) --------
 			
@@ -873,5 +884,78 @@ public class ProductDAO implements InterProductDAO {
 	      
 	      return isSuccess;
 	}
+
+	// 장바구니 테이블에서 특정제품을 수량을 변경하기
+	@Override
+	public int updateCart(Map<String, String> paraMap) throws SQLException {
+		int n = 0;
+		
+		try {
+			 conn = ds.getConnection();
+			 
+			 String sql = " update tbl_cart set orderqty = ? "
+					 	+ " where cartno = ? " ;
+			 
+			 pstmt = conn.prepareStatement(sql);
+			 
+			 pstmt.setString(1, paraMap.get("oqty"));
+			 pstmt.setString(2, paraMap.get("cartno"));
+			 
+			 n = pstmt.executeUpdate();
+
+		} finally {
+			close();
+		}
+		
+		return n;
+	}
+
+	// index 페이지에서 보여줄 BEST 상품 select 해오기
+	@Override
+	public List<ProductVO> selectBySpecName(Map<String, String> paraMap) throws SQLException {
+		List<ProductVO> prodList = new ArrayList<>();
+		
+		try {
+			 conn = ds.getConnection();
+			 
+			 String sql = " select productnum, productname, productimage1, productprice, point "+
+					 "from  "+
+					 "(  "+
+					 "select row_number() over(order by P.productnum desc) AS RNO  "+
+					 ", P.productnum, P.productname, P.productimage1, P.productprice, P.point   "+
+					 " "+
+					 "from tbl_product P   "+
+					 "JOIN TBL_spec S\n"+
+					 "ON P.fk_specnum = S.specnum "+
+					 "where S.specnum = ? "+
+					 ") V  "+
+					 " where V.RNO between ? and ? ";
+			 
+			 pstmt = conn.prepareStatement(sql);
+			 pstmt.setString(1, paraMap.get("snum"));
+			 pstmt.setString(2, paraMap.get("start"));
+			 pstmt.setString(3, paraMap.get("end"));
+			 
+			 rs = pstmt.executeQuery();
+			 
+			 while(rs.next()) {
+				 
+				 ProductVO pvo = new ProductVO();
+				 
+				 pvo.setProductnum(rs.getInt(1));
+				 pvo.setProductname(rs.getString(2));
+				 pvo.setProductimage1(rs.getString(3));
+				 pvo.setProductprice(rs.getInt(4));
+				 pvo.setPoint(rs.getInt(5));
+				 
+				 prodList.add(pvo);
+			 }// end of while(rs.next())-------------------------------
+			 
+		} finally {
+			close();
+		}
+		
+		return prodList;
+	}// end of public List<ProductVO> selectBySpecName(Map<String, String> paraMap) ---------- 
 	
 }
