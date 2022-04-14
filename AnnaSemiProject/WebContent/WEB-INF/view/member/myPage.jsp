@@ -23,7 +23,6 @@
 	    letter-spacing: 1px;
 	    font-family: 'Roboto','Noto Sans KR',sans-serif;
 	}
-
 	#contents {
 	    width: 100%;
 	    float: none;
@@ -107,11 +106,9 @@
 
 
 <script type="text/javascript">
-
 	$(document).ready(function(){
 		
 	});
-
 </script>
 
 <div class="contents mx-5" style="margin-top:230px;">

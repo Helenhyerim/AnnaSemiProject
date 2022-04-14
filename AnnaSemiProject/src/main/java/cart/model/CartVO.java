@@ -7,7 +7,8 @@ public class CartVO {
 	private int orderqty ; 			/* 주문량 */
 	private String registerday ; 	/* 입력일자 */
 	
-	
+	private int totalpricebyproduct;
+	private int totalpointbyproduct;
 	//////////////////////////////////////////////////////////////////
 	public int getCartno() {
 		return cartno;
@@ -39,7 +40,18 @@ public class CartVO {
 	public void setRegisterday(String registerday) {
 		this.registerday = registerday;
 	}
-	
+	public int getTotalpricebyproduct() {
+		return totalpricebyproduct;
+	}
+	public void setTotalpricebyproduct(int totalpricebyproduct) {
+		this.totalpricebyproduct = totalpricebyproduct;
+	}
+	public int getTotalpointbyproduct() {
+		return totalpointbyproduct;
+	}
+	public void setTotalpointbyproduct(int totalpointbyproduct) {
+		this.totalpointbyproduct = totalpointbyproduct;
+	}
 	/////////////////////////////////////////////////////////////
 	
 	public CartVO() {}
@@ -52,6 +64,8 @@ public class CartVO {
 		this.orderqty = orderqty;
 		this.registerday = registerday;
 	}
+	
+	
 	
 	
 

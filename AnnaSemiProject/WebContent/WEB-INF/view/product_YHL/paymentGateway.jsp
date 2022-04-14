@@ -26,29 +26,21 @@ $(document).ready(function() {
        buyer_email : '${requestScope.email}',  // 구매자 email
        buyer_name : '${requestScope.name}',	  // 구매자 이름 
        buyer_tel : '${requestScope.mobile}',    // 구매자 전화번호 (필수항목)
-       buyer_addr : '',  
-       buyer_postcode : '',
+       buyer_addr : '${requestScope.address}',  
+       buyer_postcode : '${requestScope.postcode}',
        m_redirect_url : ''  // 휴대폰 사용시 결제 완료 후 action : 컨트롤러로 보내서 자체 db에 입력시킬것!
    }, function(rsp) {
 	   
 	   if ( rsp.success ) { // PC 데스크탑용
-			/* === 팝업창에서 부모창 함수 호출 방법 3가지 ===
-			    1-1. 일반적인 방법
-				opener.location.href = "javascript:부모창스크립트 함수명();";
-				opener.location.href = "http://www.aaa.com";
-				
-				1-2. 일반적인 방법
-				window.opener.부모창스크립트 함수명();
-
-				2. jQuery를 이용한 방법
-				$(opener.location).attr("href", "javascript:부모창스크립트 함수명();");
-			*/
-			//	opener.location.href = "javascript:goCoinUpdate('${requestScope.userid}','${requestScope.coinmoney}');";
-			//	window.opener.goCoinUpdate('${requestScope.userid}','${requestScope.coinmoney}');
-			//  $(opener.location).attr("href", "javascript:goCoinUpdate('${requestScope.userid}','${requestScope.coinmoney}');");
+			
+			opener.location.href = "javascript:goPayDB('${requestScope.userid}','100', '0','${requestScope.receivedname}', '${requestScope.postcode}', '${requestScope.address}');";
 				
 	 
 		   self.close();
+	   }else {
+           location.href="/product/myCart.an";
+           alert("결제에 실패하였습니다.");
+      }
    }); // end of IMP.request_pay()----------------------------
 
 }); // end of $(document).ready()-----------------------------

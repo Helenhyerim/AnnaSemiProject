@@ -73,100 +73,36 @@
 			
 			</h1>	
 				<form name="productFrm" action="categoryClick.an" method="get" >	
+						<input type="hidden" name="categorynum" value="${requestScope.categorynum}">
+
 					
-					<input type="hidden" name="categorynum" value="${requestScope.categorynum}">
-					
-					<span style="color: red; font-weight: bold; font-size: 12pt;">페이지당 제품개수-</span>
+						<div>
+						<span style="font-size: 14pt; font-weight: bold;">페이지당 제품개수</span>
 				        <select id="sizePerPage" name="sizePerPage">
 					        <option value="9">9</option>
 					        <option value="6">6</option>
 					        <option value="3">3</option>
 				        </select>
+						</div>
+						
+						<div class="dropdown mb-5" style="margin-left: 90%;">
+							<select id="sort" name="sort" class="form-select" aria-label="Default select example">
+							  <option value="1" selected>등록순</option>
+							  <option value="2">가격높은순</option>
+							  <option value="3">가격낮은순</option>
+							</select>
+						</div>
 					
 					
-					<div class="dropdown mb-5" style="margin-left: 90%;">
-						<select id="sort" name="sort" class="form-select" aria-label="Default select example">
-						  <option value="1" selected>등록순</option>
-						  <option value="2">가격높은순</option>
-						  <option value="3">가격낮은순</option>
-						</select>
-					</div>
 				</form>
 			</div>
 			
 			
 			<div id="middle-container" class="row " style="">
-				<div class="col-md-2 " id="sideinfo" >
-					<div>
-						<p class="py-2 mb-0 h5">Color</p>
-						<div class="mb-2">
-							<div class="form-check">
-					  			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-								  <label class="form-check-label" for="flexCheckDefault">
-								    White
-								  </label>
-							</div>
-							<div class="form-check">
-					  			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-								  <label class="form-check-label" for="flexCheckDefault">
-								    Gold
-								  </label>
-							</div>
-							<div class="form-check">
-					  			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-								  <label class="form-check-label" for="flexCheckDefault">
-								    Rose Gold
-								  </label>
-							</div>
-						</div>
-					</div>
-					
-					<div>
-						<p class="py-2 mb-0 h5">Price</p>
-						<div class="mb-2">
-							<div class="form-check">
-					  			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-								  <label class="form-check-label" for="flexCheckDefault">
-								    ~ 200,000
-								  </label>
-							</div>
-							<div class="form-check">
-					  			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-								  <label class="form-check-label" for="flexCheckDefault">
-								    ~ 300,000
-								  </label>
-							</div>
-							<div class="form-check">
-					  			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-								  <label class="form-check-label" for="flexCheckDefault">
-								    ~ 400,000
-								  </label>
-							</div>
-						</div>
-					</div>
-					
-					<div>
-						<p class="py-2 mb-0 h5">Type</p>
-						<div class="mb-2">
-							<div class="form-check">
-					  			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-								  <label class="form-check-label" for="flexCheckDefault">
-								    Long
-								  </label>
-							</div>
-							<div class="form-check">
-					  			<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-								  <label class="form-check-label" for="flexCheckDefault">
-								    Bold
-								  </label>
-							</div>
-						</div>
-					</div>
-			 
-			 	</div>
+				
 			 	
 			 	
-			 	<div id="image-container" class="col-md-10 ">
+			 	<div id="image-container" class="col-md-12 ">
 				 	<div class="row">
 				 	<c:if test="${not empty requestScope.productList}">
 					 	<c:forEach var="productvo" items="${requestScope.productList}">

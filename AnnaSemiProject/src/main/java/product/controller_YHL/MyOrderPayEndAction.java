@@ -16,7 +16,20 @@ public class MyOrderPayEndAction extends AbstractController {
 		if(super.checkLogin(request)) {// true 라면 로그인을 한 경우임
 			
 			String userid = request.getParameter("userid"); 
-			String paymentprice = request.getParameter("paymentprice"); 
+			String totalpayprice = request.getParameter("paymentprice"); 
+			String totalpaypoint = request.getParameter("totalpaypoint"); 
+			String receivedname = request.getParameter("receivedname"); 
+			String postcode = request.getParameter("postcode"); 
+			String address = request.getParameter("address"); 
+			/*	
+			System.out.println("~~~ 확인용 userid =>" + userid);
+			System.out.println("~~~ 확인용 totalpayprice =>" + totalpayprice);
+			System.out.println("~~~ 확인용 totalpaypoint =>" + totalpaypoint);
+			System.out.println("~~~ 확인용 receivedname =>" + receivedname);
+			System.out.println("~~~ 확인용 postcode =>" + postcode);
+			System.out.println("~~~ 확인용 address =>" + address);
+			*/
+			
 			/*
 				const url = "<%= request.getContextPath()%>/product/myOrderPayEnd.an?userid="+userid+"&paymentprice="+sum;
 				의 get 방식으로 저장해둔 userid 를 가져온 것임
@@ -28,13 +41,20 @@ public class MyOrderPayEndAction extends AbstractController {
 			if(loginuser.getUserid().equals(userid)) {// 세션에 저장된 아이디와, getPara 한 아이디가 같으면
 				// 즉 로그인 한 사용자가 자신의 결제 하는 경우
 	
-				// 아직 paymentprice 안넘겨줌, jsp 에서 100 으로 고정됨
+				// userid, totalpayprice, totalpaypoint, receivedname, postcode, address
+				request.setAttribute("userid", userid);
+
+				// 아직 paymentprice, point 안넘겨줌, jsp 에서 100 으로 고정됨
+				request.setAttribute("totalpayprice", totalpayprice);
+				request.setAttribute("totalpaypoint", totalpaypoint);
+				request.setAttribute("receivedname", receivedname);
+				request.setAttribute("postcode", postcode);
+				request.setAttribute("address", address);
 				
-				request.setAttribute("paymentprice", paymentprice);
+				
 				request.setAttribute("email", loginuser.getEmail());
 				request.setAttribute("name", loginuser.getName());
 				request.setAttribute("mobile", loginuser.getMobile());
-				request.setAttribute("userid", userid);
 				
 			//	super.setRedirect(false);
 				super.setViewPage("/WEB-INF/view/product_YHL/paymentGateway.jsp");
