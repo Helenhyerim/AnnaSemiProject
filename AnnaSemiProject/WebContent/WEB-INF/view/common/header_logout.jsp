@@ -216,9 +216,7 @@
 		           <a class="dropdown-item" href="#">diamond</a>
 		        </div>
 		     </li>
-		     <li class="nav-item active">
-		     	<a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=5" style="color:gray;">Sale</a>
-		     </li>
+		     
 		  </ul>
 		  <ul class="navbar-nav flex-row mb-2">
      		<form class="form-inline">

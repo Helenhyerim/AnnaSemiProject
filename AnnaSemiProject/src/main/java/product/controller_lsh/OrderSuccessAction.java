@@ -55,22 +55,6 @@ public class OrderSuccessAction extends AbstractController {
 				MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 				
 				InterProductDAO pdao = new ProductDAO();
-				
-				// 로그인 중인 사용자의 아이디로 최근 주문 코드 조회하기
-				String ordernum = pdao.selectRecentOrdernum(loginuser.getUserid());
-				
-				// 주문 번호로 주문 상세 정보 알아오기
-				List<OrderVO> orderList = pdao.selectOrderInfo(ordernum);
-				request.setAttribute("orderList", orderList);
-				
-				int totalPrice_origin = 0; // 총 주문금액(정가기준)
-				for(OrderVO order : orderList) {
-					totalPrice_origin += order.getPvo().getProductprice() * order.getOdvo().getOrderqty();
-				}
-				
-				request.setAttribute("totalPrice_origin", totalPrice_origin);
-				
-				
 
 				// 주문정보
 				String orderedname = request.getParameter("orderedname");
@@ -210,6 +194,20 @@ public class OrderSuccessAction extends AbstractController {
 				
 			//	request.setAttribute("ovo", ovo);
 			
+				// 로그인 중인 사용자의 아이디로 최근 주문 코드 조회하기
+				String ordernum = pdao.selectRecentOrdernum(loginuser.getUserid());
+				
+				// 주문 번호로 주문 상세 정보 알아오기
+				List<OrderVO> orderList = pdao.selectOrderInfo(ordernum);
+				request.setAttribute("orderList", orderList);
+				
+				int totalPrice_origin = 0; // 총 주문금액(정가기준)
+				for(OrderVO order : orderList) {
+					totalPrice_origin += order.getPvo().getProductprice() * order.getOdvo().getOrderqty();
+				}
+				
+				request.setAttribute("totalPrice_origin", totalPrice_origin);
+				
 			//	super.setRedirect(false);
 				super.setViewPage("/WEB-INF/product_lsh/orderSuccess.jsp");
 		//	}

@@ -74,11 +74,13 @@ public class ProductDAO implements InterProductDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = "select ceil(count(*)/?) "+
-						"from tbl_product ";
+			String sql = " select ceil(count(*)/?) "+
+						" from tbl_product " + 
+						" where categorynum = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("sizePerPage") );
+			pstmt.setString(2, paraMap.get("categorynum") );
 			
 			rs = pstmt.executeQuery();
 			
@@ -142,12 +144,13 @@ public class ProductDAO implements InterProductDAO {
 					"    from "+
 					"    ( "+
 					"    select productimage1, productname, productprice, productnum, categorynum "+
-					"    from tbl_product "
+					"    from tbl_product " +
+					"	 where categorynum = ?	"		
 					+ "  order by " + orderby;
 			
 			sql += "    ) V "+
 					") T "+
-					"where rno between ? and ? and categorynum = ? ";
+					"where rno between ? and ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -156,9 +159,9 @@ public class ProductDAO implements InterProductDAO {
 			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
 		//	System.out.println(" paraMap.get(\"sort\") => " + paraMap.get("sort"));
 		//	pstmt.setString(1, paraMap.get("sort"));
-			pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
-			pstmt.setInt(2, (currentShowPageNo * sizePerPage));
-			pstmt.setString(3, paraMap.get("categorynum"));
+			pstmt.setString(1, paraMap.get("categorynum"));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+			pstmt.setInt(3, (currentShowPageNo * sizePerPage));
 			
 			System.out.println("~~~ 확인용 categorynum=> " + paraMap.get("categorynum") );
 			
@@ -1106,7 +1109,7 @@ public class ProductDAO implements InterProductDAO {
 	            int cnt = 0;
 	            for(int i=0; i<pnumArr.length; i++) {
 	               sql = " insert into tbl_orderdetail(orderseqnum, ordernum, fk_productnum, orderqty, orderprice, deliverstatus ) "
-	                  + " values(seq_tbl_orderdetail.nextval, ?, to_number(?), to_number(?), to_number(?), default) "; 
+	                  + " values(SEQ_TBL_ORDERDETAIL.nextval, ?, to_number(?), to_number(?), to_number(?), default) "; 
 	               
 	               pstmt = conn.prepareStatement(sql);
 	               pstmt.setString(1, (String)paraMap.get("odrcode"));

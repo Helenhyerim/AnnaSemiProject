@@ -245,9 +245,7 @@
 		           <a class="dropdown-item" href="#">diamond</a>
 		        </div>
 		     </li>
-		      <li class="nav-item active">
-		     	<a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=5" style="color:#00000080;">Sale</a>
-		     </li>
+		      
 		  </ul>
   		</div>		
 	  	

@@ -36,6 +36,7 @@ public class CategoryClickAction extends AbstractController {
 
 		// sort
 		String sort = request.getParameter("sort");
+		String categorynum = request.getParameter("categorynum");
 		
 		if(currentShowPageNo == null) {
 			currentShowPageNo = "1";
@@ -61,6 +62,7 @@ public class CategoryClickAction extends AbstractController {
 		}
 
 		paraMap.put("sizePerPage", sizePerPage);
+		paraMap.put("categorynum", categorynum);
 		
 		
 		// 전체상품에 대한 총페이지 알아오기
@@ -76,7 +78,7 @@ public class CategoryClickAction extends AbstractController {
 		// sort
 		paraMap.put("sort", sort);
 		
-		String categorynum = request.getParameter("categorynum");
+		
 		paraMap.put("categorynum", categorynum);
 		List<ProductVO> productList = pdao.selectPagingProduct(paraMap);
 		

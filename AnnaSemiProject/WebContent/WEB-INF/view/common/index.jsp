@@ -112,7 +112,7 @@
 							
 						html +=  "<div class='col-md-6 col-lg-3'>"+
                         "<div class='card mb-3'>"+
-                            "<img src='AnnaSemiProject/images/"+item.productimage1+"' class='card-img-top' style='width: 100%'/>"+
+                            "<img src='/AnnaSemiProject/images/product/"+item.productimage1+"' class='card-img-top' style='width: 100%'/>"+
                             "<div class='card-body' style='padding: 0; font-size: 11pt;'>"+
                               "<ul class='list-unstyled mt-3 pl-3'>"+
                                  "<li><label class='prodInfo'>제품명</label>"+item.productname+"</li>"+
@@ -202,13 +202,15 @@
 		<div class="col-md-12 ">
 	  		<div class="row">
 		        <div class="col-7">
-		        <a href=""> <img id="img_all" src="<%= ctxPath %>/images/index/index_menuimg1.png" class="img-responsive img-rounded "  /></a>
-		          <h4>텍스트1</h4>
+		        <a href="<%= ctxPath %>/member/memberRegister.an"> <img id="img_all" src="<%= ctxPath %>/images/index/index_menuimg1.png" class="img-responsive img-rounded "  />
+		          <span class="index_menubox" >Member</span>
+		         </a>
 		        </div>
 		        
 		        <div class="col-5">
-		         <a href="">  <img id="img_sale" src="<%= ctxPath %>/images/index/index_menuimg6.png" class="img-responsive img-rounded"  /></a>
-		          <h4>텍스트2</h4>
+		         <a href="<%= ctxPath %>/event.an">  <img id="img_sale" src="<%= ctxPath %>/images/index/index_menuimg6.png" class="img-responsive img-rounded"  />
+		          <span class="index_menubox" >EVENT</span>
+		         </a>
 		    	</div>
 			</div>
     	</div>
@@ -218,19 +220,17 @@
 	  		<div class="row">
 		        <div class="col-4">
 		         <div>
-		         <a href="">  <img id="img_necklaces" src="<%= ctxPath %>/images/index/index_menuimg2.png" class="img-responsive img-rounded "  /></a>
-		          <div id="text_necklaces"><h5>텍스트1</h5></div>
+		         <a href="<%= ctxPath %>/product/categoryClick.an?categorynum=1">  
+		         	<img id="img_necklaces" src="<%= ctxPath %>/images/index/index_menuimg2.png" class="img-responsive img-rounded " />
+		          	<span class="index_menubox" >Necklaces</span>
+		         </a>
+		         </div>
 		         </div>
 		         
-		         <div>
-		         <a href="">  <img id="img_rings" src="<%= ctxPath %>/images/index/index_menuimg2.png" class="img-responsive img-rounded "  /></a>
-		          <div id="text_rings"><h5>텍스트1</h5></div>
-		          </div>
-		        </div>
-		         
 		        <div class="col-8">
-		         <a href="">  <img id="img_top10" src="<%= ctxPath %>/images/index/index_menuimg3.png" class="img-responsive img-rounded"  /></a>
-		          <h4>텍스트2</h4>
+		         <a href="<%= ctxPath %>/product/categoryClick.an?categorynum=2">  <img id="img_top10" src="<%= ctxPath %>/images/index/index_menuimg3.png" class="img-responsive img-rounded"  />
+		          <span class="index_menubox" >Earings</span>
+		         </a>
 		    	</div>
 			</div>
     	</div>

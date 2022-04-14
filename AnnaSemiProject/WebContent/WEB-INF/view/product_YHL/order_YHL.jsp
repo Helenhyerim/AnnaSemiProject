@@ -472,7 +472,7 @@ $(document).ready(function(){
 							<input type="hidden" name="productnum" value="${pvo.productnum }">
 							<input type="hidden" class="cartno" value="${pvo.cvo.cartno}" /> 
 							
-							<img src="<%=ctxPath %>/images/necklaces/목걸이이미지1.png" class="" alt="..." >
+							<img src="<%=ctxPath %>/images/product/necklaces/목걸이이미지1.png" class="" alt="..." >
 						</a>
 					</div>
 					<div class="col-5" id="itemdetail">
