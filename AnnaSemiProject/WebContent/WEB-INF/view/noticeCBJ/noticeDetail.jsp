@@ -14,6 +14,7 @@
 	NoticeDAO dao = new NoticeDAO();
 	/* int result = dao.delete(noticeNo); */
 	pageContext.setAttribute("vo", vo);
+	
 %>
 
 <style type="text/css">
@@ -67,7 +68,9 @@
 				</div>
 				&nbsp;				
 				<div id="noitceinfo" style="float: right; ">
-					<button type="button" id=menu class="btn btn-default btn-lg" aria-label="Left Align" onclick="location.href='<%= ctxPath %>/notice.an'">
+					<button type="button" id=menu class="btn btn-default btn-lg" 
+							aria-label="Left Align" 
+							onclick="location.href='<%= ctxPath %>/notice.an'">
 						<i class="fas fa-bars"></i>
 					</button>
 				</div>
@@ -77,14 +80,16 @@
 		<div style="padding: 20px;">
 			${vo.noticeContents}
 		</div>
-		<div style="text-align: right; padding: 20px;">
-			view : ${vo.cnt}
-		</div>	
-		<div style="float: right; padding: 20px;">
-			<a href="<%=ctxPath %>/noticeEditForm.an?noticeNo=${vo.noticeNo}"><button id="modify">수정</button></a>
-			<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="<%=ctxPath %>/noticeDelete.an?noticeNo=${vo.noticeNo}"><button id="delete">삭제</button></a>
-	  </div>
-  </div>		
+		
+		<c:if test="${sessionScope.loginuser.userid eq 'admin'}">
+			<div style="float: right; padding: 20px;">
+				<a href="<%=ctxPath %>/noticeEditForm.an?noticeNo=${vo.noticeNo}"><button id="modify">수정</button></a>
+				<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="<%=ctxPath %>/noticeDelete.an?noticeNo=${vo.noticeNo}">
+					<button id="delete">삭제</button>
+				</a>
+			</div>
+		</c:if>
+	</div>		
 </div>
 
 <jsp:include page="../common/footer.jsp"></jsp:include>

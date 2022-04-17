@@ -38,46 +38,63 @@
 		border-line: solid 1px black;
 		font-size: 14px;
 		width: 100px;
-	
+		
 	}
+	
+	input.img-button {
+        background: url( "<%= ctxPath%>/imagesCBJ/button_search.png" ) no-repeat;
+        border: none;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+      }
+    
+	
+	ul.pagination a {
+		border: none;
+		font-weight: bold;
+	}
+	
+	
 </style>
 
 <script type="text/javascript">
 
 	$(document).ready(function(){
 		
-		$("select#noitceSizePerPage").bind("change", function(){
+		$("select#sizePerPage").bind("change", function(){
 			const frm = document.noticeFrm;
 			frm.action = "notice.an";
 			frm.method = "get";
 			frm.submit();
 		});
 		
-		$("select#noitceSizePerPage").val("${requestScope.noitceSizePerPage}");
+		$("select#sizePerPage").val("${requestScope.sizePerPage}");
+		
 		
 		$("form[name='noticeFrm']").submit(function(){
 			if($("select#searchType").val() == "") {
 				alert("검색대상을 올바르게 선택하세요!!");
-				return false; // return false; 는 submit을 하지말라는 것이다.
+				return false; 
 			}
 			
 			if($("input#searchWord").val().trim() == "") {
 				alert("검색어는 공백만으로는 되지 않습니다.\n검색어를 올바르게 입력하세요!!");
-				return false; // return false; 는 submit을 하지말라는 것이다.
+				return false; 
 			}
 		});
 		
+		
 		$("input#searchWord").bind("keyup", function(event){
 			if(event.keyCode == 13) {
-				// 검색어에서 엔터를 치면 검색하러 가도록 한다.
 				goSearch();
 			}
 		});
 		
-		if("${requestScope.searchType}" != "") { 
+	    if("${requestScope.searchType}" != "") { 
 			$("select#searchType").val("${requestScope.searchType}");
 			$("input#searchWord").val("${requestScope.searchWord}");
-	    }		
+	    }
 		
 		
 	});
@@ -137,11 +154,13 @@
 		</tbody>
 	</table>
 	
-	<div id="regist" style="display:inline-block; float:right;">
-		<a href="<%= ctxPath%>/noticeRegistForm.an"/><button>글등록</button></a>
-	</div>
+	<c:if test="${sessionScope.loginuser.userid eq 'admin'}">
+		<div id="regist" style="display:inline-block; float:right; padding:20px;">
+			<a href="<%= ctxPath%>/noticeRegistForm.an"/><button>글등록</button></a>
+		</div>
+	</c:if>
 	
-	<form name="noticeFrm" action="notice.an" method="get">
+	<form name="noticeFrm" action="notice.an" method="get" style="padding:20px 20px 0 0;">
 		<select id="searchType" name="searchType">
 			<option value="">검색대상</option>
 			<option value="noticeTitle">제목</option>
@@ -151,21 +170,14 @@
 		
 		<input type="text" style="display: none;" />	
 		
-		<input type="submit" value="검색" style="margin-right: 30px" /> 
-		<span style="color: red; font-weight: bold; font-size: 12pt;">페이지당 공지사항수-</span>
-		<select id="noitceSizePerPage" name="noitceSizePerPage">
-		   <option value="10">10</option>
-		   <option value="5">5</option>
-		   <option value="3">3</option>
-		</select>
+		<input type="submit" class="img-button" value="  "  />
+		
 	</form>
 	
 	<nav class="my-5">
-		<div style="display: flex; width: 80%;">
+		<div style="display: flex;">
 			<ul class="pagination" style='margin:auto;'>${requestScope.pageBar}</ul>
 		</div>
-		
-		
 	</nav>
 		
 </div>		
