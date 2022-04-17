@@ -33,22 +33,26 @@ public class VerifyCertificationAction extends AbstractController {
 	      
 	      if(certificationCode.equals(userCertificationCode)) {
 	         message = "인증성공 되었습니다.";
-	         // super.setRedirect(false);
-	         loc = request.getContextPath()+"/login/pwdUpdateEnd.an?userid="+userid;
+	         request.setAttribute("userid", userid);
+	         request.setAttribute("message", message);
+		      
+		     super.setViewPage("/WEB-INF/view/login/pwdUpdateEnd.jsp"); 
+	        
 	      }
 	      else {
 	         message = "발급된 인증코드가 아닙니다. 인증코드를 다시 발급받으세요!!";
 	         loc = request.getContextPath()+"/login/pwdFind.an";
+	         request.setAttribute("message", message);
+		      request.setAttribute("loc", loc);
+		      
+		      super.setViewPage("/WEB-INF/msg.jsp");
 	      }
 	   
 
 	   }
-	      request.setAttribute("message", message);
-	      request.setAttribute("loc", loc);
-	      
 	      // super.setRedirect(false);
 	      
-	      super.setViewPage("/WEB-INF/msg.jsp");
+	      
 	      
 	      
 	      session.removeAttribute("certificationCode");

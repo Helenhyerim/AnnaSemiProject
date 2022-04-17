@@ -12,6 +12,8 @@ import my.util.MyUtil;
 import product.model_lsh.InterProductDAO;
 import product.model_lsh.ProductDAO;
 
+import faqCBJ.model.*;
+
 public abstract class AbstractController implements InterCommand {
 	// AbstractController 클래스는 미완성(추상) 부모클래스로 사용된다. 
 		
@@ -104,4 +106,14 @@ public abstract class AbstractController implements InterCommand {
 		session.setAttribute("goBackURL", MyUtil.getCurrentURL(request));
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////
+	// ***** 카테고리목록(FaqCategory)을 보여줄 메소드 생성하기 ***** //
+	public void getFaqCategoryList(HttpServletRequest request) throws SQLException {
+		
+		InterFaqDAO fdao = new FaqDAO();
+		List<HashMap<String, String>> faqCategoryList = fdao.getFaqCategoryList();
+		
+		request.setAttribute("faqCategoryList", faqCategoryList);
+	}
+	
 }

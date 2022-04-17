@@ -503,10 +503,6 @@ public class MemberDAO implements InterMemberDAO {
          pstmt.setInt(8, member.getSms_status());
          pstmt.setInt(9, member.getEmail_status());
          pstmt.setString(10,  member.getUserid());
-                  
-         System.out.println(member.getName() + member.getPwd()+ member.getEmail() + member.getMobile() 
-         + member.getPostcode() + member.getAddress() + member.getDetailaddress()+ member.getSms_status()
-         +member.getEmail_status()+ member.getUserid());
          
          result = pstmt.executeUpdate();
          
@@ -566,6 +562,38 @@ public class MemberDAO implements InterMemberDAO {
       return mvo;
 
    }
-      
-      
+   
+	   
+	// 회원탈퇴 메소드 생성 
+	@Override
+	public int leaveMember(Map<String, String> paraMap) throws SQLException {
+		
+		int result = 0;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " update tbl_member set register_status = 0 "
+	                  + " where userid = ? and pwd = ?";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1,  paraMap.get("userid"));
+	         pstmt.setString(2,  Sha256.encrypt(paraMap.get("pwd")));  // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.   
+	        
+
+	         result = pstmt.executeUpdate();
+	         
+	         System.out.println(result);
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         close();
+	      }
+	      
+	      return result;
+	
+	}
+	      
+	      
 }

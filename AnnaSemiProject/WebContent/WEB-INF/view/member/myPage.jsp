@@ -171,8 +171,8 @@
                 <p><a href="">고객님께서 주문하신 상품의 주문내역을 확인하실 수 있습니다.</a></p>
             </li>
             <li class="shopMain" id="profile">
-                <h3><a href=""><i class="far fa-user fa-xs"></i><strong>PROFILE</strong></a></h3>
-                <p><a href="">회원이신 고객님의 개인정보를 관리하는 공간입니다.<br>비밀번호 등의 정보를 수정하실 수 있습니다.</a></p>
+                <h3><a href="<%= ctxPath %>/member/memberEdit.an"><i class="far fa-user fa-xs"></i><strong>PROFILE</strong></a></h3>
+                <p><a href="<%= ctxPath %>/member/memberEdit.an">회원이신 고객님의 개인정보를 관리하는 공간입니다.<br>비밀번호 등의 정보를 수정하실 수 있습니다.</a></p>
             </li>
             <li class="shopMain" id="board">
                 <h3><a href=""><i class="far fa-file-alt fa-xs"></i><strong>BOARD</strong></a></h3>

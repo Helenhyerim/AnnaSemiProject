@@ -20,12 +20,13 @@
 
 <style type="text/css">
 
-	input#modify {
+	input#modify, input#cancel {
 		background-color: black;
 		color: white;
 		border-line: solid 1px black;
 		font-size: 14px;
 		width: 100px;
+		margin: 5px;
 	}
 	
 </style>
@@ -43,6 +44,7 @@
 		<input type="hidden" name="noticeNo" value="${vo.noticeNo}" />
 		<input type="text" name="noticeTitle" value="${vo.noticeTitle}" style="width: 100%;" required /><br/><br/>
 		<textarea rows="20" cols="20" name="noticeContents" placeholder="내용" style="width: 100%;">${vo.noticeContents}</textarea><br/><br/>
+		<input id="cancel" style="float:right;" type="button" onclick="location.href='<%=ctxPath %>/noticeDetail.an?noticeNo=${vo.noticeNo}'" value="취소">
 		<input id="modify" style="float:right;" type="submit" value="수정">
 	</form>
 

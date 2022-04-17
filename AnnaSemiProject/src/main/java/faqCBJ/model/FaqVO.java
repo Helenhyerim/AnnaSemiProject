@@ -1,22 +1,30 @@
 package faqCBJ.model;
 
+/**
+ * @author sist
+ *
+ */
 public class FaqVO {
 
 	private int faqNo;
 	private String fk_userId;
 	private String faqRequestType;
 	private String faqTitle;
-	private String faqContents;
+	private String faqImg;
+	private int fk_cnum;
 	
+	private FaqCategoryVO faqcategvo;
+		
 	public FaqVO() {}
 
-	public FaqVO(int faqNo, String fk_userId, String faqRequestType, String faqTitle, String faqContents) {
+	public FaqVO(int faqNo, String fk_userId, String faqRequestType, String faqTitle, String faqImg, int fk_cnum) {
 		super();
 		this.faqNo = faqNo;
 		this.fk_userId = fk_userId;
 		this.faqRequestType = faqRequestType;
 		this.faqTitle = faqTitle;
-		this.faqContents = faqContents;
+		this.faqImg = faqImg;
+		this.fk_cnum = fk_cnum;
 	}
 
 	public int getFaqNo() {
@@ -51,14 +59,29 @@ public class FaqVO {
 		this.faqTitle = faqTitle;
 	}
 
-	public String getFaqContents() {
-		return faqContents;
+	public String getFaqImg() {
+		return faqImg;
 	}
 
-	public void setFaqContents(String faqContents) {
-		this.faqContents = faqContents;
+	public void setFaqImg(String faqImg) {
+		this.faqImg = faqImg;
 	}
-	
-	
+
+	public int getFk_cnum() {
+		return fk_cnum;
+	}
+
+	public void setFk_cnum(int fk_cnum) {
+		this.fk_cnum = fk_cnum;
+	}
+
+	public FaqCategoryVO getFaqcategvo() {
+		return faqcategvo;
+	}
+
+	public void setFaqcategvo(FaqCategoryVO faqcategvo) {
+		this.faqcategvo = faqcategvo;
+	}
+
 	
 }

@@ -1317,5 +1317,141 @@ public class ProductDAO implements InterProductDAO {
 		
 		return prodList;
 	}// end of public List<ProductVO> selectBySpecName(Map<String, String> paraMap) ---------- 
+
+
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////
+	
+	// 이두현 찜목록 받아서 보여주기 위한 메소드 찜List를 반환해서 보여줄거
+	// 
+	@Override
+	public List<ProductVO> selectByWishList(Map<String, String> paraMap) throws SQLException {
+		
+		List<ProductVO> productList = new ArrayList<>(); // ProductVO타입의 리스트 생성
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select productnum, categorynum, productname, productimage1, productqty, " +
+			
+					     " productprice, fk_specnum, productcontent, point, userid "+
+						 " from "+
+						 " ( "+
+						 "    select row_number() over(order by P.productnum desc)as RNO, productnum, " +
+						 "	  categorynum, productname, productimage1, productqty, productprice, fk_specnum, " +
+						 "    productcontent, point, D.fk_userid as userid "+
+						 
+					 	 "    from tbl_product P "+
+						 "    JOIN tbl_dibs D "+
+						 "    ON P.productnum = D.fk_productnum "+
+						 "    where D.fk_userid = ? "+
+						 " ) V "+
+						 " where V.RNO between ? and ? ";
+
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("start"));
+			pstmt.setString(3, paraMap.get("end"));
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductVO pvo = new ProductVO();
+				
+				pvo.setProductnum(rs.getInt(1));
+				pvo.setCategorynum(rs.getInt(2));
+				pvo.setProductname(rs.getString(3));
+				pvo.setProductimage1(rs.getString(4));
+				pvo.setProductqty(rs.getInt(5));
+				pvo.setProductprice(rs.getInt(6));
+				pvo.setFk_specnum(rs.getInt(7));
+				pvo.setProductcontent(rs.getString(8));
+				pvo.setPoint(rs.getInt(9));
+				
+				productList.add(pvo);
+				
+			}// end of while-----------------
+			
+			
+			
+		} finally {
+			close();
+		}
+		
+		return productList;
+	}
+
+	// 이두현 찜목록의 페이징을 위해서 해당유저의 id값을 매개변수로 하여 찜목록의 전체 카운트를 반환받기위한 메소드
+	@Override
+	public int totalWishListCount(String userid) throws SQLException {
+		
+		int result = 0;
+		
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select count(*) "
+					   + " from tbl_dibs "
+					   + " where fk_userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	// 멤버의 위시리스트에서 삭제 버튼을 눌렀을 경우 userid와 productnum을 받아와 위시리스트에서 삭제해주는 메소드
+	@Override
+	public int removeWishProduct_DH(Map<String, String> paraMap) throws SQLException {
+		int result = 0;
+		
+		
+		try {
+
+			conn = ds.getConnection();
+			
+			String productnum = paraMap.get("productnum");
+			String userid = paraMap.get("userid");
+			
+			String sql = " delete "+
+					     " from tbl_dibs "+
+					     " where fk_userid = ? and fk_productnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			pstmt.setString(2, productnum);
+			
+			result = pstmt.executeUpdate();
+			
+	
+		} finally {
+			close();
+		}
+		
+
+		return result;
+	}
 }

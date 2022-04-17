@@ -41,5 +41,8 @@ public interface InterMemberDAO {
       
       // userid 정보를 받아와서 회원에 대한 상세정보 알아오기
       MemberVO memberOneDetail(String userid) throws SQLException;
-      
+
+      // 회원탈퇴 메소드
+	  int leaveMember(Map<String, String> paraMap) throws SQLException;
+
 }

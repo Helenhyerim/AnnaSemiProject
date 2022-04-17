@@ -1,11 +1,13 @@
 package member.controller_DH;
 
+import java.util.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
-import member.model.MemberVO;
+import member.model.*;
 
 public class LeaveAction extends AbstractController {
 
@@ -13,31 +15,52 @@ public class LeaveAction extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// TODO Auto-generated method stub
 		
-		HttpSession session = request.getSession();
+		String method = request.getMethod();
 		
-		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		String message = "";
+        String loc = "";
 		
-		if(loginuser == null) {
-			// 로그인이 되어있지 않은 상태라면
-			String message = "로그인을 먼저 해주세요";
-			String loc = request.getContextPath() + "/login/login.an";
+		if("POST".equalsIgnoreCase(method)) {
+			String userid = request.getParameter("userid");
+			String pwd = request.getParameter("pwd");
 			
-			request.setAttribute("message", message);
-			request.setAttribute("loc", loc);
+			request.setAttribute("userid", userid);
+			request.setAttribute("pwd", pwd);
 			
-			// super.setRedirect(aflse)
-			super.setViewPage("/WEB-INF/msg.jsp");
+			InterMemberDAO member = new MemberDAO();
+			Map<String, String> paraMap = new HashMap<>();
+			
+			paraMap.put("userid", userid);
+			paraMap.put("pwd", pwd);
+			
+			int n = member.leaveMember(paraMap);
+			
+			if(n == 1) {
+				HttpSession session = request.getSession();// 세션불러오기
+
+			    session.invalidate(); // 로그아웃처리로 세션삭제 해줌
+				message = "회원탈퇴 성공";
+		        loc = request.getContextPath() + "/index.an";
+			}
+			else {
+				
+				message = "회원탈퇴 실패";
+		        loc = "javascript:history.back()";
+		        
+			}
 			
 		}
 		else {
-			// 로그인이 되어진 후 들어온 것이라면
-			
-			
-			super.setRedirect(false);
-			super.setViewPage("");
+			message = "비정상적인 경로를 통해 들어왔습니다.";
+	        loc = "javascript:history.back()";
+	         
+	        
 		}
-		
-		
+	
+		request.setAttribute("message", message);
+        request.setAttribute("loc", loc);
+         
+        super.setViewPage("/WEB-INF/msg.jsp");
 	}
 
 }

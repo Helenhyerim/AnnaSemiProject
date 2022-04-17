@@ -126,7 +126,7 @@ table#tblMemberRegister {
 <script type="text/javascript" src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 
-
+let pwdpass = false;
 
 $(document).ready(function(){
 	
@@ -160,12 +160,13 @@ $(document).ready(function(){
 		if(!bool) {
 			// 암호가 정규표현식에 위배된 경우  			
 			$target.parent().find(".error").show();
-
+			pwdpass = false;
 		
 		}
 		else {
 			// 암호가 정규표현식에 맞는 경우  
 				$target.parent().find(".error").hide();
+				pwdpass = true;
 		}
 	}); 
 	
@@ -403,6 +404,30 @@ $(document).ready(function(){
 // 회원탈퇴하기
 function goLeave(){
 	
+	
+	if($("input#pwd").val().trim() == ""){
+		alert("비밀번호를 입력하세요");
+		return;
+	}
+	
+	if($("input#pwdcheck").val().trim() == ""){
+		alert("비밀번호확인을 입력하세요.");
+		return;
+	}
+	if(!pwdpass){
+		alert("비밀번호를 조건에 맞게 입력해주세요.");
+		return;
+	}
+	if($("input#pwd").val() != $("input#pwdcheck").val() ){
+		alert("비밀번호와 비밀번호확인이 다릅니다.");
+		return;
+	}
+	
+	
+	const frm = document.modifyFrm;
+	frm.action = "<%= request.getContextPath()%>/member/leave.an";
+	frm.method = "post";
+	frm.submit();
 }
 // 취소하기
 function goCancel(){
@@ -414,6 +439,8 @@ function goModify() {
 		// *** 필수입력 사항에 모두 입력이 되었는지 검사한다. ***// 
 		let b_FlagRequiredInfo = false;
 		
+		
+		
 		$("input.requiredInfo").each(function(index, item){
 			const data = $(item).val().trim();
 			if(data == "") {
@@ -422,6 +449,11 @@ function goModify() {
 				return false; // for문에서 break;와 같은 기능이다. 
 			}
 		});
+		
+		if(!pwdpass){
+			alert("비밀번호를 조건에 맞게 입력해주세요.");
+			return;
+		}
 		
 		if(b_FlagRequiredInfo) {
 			return; // 종료 
@@ -453,7 +485,7 @@ function goModify() {
 		frm.submit();
 	}
 
-/// === 이메일 중복 검사하기 == ////
+
 
 
 	
