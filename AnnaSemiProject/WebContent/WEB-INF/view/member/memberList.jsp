@@ -15,7 +15,6 @@
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/pagination_syj.css" />
 
 <style type="text/css">
-
 	.titleArea h2 {
 	    font-size: 18px;
 	    color: #444;
@@ -35,7 +34,6 @@
     margin: 0 auto;
     font-size: 12px;
     }
-
 	select {
     height: 24px;
     border: 1px solid #d5d5d5;
@@ -85,7 +83,6 @@
 </style>
 
 <script type="text/javascript">
-
 	$(document).ready(function(){
 		// **** select 태그에 대한 이벤트는 click 이 아니라 change 이다. **** //
 		$("select#sizePerPage").bind("change", function(){
@@ -138,7 +135,6 @@
 	    });
 	 
 	});// end of $(document).ready(function(){})-----------------------------
-
 	// Function Declaration
 	function goSearch() {
 		
@@ -157,7 +153,6 @@
 		frm.method = "get";
 		frm.submit();
 	}
-
 </script>
 
 <div class="contents mx-5" style="margin-top:230px;">

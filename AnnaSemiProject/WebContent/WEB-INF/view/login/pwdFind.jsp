@@ -7,23 +7,17 @@
 <jsp:include page="../common/header_login.jsp"></jsp:include>
 
 <style type = "text/css">
-
-
 #btnIdFind {
 	border:0;
 	outline: 0;
 }
-
 div.row {
 	margin-bottom: 30px;
 }
-
 div.row > div{
 	padding: 0;
 	text-align: left;
 }
-
-
 </style>
 <script type = "text/javascript">
  
@@ -36,7 +30,6 @@ $(document).ready(function(){
 	});
 		
 });
-
 // 유효성검사를 한뒤에 post 형식으로 보내준다.
 function goPwdFind(){
 	
@@ -72,10 +65,8 @@ function goCheckCode(){
 	frm.action = "<%= request.getContextPath()%>/login/verifyCertification.an";
 	frm.method = "post";
 	frm.submit();
-
 	
 } 
-
 function goCancel(){
 	location.href = "<%= request.getContextPath()%>/index.an";	
 }

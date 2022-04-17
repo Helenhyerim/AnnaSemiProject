@@ -133,7 +133,7 @@
 	<!-- 상단 네비게이션 시작 -->
 	<nav class="navbar-expand-lg bg-white navbar-light fixed-top" id = "first-nav">
 		<!-- Brand/logo --> <!-- Font Awesome 5 Icons -->
-		<a class="d-flex justify-content-center mr-0" href="#" style="margin-right: 10%;"><img class = "mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
+		<a class="d-flex justify-content-center mr-0" href="<%= ctxPath %>/index.an" style="margin-right: 10%;"><img class = "mt-3" id = "logo" src="<%= ctxPath %>/images/logo.png" /></a>
 		
 		<!-- 아코디언 같은 Navigation Bar 만들기 -->
 	    <button class="navbar-toggler " type="button"onclick="openNav()">
@@ -177,7 +177,7 @@
 		<div class="collapse navbar-collapse row-vh "  >
 		  <ul class="navbar-nav flex-row mb-2"  style="font-size: 12pt;">
 		       <li class="nav-item dropdown">
-			        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+			        <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=1" id="navbarDropdown" data-toggle="dropdown"> 
 			                      Necklaces                     
 			        </a>
 			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -187,7 +187,7 @@
 			        </div>
 			 </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+		        <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=2" id="navbarDropdown" data-toggle="dropdown"> 
 		                      Earings                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -197,7 +197,7 @@
 		        </div>
 		     </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+		        <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=3" id="navbarDropdown" data-toggle="dropdown"> 
 		                      Rings                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -207,7 +207,7 @@
 		        </div>
 		     </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+		        <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=4" id="navbarDropdown" data-toggle="dropdown"> 
 		                      Bracelets                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -217,7 +217,7 @@
 		        </div>
 		     </li>
 		     <li class="nav-item active">
-		     	<a class="nav-link menufont_size" href="#" style="color:gray;">Sale</a>
+		     	<a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=5" style="color:gray;">Sale</a>
 		     </li>
 		  </ul>
 		  <ul class="navbar-nav flex-row mb-2">
