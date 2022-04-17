@@ -62,7 +62,8 @@ public interface InterProductDAO {
 	// VO를 사용하지 않고 Map으로 처리해보겠습니다.
 	List<HashMap<String, String>> getOptionList(String productnum) throws SQLException;
 	
-	
+	// optionnum으로 optionname 알아오기
+	List<String> selectOptionName(List<String> optionnumList) throws SQLException;
 	
 	
 	
@@ -82,6 +83,8 @@ public interface InterProductDAO {
 
 	// 장바구니 페이지에서 넘어온 cartno 로 주문페이지에 보여줄 아이템 조회해오기
 	ProductVO getOrderItems(String cartno) throws SQLException;
+
+	
 
 	
 

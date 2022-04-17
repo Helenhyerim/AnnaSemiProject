@@ -72,7 +72,7 @@
 				</thead>
 				
 				<tbody>
-					<c:forEach var="order" items="${requestScope.orderList}" varStatus="status">
+					<c:forEach var="order" items="${requestScope.orderList}" varStatus="status" begin="0">
 						<tr style="border-bottom: solid 1px lightgray;">
 							<td style="width: 10%;">
 								<img src="../images/product/${order.pvo.productimage1}" style="max-width: 100%; border-radius: 5px;">
@@ -81,7 +81,7 @@
 								<ul style="list-style: none; padding: 0;">
 									<li><label style="font-weight: bold;">${order.pvo.productname}</label></li>
 									<li><label>[옵션]</label></li>
-									<li><label>옵션명&nbsp;(개)</label></li>
+									<li><label>${requestScope.optionnameList.get(status.index)}</label></li>
 								</ul>
 							</td>
 							<td style="width: 20%;" align=center>
@@ -91,7 +91,7 @@
 								기본배송
 							</td>
 							<td style="width: 20%;" align=center>
-								<label><fmt:formatNumber value="${order.odvo.orderprice * order.odvo.orderqty}" pattern="#,###,###"/>&nbsp;원</label>
+								<label><fmt:formatNumber value="${order.odvo.orderprice}" pattern="#,###,###"/>&nbsp;원</label>
 							</td>
 						</tr>
 					</c:forEach>

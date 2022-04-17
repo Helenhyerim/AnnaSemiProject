@@ -132,15 +132,14 @@
 							<ul style="list-style: none; padding: 0;">
 								<li><label style="font-weight: bold;">${order.pvo.productname}</label></li>
 								<li><label>[옵션]</label></li>
-								<li>옵션1 (2개)</li>
-								<li>옵션2 (1개)</li>
+								<li>${requestScope.optionnameList.get(status.index)}</li>
 							</ul>
 						</td>
 						<td style="width: 20%;" align=center>
 							${order.odvo.orderqty}
 						</td>
 						<td style="width: 20%;" align=center>
-							<label><fmt:formatNumber value="${order.odvo.orderprice * order.odvo.orderqty}" pattern="#,###,###"/>&nbsp;원</label>	
+							<label><fmt:formatNumber value="${order.odvo.orderprice}" pattern="#,###,###"/>&nbsp;원</label>	
 						</td>
 					</tr>
 				</c:forEach>

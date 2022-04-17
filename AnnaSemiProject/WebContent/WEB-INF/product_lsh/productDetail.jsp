@@ -117,7 +117,7 @@
 				
 				if($("ul#ul_reqOptionResult li").length != 0) { // 필수 옵션이 선택되어 있는 경우
 					
-					// 선택된 옵션별 옵션명을 알아오는 반복문
+					// 선택된 옵션별 옵션번호를 알아오는 반복문
 					$("input[name='optionValue']").each(function(){
 						var optionValue = $(this).val();
 						
@@ -372,7 +372,9 @@
 	<div id="main_content">
 		<div id="top_content" class="row">
 			<div id="product_cover" class="col-md-7">
-				<div id="cover" style="width: 90%; margin: 0px auto;" align=center><img class="imgcss" src="../images/product/${requestScope.pvo.productimage1}"></div>
+				<div id="cover" style="width: 90%; margin: 0px auto;" align=center>
+					<img class="imgcss" src="../images/product/${requestScope.pvo.productimage1}">
+				</div>
 				<div id="img_list" align=center>
 					<c:forEach var="pimg" items="${requestScope.imgList}" end="4">
 						<img class="imgcss" src="../images/product/${pimg.imagefilename}">

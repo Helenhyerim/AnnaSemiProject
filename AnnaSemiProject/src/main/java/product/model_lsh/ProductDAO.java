@@ -414,18 +414,6 @@ public class ProductDAO implements InterProductDAO {
 				result = pstmt.executeUpdate();
 			}
 			
-			/*
-			 	String sql = "insert into tbl_cart(cartno, fk_userid, fk_productnum, orderqty, optionlist, quantitylist) "
-			        	   + "values(seq_cartno.nextval, ?, ?, ?, ?, ?) ";
-			        	   
-			    pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, paraMap.get("userid"));
-				pstmt.setInt(2, productnum);
-				pstmt.setInt(3, orderqty);
-				pstmt.setString(4, paraMap.get("optionList"));
-				pstmt.setString(5, paraMap.get("quantityList"));
-			*/
-			
 		} finally {
 			close();
 		}
@@ -613,7 +601,7 @@ public class ProductDAO implements InterProductDAO {
 			String sql = "select m.name, m.mobile, o.ordernum, to_char(o.orderdate, 'yyyy-mm-dd hh24:mi:ss'), "
 					   + "o.name_receiver, o.orderstatus, o.ordertotalprice, o.ordertotalpoint, o.zipcode, "
 					   + "o.address, d.orderprice, d.orderqty, p.productnum, p.productname, p.productprice, "
-					   + "p.productimage1 "
+					   + "p.productimage1, d.fk_optionnum "
 					   + "from tbl_member M "
 					   + "JOIN tbl_order O "
 					   + "ON m.userid = o.fk_userid "
@@ -646,6 +634,7 @@ public class ProductDAO implements InterProductDAO {
 				String productname = rs.getString(14);
 				int productprice = rs.getInt(15);
 				String productimage1 = rs.getString(16);
+				int optionnum = rs.getInt(17);
 
 				OrderVO ordervo = new OrderVO();
 				
@@ -667,6 +656,7 @@ public class ProductDAO implements InterProductDAO {
 				
 				odvo.setOrderprice(orderprice);
 				odvo.setOrderqty(orderqty);
+				odvo.setOptionnum(optionnum);
 				ordervo.setOdvo(odvo);
 				
 				ProductVO pvo = new ProductVO();
@@ -975,6 +965,39 @@ public class ProductDAO implements InterProductDAO {
 		}
 		
 		return optionList;
+	}
+
+
+	// optionnum으로 optionname 알아오기
+	@Override
+	public List<String> selectOptionName(List<String> optionnumList) throws SQLException {
+		
+		List<String> optionnameList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			for(int i = 0; i < optionnumList.size(); i++) {
+				
+				String sql = "select optionname "
+						   + "from tbl_product_option "
+						   + "where optionnum = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, Integer.parseInt(optionnumList.get(i)));
+				
+				rs = pstmt.executeQuery();
+				
+				rs.next();
+				
+				optionnameList.add(rs.getString(1));
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return optionnameList;
 	}
 	
 }

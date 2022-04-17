@@ -1,5 +1,6 @@
 package product.controller_lsh;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,8 +37,18 @@ public class OrderDetailAction extends AbstractController {
 
 				// 주문 번호로 주문 상세 정보 알아오기
 				List<OrderVO> orderList = pdao.selectOrderInfo(ordernum);
-				
 				request.setAttribute("orderList", orderList);
+				
+				// optionnum으로 optionname알아오기
+				List<String> optionnumList = new ArrayList<>();
+				for(int i=0; i<orderList.size(); i++) {
+					String optionnum = String.valueOf(orderList.get(i).getOdvo().getOptionnum());
+					
+					optionnumList.add(optionnum);
+				}
+				List<String> optionnameList = pdao.selectOptionName(optionnumList);
+				
+				request.setAttribute("optionnameList", optionnameList);
 				
 			//	super.setRedirect(false);
 				super.setViewPage("/WEB-INF/product_lsh/orderDetail.jsp");
