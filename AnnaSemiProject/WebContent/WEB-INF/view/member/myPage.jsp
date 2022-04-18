@@ -169,25 +169,25 @@
 		<p class="myshopTit">MY INFO</p>
 		<ul>
 			<li class="shopMain" id="order">
-                <h3><a href=""><i class="fas fa-list fa-xs"></i><strong>ORDER</strong></a></h3>
-                <p><a href="">고객님께서 주문하신 상품의 주문내역을 확인하실 수 있습니다.</a></p>
+                <h3><a href="<%= ctxPath%>/product/myorder"><i class="fas fa-list fa-xs"></i><strong>ORDER</strong></a></h3>
+                <p><a href="<%= ctxPath%>/product/myorder">고객님께서 주문하신 상품의 주문내역을 확인하실 수 있습니다.</a></p>
             </li>
             <li class="shopMain" id="profile">
-                <h3><a href=""><i class="far fa-user fa-xs"></i><strong>PROFILE</strong></a></h3>
-                <p><a href="">회원이신 고객님의 개인정보를 관리하는 공간입니다.<br>비밀번호 등의 정보를 수정하실 수 있습니다.</a></p>
+                <h3><a href="<%= ctxPath%>/member/memberEdit.an"><i class="far fa-user fa-xs"></i><strong>PROFILE</strong></a></h3>
+                <p><a href="<%= ctxPath%>/member/memberEdit.an">회원이신 고객님의 개인정보를 관리하는 공간입니다.<br>비밀번호 등의 정보를 수정하실 수 있습니다.</a></p>
             </li>
             <li class="shopMain" id="board">
-                <h3><a href="<%= ctxPath%>/member/memberBoard.an"><i class="far fa-file-alt fa-xs"></i><strong>BOARD</strong></a></h3>
-                <p><a href="<%= ctxPath%>/member/memberBoard.an"><i class="far fa-edit"></i>&nbsp;고객님께서 작성하신 리뷰를 관리하는 공간입니다.</a></p>
-                <p><a href="<%= ctxPath%>/member/memberBoard.an"><i class="fas fa-question"></i>&nbsp;고객님께서 작성하신 Q&A를 관리하는 공간입니다.</a></p>
+                <h3><a href=""><i class="far fa-file-alt fa-xs"></i><strong>BOARD</strong></a></h3>
+                <p><a href="<%= ctxPath%>/qna2.an"><i class="far fa-edit"></i>&nbsp;고객님께서 작성하신 리뷰를 관리하는 공간입니다.</a></p>
+                <p><a href="<%= ctxPath%>/member/myQna.an"><i class="fas fa-question"></i>&nbsp;고객님께서 작성하신 Q&A를 관리하는 공간입니다.</a></p>
             </li>
             <li class="shopMain" id="wishlist">
-                <h3><a href=""><i class="far fa-heart fa-xs"></i><strong>WISHLIST</strong></a></h3>
-                <p><a href="">관심상품으로 등록하신 상품의 목록을 보여드립니다.</a></p>
+                <h3><a href="<%= ctxPath%>/member/wishlist.an"><i class="far fa-heart fa-xs"></i><strong>WISHLIST</strong></a></h3>
+                <p><a href="<%= ctxPath%>/member/wishlist.an">관심상품으로 등록하신 상품의 목록을 보여드립니다.</a></p>
             </li>
             <li class="shopMain" id="point">
-                <h3 class="txtTitle16B"><a href=""><i class="fas fa-dollar-sign fa-xs"></i><strong>POINT</strong></a></h3>
-                <p class="txtSub11"><a href="<%= ctxPath%>/member/memberPoint.an">고객님께서 보유하고 계신 적립금 내역을 보여드립니다.<br>포인트은 상품 구매 시 사용하실 수 있습니다.</a></p>
+                <h3 class="txtTitle16B"><a href="<%= ctxPath%>/member/myPoint.an"><i class="fas fa-dollar-sign fa-xs"></i><strong>POINT</strong></a></h3>
+                <p class="txtSub11"><a href="<%= ctxPath%>/member/myPoint.an">고객님께서 보유하고 계신 적립금 내역을 보여드립니다.<br>포인트은 상품 구매 시 사용하실 수 있습니다.</a></p>
            </li>
              
 

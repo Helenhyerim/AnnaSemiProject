@@ -5,6 +5,16 @@ show user;
 
 grant connect, resource, create view, unlimited tablespace to SEMIORAUSER2;
 
+ select qnano, fk_userid, questiontitle, questioncontents, questiondate, answertitle, answercontents, answerdate  
+ from  (  	select rownum AS rno, qnano, fk_userid, questiontitle, questioncontents, questiondate, answertitle, answercontents, answerdate  	
+ from  	(  		select qnano, fk_userid, questiontitle, questioncontents, questiondate, answertitle, answercontents, answerdate  		
+ from tbl_qna  		
+ where fk_userid = 'choibj'  and questiontitle like '%문의%'
+ order by qnano desc) V 
+) T 
+ where rno between 1 and 2 
+ 
+
 select count(*)
 from tbl_qna;
 
@@ -18,11 +28,17 @@ to_char(A.questiondate, 'yyyy-mm-dd') AS questiondate, A.answertitle, B.name
 from tbl_qna A join tbl_member B
 on A.fk_userid = B.userid
 where A.fk_userid = 'choibj'
-and questiontitle like %문의%;
+and questiontitle like %'문의'%
 
 
 select *
 from tbl_member;
+
+select *
+from tbl_order;
+
+select *
+from tbl_orderdetail;
 
 select * 
 from tbl_qna;

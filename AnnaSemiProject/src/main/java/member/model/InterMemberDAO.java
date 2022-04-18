@@ -40,13 +40,7 @@ public interface InterMemberDAO {
 	 // 주문내역 페이징 처리하여 조회 해오기
 	List<Map<String, String>> getOrderList(String userid, int currentShowPageNo, int sizePerPage) throws SQLException;
 
-	// 게시글에 대한 페이징 처리를 위해 자신이 작성한 게시글 갯수 알아오기
-	int getTotalCountBoard(String userid) throws SQLException;
 	
-	 // 게시글 페이징 처리하여 조회 해오기
-	List<Map<String, String>> getMemberBoard(String userid, String searchType, String searchWord, int currentShowPageNo, int sizePerPage) throws SQLException;
-    
-
 	
       
 }

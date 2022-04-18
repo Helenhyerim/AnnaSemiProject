@@ -1,12 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%
 	String ctxPath = request.getContextPath();
-    //     /MyMVC
 %>   
 
 <jsp:include page="../common/header_login.jsp" />   
@@ -31,7 +29,7 @@
 	    box-sizing: border-box;  
 	} 
 	
-	.memberboardFrm {
+	.myQnaFrm {
     margin: 0 auto;
     font-size: 12px;
     }
@@ -39,6 +37,7 @@
 	select {
     height: 24px;
     border: 1px solid #d5d5d5;
+    padding: 0%;
 	}
 	
 	input[type=text] {
@@ -60,18 +59,21 @@
 	    border: 1px solid #ddd;
     }
     
-    table#memberboardTbl {
+    table#myQnaTbl {
    	 	border: 1px solid #ddd;
     }
     
-    table#memberboardTbl th, td {
+    table#myQnaTbl th, td {
    		padding: 5px 0;
    		color: black;
     	font-weight: 300;
     	text-align: center;
    }
     
-	tr.memberInfo:hover {
+    tbody {
+    color: black;
+    }
+	tr.myQnaInfo:hover {
 		background-color: #d5d5d5;
 		cursor: pointer;
 	}
@@ -88,17 +90,17 @@
 
 	$(document).ready(function(){
 		// **** select 태그에 대한 이벤트는 click 이 아니라 change 이다. **** //
-		$("select#boardSort").bind("change", function(){
-			const frm = document.memberFrm;
-			frm.action = "memberBoard.an";
+		$("select#sizePerPage").bind("change", function(){
+			const frm = document.qnaFrm;
+			frm.action = "myQna.an";
 			frm.method = "get";
 			frm.submit();
 		});
 		
-		$("select#boardSort").val("${requestScope.boardSort}");
+		$("select#sizePerPage").val("${requestScope.sizePerPage}");
 
 		
-		$("form[name='memberboardFrm']").submit(function(){
+		$("form[name='qnaFrm']").submit(function(){
 			if($("select#searchType").val() == "") {
 				alert("검색대상을 선택하세요!!");
 				return false; // return false; 는 submit을 하지말라는 것이다.
@@ -124,16 +126,15 @@
 	    }
 		
 		 // 특정 글을 클릭하면 그 글의 상세정보를 보여주도록 한다.
-	    $("tr.memberboardInfo").click( ()=>{
+	    $("tr.myQnaInfo").click( ()=>{
 	    	
 	    	const $target = $(event.target);
-	        
-	        const userid = $target.parent().children(".userid").text();
-	    //  alert("확인용 => " + userid);
-	    
-	        location.href="<%= ctxPath%>/member/memberOneDetail.an?userid="+userid;
-	    //																									  &goBackURL=/member/memberList.up?currentShowPageNo=5 sizePerPage=10 searchType=name searchWord=%EC%9C%A0
-				
+	        //	alert("확인용 => " + $target.parent().html() );
+	        const qnaNo = $target.parent().children(".qnano").text();
+	        //alert("확인용 => " + qnaNo);
+	       
+	        location.href="<%= ctxPath%>/qnaDetail.an?qnaNo="+qnaNo+"&goBackURL=${requestScope.goBackURL}";
+	   	
 	    });
 	 
 	});// end of $(document).ready(function(){})-----------------------------
@@ -151,8 +152,8 @@
 			return; // return; 는 goSearch() 함수 종료이다.
 		}
 		
-		const frm = document.memberFrm;
-		frm.action = "memberBoard.an";
+		const frm = document.qnaFrm;
+		frm.action = "myQna.an";
 		frm.method = "get";
 		frm.submit();
 	}
@@ -161,87 +162,69 @@
 
 <div class="contents mx-5" style="margin-top:230px;">
 	<div class="titleArea">
-	    <h2 class="w3-left-align mb-5">MY BOARD</h2>
+	    <h2 class="w3-left-align mb-5">MY Q&A BOARD</h2>
 	</div>
 	
-	<div class="memberboardFrm">
-	    <form name="memberboardFrm" action="memberBoard.an" method="get">
-	    	<select id="searchType" name="searchType">
-	    		<option value="">게시물검색</option>
-	    		<option value="subject">제목</option>
-	    		<option value="content">내용</option>
-	    		<option value="subjectContent">제목+내용</option>
-	    	</select>
-	    	<input type="text" id="searchWord" name="searchWord">
-	    	<input type="text" style="display: none;" />
-	   	<button type="button" onclick="goSearch();">검색</button> 
-	     <!--  	<input type="submit" value="검색" style="margin-right: 30px" /> -->
-	    	
-	    	<span style="margin-right:2px">분류별</span>
-			<select id="boardSort" name="boardSort">
-				<option value="Q">Q&A</option>
-				<option value="R">리뷰</option>
-			</select>
-	    </form>
-	    
+	<div class="myQnaFrm">
 
-	    <%-- 일단 Q&A 게시판 열람 위한 형식으로 만들었으나 추후 리뷰등의 게시판 조회도 염두에 두고 분류 카테고리 넣음 --%>
-	    <table id="memberboardTbl" class="table table-bordered" style="width: 100%; margin-top: 20px;">
-	        <colgroup><col style="width:70px;">
-		        <col style="width:135px;">
+
+	    <table id="myQnaTbl" class="table table-bordered" style="width: 100%; margin-top: 20px;">
+	        <colgroup>
+	        	<col style="width:70px;">
 				<col style="width:auto;">
-				<col style="width:84px;">
-				<col style="width:80px;">
-				<col style="width:55px;">
+			<!--  	<col style="width:80px;">-->
+				 <col style="width:100px;">
+				<col style="width:120px;">
 			</colgroup>
 	        <thead><tr>
-				<th scope="col">분류</th>
 				<th scope="col">번호</th>
                 <th scope="col">제목</th>
-                <th scope="col">작성자</th>
-                <th scope="col">작성일</th>
+               <!--    <th scope="col">작성자</th>-->
                 <th scope="col">답변여부</th>
+                 <th scope="col">작성일</th>
 			</tr></thead>
 	        <tbody>
-		        <c:if test="${not empty requestScope.boardList}">
-		            <c:forEach var="boardmap" items="${requestScope.boardList}">
-		            	<tr class="memberboardInfo">
-		            		<td class="category">
-		            		<c:if test="${not empty boardmap.QUESTIONTITLE}">QnA
-		            		</c:if>
-		            		</td>
-		            		<td class="boardNum">${boardmap.QNANO}</td>
-		            		<td class="questiontitle">${boardmap.QUESTIONTITLE}</td>
-		            		<td class="name">${boardmap.NAME}</td>
-		            		<td class="questiondate">${boardmap.QUESTIONDATE}</td>
+		        <c:if test="${not empty requestScope.qnaList}">
+		            <c:forEach var="qvo" items="${requestScope.qnaList}">
+		            	<tr class="myQnaInfo">
+		            		<td class="qnano">${qvo.qnaNo}</td>
+		            		<td class="questiontitle" style="text-align:left;"><a href="<%= ctxPath%>/qnaDetail.an?qnaNo=${qvo.qnaNo}">${qvo.questionTitle}</a></td>
+		            	<!--  	<td>${qvo.fk_userId}</td>-->
 		            		<td class="answerorno">
-		            		<c:if test="${not empty boardmap.answertitle}">답변완료</c:if>
-		            		<c:if test="${empty boardmap.answertitle}">답변중</c:if>
-		            		</td>
+							<c:choose>
+								<c:when test="${empty qvo.answerTitle}">
+									<div style="color:black;">대기중</div>
+								</c:when>
+								<c:otherwise>
+									<div style="color:blue;">답변완료</div>
+								</c:otherwise>
+							</c:choose>
+							</td>
+		            		<td class="questiondate">${ fn:substring(qvo.questionDate, 0, 10)}</td>
 		            	</tr>
 		            </c:forEach>
 	            </c:if>
-	            <c:if test="${empty requestScope.boardList}">
+	            <c:if test="${empty requestScope.qnaList}">
             	<tr>
             		<td colspan="4" style="text-align: center;">작성한 게시물이 없습니다.</td>
             	</tr>
             </c:if>
 	        </tbody>
 	    </table>    
-
-			
-	        
-	        
-	        
-	        
-
-	
-	
-	
-
-
-</div>
-</div>
+    
+	     <form name="qnaFrm" action="myQna.an" method="get">
+	    	<select id="searchType" name="searchType">
+	    		<option value="">게시물검색</option>
+	    		<option value="questionTitle">제목</option>
+	    		<option value="questionContents">내용</option>
+	    	</select>
+	    	<input type="text" id="searchWord" name="searchWord">
+	    	<input type="text" style="display: none;" />
+	 	<button type="button" onclick="goSearch();">검색</button> 
+	     <!--  	<input type="submit" value="검색" style="margin-right: 30px" /> 
+	     <!--   <input type="submit" class="img-button" value="  "  />-->
+		
+	    </form>
 
 	
 	

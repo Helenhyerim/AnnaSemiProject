@@ -39,6 +39,7 @@
 	select {
     height: 24px;
     border: 1px solid #d5d5d5;
+    padding: 0%;
 	}
 	
 	input[type=text] {
@@ -124,17 +125,15 @@
 			$("input#searchWord").val("${requestScope.searchWord}");
 	    }
 		
-		 // 특정 회원을 클릭하면 그 회원의 상세정보를 보여주도록 한다.
+		 // 특정 회원을 클릭하면 그 회원의 상세정보를 보여준다..
 	    $("tr.memberInfo").click( ()=>{
 	    	
 	    	const $target = $(event.target);
 	        
 	        const userid = $target.parent().children(".userid").text();
-	    //  alert("확인용 => " + userid);
-	    
+	   
 	        location.href="<%= ctxPath%>/member/memberOneDetail.an?userid="+userid;
-	    //																									  &goBackURL=/member/memberList.up?currentShowPageNo=5 sizePerPage=10 searchType=name searchWord=%EC%9C%A0
-				
+		
 	    });
 	 
 	});// end of $(document).ready(function(){})-----------------------------

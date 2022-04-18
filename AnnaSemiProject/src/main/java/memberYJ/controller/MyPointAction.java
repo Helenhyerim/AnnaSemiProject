@@ -15,7 +15,7 @@ import member.model.MemberDAO;
 import member.model.MemberVO;
 
 
-public class MemberPointAction extends AbstractController {
+public class MyPointAction extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -80,7 +80,7 @@ public class MemberPointAction extends AbstractController {
         
         
         //  페이지바 만들기 
-        String url = "memberPoint.an";
+        String url = "myPoint.an";
         int blockSize = 10;
         //  blockSize 는 1개 블럭(토막)당 보여지는 페이지번호의 갯수.
                  
@@ -120,7 +120,7 @@ public class MemberPointAction extends AbstractController {
         request.setAttribute("orderList", orderList);
         request.setAttribute("pageBar", pageBar);
       //super.setRedirect(false);
-        super.setViewPage("/WEB-INF/view/member/memberPoint.jsp");
+        super.setViewPage("/WEB-INF/view/member/myPoint.jsp");
    
 			
 		}

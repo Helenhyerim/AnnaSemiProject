@@ -59,7 +59,7 @@ public class MemberDAO implements InterMemberDAO {
       }// end of private void close()------------------------------------
          
 
-      // ID 중복검사 (tbl_member 테이블에서 userid 가 존재하면 true를 리턴해주고, userid 가 존재하지 않으면 false를 리턴한다)
+      // ID 중복검사 
       @Override
       public boolean idDuplicateCheck(String userid) throws SQLException {
          boolean isExist = false;
@@ -86,7 +86,7 @@ public class MemberDAO implements InterMemberDAO {
       }
 
       
-      // 이메일 중복검사 (tbl_member 테이블에서 email 가 존재하면 true를 리턴해주고, email 가 존재하지 않으면 false를 리턴한다)
+      // 이메일 중복검사 
       @Override
       public boolean emailDuplicateCheck(String email) throws SQLException {
          boolean isExist = false;
@@ -365,16 +365,7 @@ public class MemberDAO implements InterMemberDAO {
             
             int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
             int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
-            /*
-              >>> where rno between A and B 
-                   A 와 B 를 구하는 공식 <<< 
-            
-                  currentShowPageNo 은 보고자 하는 페이지 번호이다. 즉, 1페이지, 2페이지, 3페이지... 를 말한다.
-                  sizePerPage 는 한페이지당 보여줄 행의 개수를 말한다. 즉, 3개, 5개, 10개를 보여줄때의 개수를 말한다.
-               
-                  A 는 (currentShowPageNo * sizePerPage) - (sizePerPage - 1) 이다. 
-                  B 는 (currentShowPageNo * sizePerPage) 이다.
-             */   
+           
              if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
  		 		
  		 		if("email".equals(colname)) {
@@ -532,8 +523,7 @@ public class MemberDAO implements InterMemberDAO {
 	
 	 // 주문내역 페이징 처리하여 조회 해오기
 	//  **관리자가 아닌 일반사용자로 로그인 했을 경우에는 자신이 주문한 내역만 페이징 처리하여 조회를 해오고,
-    //     관리자로 로그인을 했을 경우에는 모든 사용자들의 주문내역을 페이징 처리하여 조회해온다.
-	
+    //     관리자로 로그인을 했을 경우에는 모든 사용자들의 주문내역을 페이징 처리하여 조회해온다.	
 	@Override
 	   public List<Map<String, String>> getOrderList(String userid, int currentShowPageNo, int sizePerPage)
 	         throws SQLException {
@@ -543,13 +533,14 @@ public class MemberDAO implements InterMemberDAO {
 	      try {
 	          conn = ds.getConnection();
 	          
-	          String sql = " select ordernum, fk_userid, orderdate, orderseqnum, fk_productnum, orderqty, orderprice, deliverstatus "  
-	                   + "      , productname, productimage1, productprice, saleprice, point "
+	          String sql = " select ordernum, fk_userid, orderdate, orderseqnum, fk_productnum, orderqty, orderprice, orderstatus, deliverstatus "  
+	                   + "      , productname, productimage1, productprice, saleprice, point, ordertotalprice, ordertotalpoint "
 	                   + " from "
 	                   + " ( "
 	                   + " select row_number() over (order by B.ordernum desc, B.orderseqnum desc) AS RNO "
-	                   + "       , A.ordernum, A.fk_userid "
+	                   + "       , A.ordernum, A.fk_userid, A.ordertotalprice, A.ordertotalpoint "
 	                   + "       , to_char(A.orderdate, 'yyyy-mm-dd') AS orderdate "
+	                   + "       , A.orderstatus "
 	                   + "       , B.orderseqnum, B.fk_productnum, B.orderqty, B.orderprice "
 	                   + "       , case B.deliverstatus "
 	                   + "         when 1 then '주문완료' "
@@ -594,12 +585,15 @@ public class MemberDAO implements InterMemberDAO {
 	             String fk_productnum = rs.getString("fk_productnum");
 	             String orderqty = rs.getString("orderqty");
 	             String orderprice = rs.getString("orderprice");
+	             String orderstatus = rs.getString("orderstatus");
 	             String deliverstatus = rs.getString("deliverstatus");
 	             String productname = rs.getString("productname");
 	             String productimage1 = rs.getString("productimage1");
 	             String productprice = rs.getString("productprice");
 	             String saleprice = rs.getString("saleprice");
 	             String point = rs.getString("point");
+	             String ordertotalprice = rs.getString("ordertotalprice");
+	             String ordertotalpoint = rs.getString("ordertotalpoint");
 	             
 	             Map<String, String> ordermap = new HashMap<>();
 	             ordermap.put("ORDERNUM", ordernum);
@@ -609,12 +603,15 @@ public class MemberDAO implements InterMemberDAO {
 	             ordermap.put("FK_PRODUCTNUM", fk_productnum);
 	             ordermap.put("ORDERQTY", orderqty);
 	             ordermap.put("ORDERPRICE", orderprice);
+	             ordermap.put("ORDERSTATUS", orderstatus);
 	             ordermap.put("DELIVERSTATUS", deliverstatus);
 	             ordermap.put("PRODUCTNAME", productname);
 	             ordermap.put("PRODUCTIMAGE1", productimage1);
 	             ordermap.put("PRODUCTPRICE", productprice);
 	             ordermap.put("SALEPRICE", saleprice);
 	             ordermap.put("POINT", point);
+	             ordermap.put("ORDERTOTALPRICE", ordertotalprice);
+	             ordermap.put("ORDERTOTALPOINT", ordertotalpoint);
 	             
 	             orderList.add(ordermap);
 	             
@@ -628,142 +625,6 @@ public class MemberDAO implements InterMemberDAO {
 	   }
 
 	
-	// 게시글에 대한 페이징 처리를 위해 자신이 작성한 게시글 갯수 알아오기
-	@Override
-	public int getTotalCountBoard(String userid) throws SQLException {
-		int totalCountBoard = 0;
-		
-		try {
-			 conn = ds.getConnection();
-			 
-			 String sql = "select count(*) "+
-					 "from tbl_qna ";
-			 
-			 if("admin".equalsIgnoreCase(userid)) {
-				 pstmt = conn.prepareStatement(sql);
-			 }
-			 else {
-				 // 관리자가 아닌 일반사용자로 로그인한 경우
-				 sql += " where fk_userid = ? " ;
-				 
-				 pstmt = conn.prepareStatement(sql);
-				 pstmt.setString(1, userid);
-			 }
-
-			 rs = pstmt.executeQuery();
-			 
-			 rs.next();
-				
-			 totalCountBoard = rs.getInt(1);
-		} finally {
-			close();
-		}
-		
-		return totalCountBoard;
-	}
-
-	
-	@Override
-	public List<Map<String, String>> getMemberBoard(String userid, String searchType, String searchWord, int currentShowPageNo, int sizePerPage) throws SQLException {
-	
-		List<Map<String, String>> boardList = new ArrayList<>();
-		String colname = searchType;
-		
-        try {
-           conn = ds.getConnection();
-           
-           String sql = 
-        		   " select qnano, questiontitle, questioncontents, questiondate, answertitle, name"
-        		   + "from "
-        		   + "( "
-        		   + " select row_number() over (order by A.qnano desc, A.qnano desc) AS RNO"
-        		   + ", A.qnano, A.questiontitle, A.questioncontents "
-           		   + " , to_char(A.questiondate, 'yyyy-mm-dd') AS questiondate, A.answertitle, B.name "
-           		   + "from tbl_qna A join tbl_member B\n"
-           		   + "on A.fk_userid = B.userid ";
-			
-           
-           if(!"admin".equals(userid)) { 
-	             // 관리자가 아닌 일반사용자로 로그인 한 경우 
-	             sql += " where A.fk_userid = ? ";
-	             if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
-	 				// 검색한 경우 
-	            	 sql += " and "+colname+" like '%'|| ? ||'%' ";
-	 			}
-	        } else {
-	             // 관리자로 로그인한 경우 
-	        	 if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
-	        		 // 검색한 경우	
-	        		 sql += " where "+colname+" like '%'|| ? ||'%' ";
-	        	 }
-	        } // end of else	 
-
-			sql += " order by questiondate desc "
-					+ " ) V "
-		            + " where RNO between ? and ? ";
-			
-           pstmt = conn.prepareStatement(sql);
-        
-	       if(!"admin".equals(userid)) { 
-	             // 관리자가 아닌 일반사용자로 로그인 한 경우 
-	             pstmt.setString(1, userid);
-	             
-	             if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
-		 				pstmt.setString(2, searchWord);	
-		 				pstmt.setInt(3, (currentShowPageNo*sizePerPage)-(sizePerPage-1) ); // 공식
-					    pstmt.setInt(4, currentShowPageNo*sizePerPage ); // 공식
-	             }		
-	             else {
-		            	 pstmt.setInt(2, (currentShowPageNo*sizePerPage)-(sizePerPage-1) ); // 공식
-					     pstmt.setInt(3, currentShowPageNo*sizePerPage ); // 공식
-	             }
-	          } else {
-	        	  //관리자로 로그인한 경우 
-	        	  if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
-		 				pstmt.setString(1, searchWord);	
-		 				pstmt.setInt(2, (currentShowPageNo*sizePerPage)-(sizePerPage-1) ); // 공식
-					    pstmt.setInt(3, currentShowPageNo*sizePerPage ); // 공식
-	        	  }      
-	        	  else {
-	        		   pstmt.setInt(1, (currentShowPageNo*sizePerPage)-(sizePerPage-1) ); // 공식
-	 			       pstmt.setInt(2, currentShowPageNo*sizePerPage ); // 공식
-	        	  }
-	          } // end of else
-
-
-           rs = pstmt.executeQuery();
-           
-           while(rs.next()) {
-              
-        	     String qnano = rs.getString("qnano");
-		         String questiontitle = rs.getString("questiontitle");
-		         String questioncontents = rs.getString("questioncontents");
-		         String questiondate = rs.getString("questiondate");
-		         String answertitle = rs.getString("answertitle");
-		         String name = rs.getString("name");
-		           
-	             
-	             Map<String, String> boardmap = new HashMap<>();
-	             boardmap.put("QNANO", qnano);
-	             boardmap.put("QUESTIONTITLE", questiontitle);
-	             boardmap.put("QUESTIONCONTENTS", questioncontents);
-	             boardmap.put("QUESTIONDATE", questiondate);
-	             boardmap.put("ANSERTITLE", answertitle);
-	             boardmap.put("NAME", name);
-	       
-
-	             boardList.add(boardmap);
-
-           }// end of while--------------------------------
-        
-
-
-		} finally {
-           close();
-        }
-        
-        return boardList;
-	}
 	
 }    
       

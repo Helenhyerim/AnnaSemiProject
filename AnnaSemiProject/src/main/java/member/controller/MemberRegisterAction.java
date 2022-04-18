@@ -53,8 +53,7 @@ public class MemberRegisterAction extends AbstractController {
 			
 			MemberVO member = new MemberVO(userid, pwd, name, email, mobile, postcode, address, detailaddress, birthday, sms_status, email_status );    
 			
-			//회원가입이 성공되면 자동으로 로그인되도록 하겠다. // 
-			 // ######## 회원가입이 성공되면 자동으로 로그인 되도록 하겠다. ######## //
+			//회원가입이 성공하면 자동으로 로그인하기. // 
 			   try {
 				   InterMemberDAO mdao = new MemberDAO();
 				   int n = mdao.registerMember(member);
@@ -69,8 +68,8 @@ public class MemberRegisterAction extends AbstractController {
 			} catch(SQLException e) {
 				e.printStackTrace();
 				
-				String message = "SQL 구문 에러발생";
-				String loc = "javascript:history.back()"; // 자바스크립트를 이용한 이전페이지로 이동한다. 
+				String message = "SQL 구문 에러가 발생하였습니다.";
+				String loc = "javascript:history.back()";
 			
 				request.setAttribute("message", message);
 				request.setAttribute("loc", loc);

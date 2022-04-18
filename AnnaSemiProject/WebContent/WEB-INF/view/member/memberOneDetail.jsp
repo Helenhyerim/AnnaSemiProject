@@ -97,10 +97,7 @@ div.mvoInfo {
 		$("div#smsResult").hide();
 		
 		$("button#btnSendSms").click( ()=>{
-			
-		//	console.log( $("input#reservedate").val() + " " + $("input#reservetime").val() );
-		//  2022-04-05 11:20
-		
+	
 			if (${requestScope.mvo.sms_status eq '0'}){
 				alert("문자 수신 동의를 받지 않아 문자를 보낼 수 없습니다.");
 				return;  // 종료 
@@ -114,8 +111,6 @@ div.mvoInfo {
 		    
 		    const datetime = reservedate + reservetime;
 		    
-		 // console.log(datetime);
-		 // 202204051120
 		    
 		    let dataObj;
 		 
@@ -135,8 +130,7 @@ div.mvoInfo {
 		    	data:dataObj,
 		    	dataType:"json",
 		    	success:function(json) {
-		    		//json은 {"group_id":"R2GsmEtz5JwaJQF4","success_count":1,"error_count":0} 처럼 된다.
-		    		
+		   
 		    		if(json.success_count == 1) {
 		    			$("div#smsResult").html("문자전송이 성공되었습니다.");
 		    		}
@@ -173,7 +167,6 @@ div.mvoInfo {
 		    			   "emailContent":$("textarea#emailContent").val()},
 			    	dataType:"json",
 			    	success:function(json) {
-			    		//json은 {"group_id":"R2GsmEtz5JwaJQF4","success_count":1,"error_count":0} 처럼 된다.
 			    		
 			    		if(json.sendMailSuccess == true) {
 			    			$("div#emailResult").html("이메일전송이 성공되었습니다.");
@@ -242,9 +235,9 @@ div.mvoInfo {
 			<%-- ==== 이메일 보내기 ==== --%>
 			<div id="email" align="left">
 			  	<span id="emailTitle">&gt;&gt;메일 보내기&lt;&lt;</span>
-			  	<div style="margin: 10px 0 20px 0">
+			<%--  	<div style="margin: 10px 0 20px 0">
 			  		발송예약일&nbsp;&nbsp;<input type="date" id="reservedate" />&nbsp;<input type="time" id="reservetime" />
-			  	</div>
+			  	</div>--%>
 			
 			  	<textarea rows="4" cols="40" id="emailContent"></textarea>
 			  	<button id="btnSendMail">전송</button>

@@ -147,21 +147,21 @@
 			
 		<table id="memberTbl" class="table table-bordered" style="width: 100%; margin-top: 20px;">
 	        <colgroup>
-               <col style="width:11%">
-               <col style="width:13%">
-               <col style="width:40%">
-               <col style="width:8%">
-               <col style="width:10%">
-               <col style="width:8%">
+               <col style="width:15%">
+               <col style="width:15%">
+               <col style="width:auto">
+               <col style="width:15%">
+               <col style="width:15%">
+
 
 	        <thead>
 	        	<tr>
-	        		<th scope="col">주문날짜</th>
+	        		<th scope="col">적립날짜</th>
 	        		<th scope="col">주문번호</th>
-	        		<th scope="col">주문제품</th>
-	        		<th scope="col">주문수량</th>
+	        		<th scope="col">주문상세</th>
 	        		<th scope="col">주문총액</th>
 	        		<th scope="col">적립포인트</th>
+	        		
 	        	</tr>
 	        </thead>
 	        
@@ -173,39 +173,29 @@
             	</c:if>
 		        <c:if test="${not empty requestScope.orderList}">
 		            <c:forEach var="ordermap" items="${requestScope.orderList}">
+		            	<c:if test="${ordermap.ORDERTOTALPOINT ne '0'}">
 		            	<tr class="orderInfo">
-		            		<td class="orderDate">${ordermap.ORDERDATE}</td>
-		            		
-		            		<td class="orderNum">${ordermap.ORDERNUM}</td>
-		            		
-		            		
+		            		<td class="orderDate">${ordermap.ORDERDATE}</td>		            		
+		            		<td class="orderNum">${ordermap.ORDERNUM}</td>		    
 		            		<td class="orderProduct" style="cursor:pointer;" onclick="javascript:location.href='/AnnaDia/shop/prodView.up?productnum=${ordermap.FK_PRODUCTNUM}'">  <%-- === 제품정보 넣기 === --%>	
-								<div style="display: flex; padding-top: 10px; justify-content: space-between;">
-									<div style="width: 44%;">
-									    <img src="/MyMVC/images/${ordermap.PRODUCTIMAGE1}" width="100%" />  
-									</div>
-									<div style="width: 54%;">
+								<div style="padding-top: 10px; justify-content: center; width=100%; text-align:center;">							
 									    <ul class="list-unstyled">
 									       <li>제품번호 : ${ordermap.FK_PRODUCTNUM}</li> 
 									       <li>제품명 : ${ordermap.PRODUCTNAME}</li>   
 									       <li>정&nbsp;가 : <span style="text-decoration: line-through;"><fmt:formatNumber value="${ordermap.PRODUCTPRICE}" pattern="###,###" /></span> 원</li>   <%-- 제품개당 판매정가 --%> 
 									       <li>판매가 : <span class="text-danger font-weight-bold"><fmt:formatNumber value="${ordermap.SALEPRICE}" pattern="###,###" /></span> 원</li> <%-- 제품개당 판매세일가 --%>
 									       <li>포인트 : <span class="text-danger font-weight-bold"><fmt:formatNumber value="${ordermap.POINT}" pattern="###,###" /></span> POINT</li>  <%-- 제품개당 포인트 --%>
-									    </ul>
-								    </div>
+									    </ul>							
 							    </div> 
 							</td>
-		            		
-		            		<td class="orderQty">${ordermap.ORDERQTY}</td>
-		            		
 		            		<td class="orderPrice">
-		            		<fmt:formatNumber value="${ordermap.ORDERPRICE}" pattern="###,###" /> 원
-		            		</td>
-		            		
+		            		<fmt:formatNumber value="${ordermap.ORDERTOTALPRICE}" pattern="###,###" /> 원
+		            		</td>		            		
 		            		<td class="orderTotalPoint">
-		            		<fmt:formatNumber value="${ordermap.POINT}" pattern="###,###" /> P
+		            		<fmt:formatNumber value="${ordermap.ORDERTOTALPOINT}" pattern="###,###" /> P
 		            		</td>	
 		            	</tr>
+		            	</c:if>
 		            </c:forEach>
 	            </c:if>
 	            

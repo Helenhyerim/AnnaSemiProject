@@ -96,22 +96,15 @@ public class MemberListAction extends AbstractController {
 			// === 검색이 있을 경우 끝 === //
 		
 			
-		// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 전체회원에 대한 총 페이지 알아오기 
+	 
 		int totalPage = mdao.getTotalPage(paraMap);
 		
-		//System.out.println("확인용 totalPage =>" +totalPage);
-		
-		// === GET 방식이므로 사용자가 웹브라우저 주소창에서 currentShowPageNo 에 토탈페이지수보다 큰 값을 입력하여  
-		//     장난친 경우라면 currentShowPageNo 는 1 페이지로 만들도록 한다. ==== // 
 		if ( Integer.parseInt(currentShowPageNo) > totalPage ){
 			currentShowPageNo = "1";
 		}
 		
-
-		
 		paraMap.put("currentShowPageNo", currentShowPageNo);
 
-		
 		List<MemberVO> memberList = mdao.selectPagingMember(paraMap);
 		
 		request.setAttribute("memberList", memberList);
@@ -120,16 +113,10 @@ public class MemberListAction extends AbstractController {
 		String pageBar = "";
 		
 		int blockSize = 10;
-		// blockSize는 블럭(토막)당 보여지는 페이지 번호의 개수이다.
 		
 		int loop = 1;
-		// loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수(blockSize 지금은 10개)까지만 증가하는 용도이다.
 		
-		
-		// !!!! 다음은 pageNo을 구하는 공식이다.!!! // 
-		int pageNo = ( ( Integer.parseInt(currentShowPageNo) - 1)/blockSize ) * blockSize + 1;
-		// pageNo는 페이지바에서 보여지는 첫번째 번호이다.
-		
+		int pageNo = ( ( Integer.parseInt(currentShowPageNo) - 1)/blockSize ) * blockSize + 1;		
 
 		if(searchType == null) {
 			searchType = "";

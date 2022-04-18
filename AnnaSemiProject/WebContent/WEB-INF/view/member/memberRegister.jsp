@@ -435,8 +435,7 @@ $(document).ready(function(){
 
 	/// === 아이디 중복 검사하기 == ////
 	$("input#userid").bind("change", ()=>{
-			//입력하고자 하는 아이디가 데이터베이스 테이블에 존재하는지 존재하지 않는지 알아와야 한다. 
-	         // === jQuery를 이용한 Ajax(Asynchronous JavaScript and XML) 처리하기 === ..
+			//입력하고자 하는 아이디가 데이터베이스 테이블에 존재하는지 알아오기
                $.ajax({
             	   url: "<%= ctxPath%>/member/idDuplicateCheck.an",
             	   data: {"userid":$("input#userid").val()}, 
@@ -467,8 +466,7 @@ $(document).ready(function(){
 	
 	/// === 이메일 중복 검사하기 == ////
 	$("input#email").bind("change", ()=>{
-		//입력하고자 하는 아이디가 데이터베이스 테이블에 존재하는지 존재하지 않는지 알아와야 한다. 
-         // === jQuery를 이용한 Ajax(Asynchronous JavaScript and XML) 처리하기 === ..
+		//입력하고자 하는 아이디가 데이터베이스 테이블에 존재하는지 알아오기
            $.ajax({
         	   url: "<%= ctxPath%>/member/emailDuplicateCheck.an",
         	   data: {"email":$("input#email").val()}, 
@@ -601,6 +599,7 @@ function goRegister() {
 	      <tr>
 	         <td style="width: 30%;">비밀번호확인*</td>
 	         <td style="width: 100%; text-align: left;"><input type="password" id="pwdcheck" class="requiredInfo" /> 
+	         <span class="error">암호가 일치하지 않습니다.</span>
 	         </td>
 	      </tr>
 	      
