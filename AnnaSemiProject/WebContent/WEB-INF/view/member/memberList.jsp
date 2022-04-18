@@ -6,7 +6,6 @@
 
 <%
 	String ctxPath = request.getContextPath();
-    //     /MyMVC
 %>   
 
 <jsp:include page="../common/header_login.jsp" />   

@@ -6,7 +6,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 <%
 	String ctxPath = request.getContextPath();
-    //     /MyMVC
 %>   
 
 <!-- Font Awesome 5 Icons -->

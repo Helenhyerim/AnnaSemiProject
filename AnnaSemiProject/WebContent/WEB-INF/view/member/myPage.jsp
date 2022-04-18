@@ -6,7 +6,6 @@
 
 <%
 	String ctxPath = request.getContextPath();
-    //     /MyMVC
 %>   
 
 <!-- Font Awesome 5 Icons -->
