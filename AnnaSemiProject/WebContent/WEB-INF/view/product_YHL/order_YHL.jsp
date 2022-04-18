@@ -295,7 +295,6 @@ $(document).ready(function(){
 	
 	// Function Declaration
 	function goPurchase(paymentprice,totalpaypoint) {
-		
 		// ** 필수입력 사항에 모두 입력이 되었는지 검사한다. ** //
 		let b_FlagNecessaryValue = false;
 		
@@ -316,12 +315,9 @@ $(document).ready(function(){
 			const receivedname = $("input#receivedname").val();
 			const postcode = $("input#postcode").val();
 			const address = $("input#address").val();
-		/*	
-			console.log(receivedname);
-			console.log(postcode);
-			console.log(address);
-		*/	
-			const url = "<%= request.getContextPath()%>/product/myOrderPayEnd.an?userid="+userid+"&paymentprice="+paymentprice+"&totalpaypoint="+totalpaypoint
+		
+			const url = "<%= request.getContextPath()%>/product/myOrderPayEnd.an?userid="+userid
+					+"&paymentprice="+paymentprice+"&totalpaypoint="+totalpaypoint
 					+"&receivedname="+receivedname+"&postcode="+postcode+"&address="+address;
 			
 			window.open(url, "coinPurchaseEnd", 
@@ -472,7 +468,7 @@ $(document).ready(function(){
 							<input type="hidden" name="productnum" value="${pvo.productnum }">
 							<input type="hidden" class="cartno" value="${pvo.cvo.cartno}" /> 
 							
-							<img src="<%=ctxPath %>/images/necklaces/목걸이이미지1.png" class="" alt="..." >
+							<img src="<%=ctxPath %>/images/product/${pvo.productimage1}" class="" alt="..." >
 						</a>
 					</div>
 					<div class="col-5" id="itemdetail">
@@ -480,7 +476,6 @@ $(document).ready(function(){
 						<!-- <span>구매가격(할인후)</span> -->
 						<a style="display: inline-block;">[옵션: ${pvo.cvo.optionname}]</a>
 						<a>[적립금: <fmt:formatNumber value="${pvo.point }" pattern="###,###"/>원]</a>
-						<fmt:formatNumber value="${pvo.productprice}" pattern="###,###" />원
 						<input type="hidden" class="totalPrice" value="${pvo.cvo.totalpricebyproduct}" />
 			            <input type="hidden" class="totalPoint" value="${pvo.cvo.totalpointbyproduct}" />
 					</div>
@@ -489,7 +484,7 @@ $(document).ready(function(){
 					</div>
 					<div id="itemprice" class="col-2 h4">
 						<strike><span id="totalpricebyproduct"><fmt:formatNumber value="${pvo.cvo.totalpricebyproduct}" pattern="###,###" /></span></strike>원
-						<br><fmt:formatNumber value="${pvo.cvo.totalpricebyproduct }" pattern="###,###" />원
+						<br><fmt:formatNumber value="${pvo.cvo.totalpricebyproduct * 0.95 }" pattern="###,###" />원
 						
 			               
 					</div>

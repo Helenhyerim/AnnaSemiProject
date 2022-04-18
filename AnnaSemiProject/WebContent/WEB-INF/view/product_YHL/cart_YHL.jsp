@@ -287,7 +287,7 @@
 					<div class="row">
 						<div class="col-2">
 							<a id="imgcontainer" class="col-4 stretched-link" href="">
-								<img src="<%=ctxPath %>/images/${productvo.productimage1}" class="" alt="..." >
+								<img src="<%=ctxPath %>/images/product/${productvo.productimage1}" class="" alt="..." >
 							</a>
 						</div>
 						<div class="col-5" id="itemdetail">

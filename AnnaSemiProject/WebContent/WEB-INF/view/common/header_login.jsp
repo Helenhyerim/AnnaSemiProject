@@ -207,7 +207,7 @@
       <div class="collapse navbar-collapse row-vh mx-2"  >
         <ul class="navbar-nav flex-row mb-2"  style="font-size: 12pt;">
              <li class="nav-item dropdown">
-                 <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
+                 <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=1" id="navbarDropdown"> 
                                Necklaces                     
                  </a>
                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -217,7 +217,7 @@
                  </div>
           </li>
            <li class="nav-item dropdown">
-              <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
+              <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=2" id="navbarDropdown"> 
                             Earrings                    
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -227,7 +227,7 @@
               </div>
            </li>
            <li class="nav-item dropdown">
-              <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
+              <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=3" id="navbarDropdown"> 
                             Rings                    
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -237,7 +237,7 @@
               </div>
            </li>
            <li class="nav-item dropdown">
-              <a class="nav-link menufont_size" href="#" id="navbarDropdown"> 
+              <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=4" id="navbarDropdown"> 
                             Bracelets                    
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -245,9 +245,6 @@
                  <a class="dropdown-item" href="#">silver</a>
                  <a class="dropdown-item" href="#">diamond</a>
               </div>
-           </li>
-            <li class="nav-item active">
-              <a class="nav-link menufont_size" href="#" style="color:#00000080;">Sale</a>
            </li>
         </ul>
         </div>      
@@ -270,11 +267,10 @@
       <div id="myNav" class="overlay">
      <a href="javascript:void(0)" class="closebtn"onclick="closeNav()" >&times;</a>
      <div class="overlay-content">
-       <a href="#">Necklaces</a>
-       <a href="#">Earring</a>
-       <a href="#">Ring</a>
-       <a href="#">Bracelets</a>
-       <a href="#">Sale</a>
+       <a href="<%= ctxPath %>/product/categoryClick.an?categorynum=1">Necklaces</a>
+       <a href="<%= ctxPath %>/product/categoryClick.an?categorynum=2">Earring</a>
+       <a href="<%= ctxPath %>/product/categoryClick.an?categorynum=3">Ring</a>
+       <a href="<%= ctxPath %>/product/categoryClick.an?categorynum=4">Bracelets</a>
        <c:if test="${empty sessionScope.loginuser}">
 
           <a href="<%= ctxPath %>/login/login.an">Login</a>
@@ -297,7 +293,6 @@
      </div>
    </div>
 
-
-   <!-- 상단 네비게이션 끝 -->
-
+	<!-- 상단 네비게이션 끝 -->
+	
     <hr style="position: relative; top:10px; margin: 0; margin-bottom: 250px; ">

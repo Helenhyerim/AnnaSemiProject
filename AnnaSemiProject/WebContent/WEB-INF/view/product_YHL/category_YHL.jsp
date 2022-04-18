@@ -108,7 +108,7 @@
 					 	<c:forEach var="productvo" items="${requestScope.productList}">
 						  <div class="col-4" style="margin-bottom: 100px;" class="clickProduct">
 							  <a href="<%=ctxPath %>/product_lsh/productDetail.an?productnum=${productvo.productnum}" class="productDetail">
-							    <img src="<%=ctxPath %>/images/${productvo.productimage1}" class="card-img-top" alt="..." >
+							    <img src="<%=ctxPath %>/images/product/${productvo.productimage1}" class="card-img-top" alt="..." >
 							  </a>
 						      <span id="product_detail">
 							      <a href="" style="" class="productDetail">${productvo.productname}</a>

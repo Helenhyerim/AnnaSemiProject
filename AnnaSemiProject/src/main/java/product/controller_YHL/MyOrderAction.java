@@ -60,7 +60,6 @@ public class MyOrderAction extends AbstractController {
 				
 				for(String cartno : cartnoList) {
 					
-					// db 테이블이 있다면 넘길필요 없지않을까
 					String opList = request.getParameter("opList[]");
 					String qtyList = request.getParameter("qtyList[]");
 					

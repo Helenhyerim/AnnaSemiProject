@@ -50,43 +50,13 @@ public class OrderSuccessAction extends AbstractController {
 			
 			String method = request.getMethod();
 			
-		//	if("POST".equalsIgnoreCase(method)) { // POST 방식으로 접근한 경우
+			if("POST".equalsIgnoreCase(method)) { // POST 방식으로 접근한 경우
 		
 				HttpSession session = request.getSession();
 				MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 				
 				InterProductDAO pdao = new ProductDAO();
 				
-				// 로그인 중인 사용자의 아이디로 최근 주문 코드 조회하기
-				String ordernum = pdao.selectRecentOrdernum(loginuser.getUserid());
-				
-				// 주문 번호로 주문 상세 정보 알아오기
-				List<OrderVO> orderList = pdao.selectOrderInfo(ordernum);
-				request.setAttribute("orderList", orderList);
-				
-				// optionnum으로 optionname알아오기
-				List<String> optionnumList = new ArrayList<>();
-				for(int i=0; i<orderList.size(); i++) {
-					String optionnum = String.valueOf(orderList.get(i).getOdvo().getOptionnum());
-					
-					optionnumList.add(optionnum);
-				}
-				List<String> optionnameList = pdao.selectOptionName(optionnumList);
-			//	String optionname = String.join(",", optionnameList);
-				
-			//	System.out.println(optionname);
-				
-				request.setAttribute("optionnameList", optionnameList);
-				
-				int totalPrice_origin = 0; // 총 주문금액(정가기준)
-				for(OrderVO order : orderList) {
-					totalPrice_origin += order.getPvo().getProductprice() * order.getOdvo().getOrderqty();
-				}
-				
-				request.setAttribute("totalPrice_origin", totalPrice_origin);
-				
-				
-
 				// 주문정보
 				String orderedname = request.getParameter("orderedname");
 				String homenum1 = request.getParameter("homenum1"); // homenum 은 null 일 수 있음
@@ -95,13 +65,6 @@ public class OrderSuccessAction extends AbstractController {
 				String hp1 = request.getParameter("hp1");
 				String hp2 = request.getParameter("hp2");
 				String hp3 = request.getParameter("hp3");
-				
-				System.out.println("~~~ 확인용 orderedname =>" + orderedname);
-				System.out.println("~~~ 확인용 homenum1 =>" + homenum1);
-				System.out.println("~~~ 확인용 homenum2 =>" + homenum2);
-				System.out.println("~~~ 확인용 homenum3 =>" + homenum3);
-				System.out.println("~~~ 확인용 hp1 =>" + hp1);
-				System.out.println("~~~ 확인용 hp2 =>" + hp2);
 				
 				// 배송정보
 				String receivedname = request.getParameter("receivedname");
@@ -116,11 +79,6 @@ public class OrderSuccessAction extends AbstractController {
 				String D_hp3 = request.getParameter("D_hp3");
 				String deliveryMsg = request.getParameter("deliveryMsg");
 				
-				System.out.println("~~~ 확인용 receivedname =>" + receivedname);
-				System.out.println("~~~ 확인용 postcode =>" + postcode);
-				System.out.println("~~~ 확인용 address =>" + address);
-				System.out.println("~~~ 확인용 detailAddress =>" + detailAddress);
-				System.out.println("~~~ 확인용 deliveryMsg =>" + deliveryMsg);
 				// DB 에 필요한 정보
 				
 				String userid = request.getParameter("userid");
@@ -132,15 +90,6 @@ public class OrderSuccessAction extends AbstractController {
 				String sumtotalPrice = request.getParameter("sumtotalPrice");
 				String sumtotalPoint = request.getParameter("sumtotalPoint");
 
-				System.out.println("~~~ 확인용 userid =>" + userid);
-				System.out.println("~~~ 확인용 pnumjoin =>" + pnumjoin);
-				System.out.println("~~~ 확인용 oqtyjoin =>" + oqtyjoin);
-				System.out.println("~~~ 확인용 cartnojoin =>" + cartnojoin);
-				System.out.println("~~~ 확인용 totalPricejoin =>" + totalPricejoin);
-				
-				System.out.println("~~~ 확인용 sumtotalPrice =>" + sumtotalPrice);
-				System.out.println("~~~ 확인용 sumtotalPoint =>" + sumtotalPoint);
-				
 				// ===== Transaction 처리하기 ===== // 
 			    // 1. 주문 테이블에 입력되어야할 주문전표를 채번(select)하기 
 		        // 2. 주문 테이블에 채번해온 주문전표, 로그인한 사용자, 현재시각을 insert 하기(수동커밋처리)
@@ -225,10 +174,35 @@ public class OrderSuccessAction extends AbstractController {
 				
 			//	request.setAttribute("ovo", ovo);
 			
+				// 로그인 중인 사용자의 아이디로 최근 주문 코드 조회하기
+				String ordernum = pdao.selectRecentOrdernum(loginuser.getUserid());
+				
+				// 주문 번호로 주문 상세 정보 알아오기
+				List<OrderVO> orderList = pdao.selectOrderInfo(ordernum);
+				request.setAttribute("orderList", orderList);
+				
+				// optionnum으로 optionname알아오기
+				List<String> optionnumList = new ArrayList<>();
+				for(int i=0; i<orderList.size(); i++) {
+					String optionnum = String.valueOf(orderList.get(i).getOdvo().getOptionnum());
+					
+					optionnumList.add(optionnum);
+				}
+				List<String> optionnameList = pdao.selectOptionName(optionnumList);
+				
+				request.setAttribute("optionnameList", optionnameList);
+				
+				int totalPrice_origin = 0; // 총 주문금액(정가기준)
+				for(OrderVO order : orderList) {
+					totalPrice_origin += order.getPvo().getProductprice() * order.getOdvo().getOrderqty();
+				}
+				
+				request.setAttribute("totalPrice_origin", totalPrice_origin);
+				
 			//	super.setRedirect(false);
 				super.setViewPage("/WEB-INF/product_lsh/orderSuccess.jsp");
-		//	}
-		/*	else { // GET 방식으로 접근한 경우
+			}
+			else { // GET 방식으로 접근한 경우
 				
 				String message = "잘못된 접근 경로입니다.";
 	            String loc = "javascript:history.back()";
@@ -238,7 +212,7 @@ public class OrderSuccessAction extends AbstractController {
 	              
 	        //  super.setRedirect(false);   
 	            super.setViewPage("/WEB-INF/msg.jsp");
-			} */
+			} 
 		}	
 		else { // 로그인을 하지 않은 경우
 			request.setAttribute("message", "로그인 후 이용할 수 있습니다.");
@@ -249,9 +223,6 @@ public class OrderSuccessAction extends AbstractController {
 					
 			return;
 		}
-		
-		
-		
 		
 		//	super.setRedirect(false);
 			super.setViewPage("/WEB-INF/product_lsh/orderSuccess.jsp");

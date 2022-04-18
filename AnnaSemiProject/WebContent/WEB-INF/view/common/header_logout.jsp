@@ -51,12 +51,10 @@
 		  $("div#search").hide();
 		  
 		}
-
 		function closeNav() {
 		  document.getElementById("myNav").style.width = "0%";
 		  $("div#search").show();
 		}
-
 </script>
 <style>
 .overlay {
@@ -71,7 +69,6 @@
   overflow-x: hidden; 
   transition: 0.5s;
 }
-
 .overlay-content {
   position: relative;
   top: 25%;
@@ -79,7 +76,6 @@
   text-align: center;
   margin-top: 30px;
 }
-
 .overlay a {
   padding: 8px;
   text-decoration: none;
@@ -88,18 +84,15 @@
   display: block;
   transition: 0.3s;
 }
-
 .overlay a:hover, .overlay a:focus {
   color: #f1f1f1;
 }
-
 .overlay .closebtn {
   position: absolute;
   top: 90px;
   right: 45px;
   font-size: 60px;
 }
-
 @media screen and (max-height: 450px) {
   .overlay a {font-size: 20px}
   .overlay .closebtn {
@@ -108,24 +101,19 @@
   right: 35px;
   }
 }
-
 #logo {
 	width:150px;
 }
-
 .dropdown:hover .dropdown-menu{
         display: block;
 }
 .dropdown-menu{
         margin-top: 0;
 }
-
 .dropdown-menu a{
     color: gray !important;
     font-size: 12px;
 }
-
-
 </style>
 </head>
 <body>
@@ -178,7 +166,7 @@
 		<div class="collapse navbar-collapse row-vh "  >
 		  <ul class="navbar-nav flex-row mb-2"  style="font-size: 12pt;">
 		       <li class="nav-item dropdown">
-			        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+			        <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=1" id="navbarDropdown" data-toggle="dropdown"> 
 			                      Necklaces                     
 			        </a>
 			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -188,7 +176,7 @@
 			        </div>
 			 </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+		        <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=2" id="navbarDropdown" data-toggle="dropdown"> 
 		                      Earrings                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -198,7 +186,7 @@
 		        </div>
 		     </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+		        <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=3" id="navbarDropdown" data-toggle="dropdown"> 
 		                      Rings                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -208,7 +196,7 @@
 		        </div>
 		     </li>
 		     <li class="nav-item dropdown">
-		        <a class="nav-link menufont_size" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+		        <a class="nav-link menufont_size" href="<%= ctxPath %>/product/categoryClick.an?categorynum=4" id="navbarDropdown" data-toggle="dropdown"> 
 		                      Bracelets                    
 		        </a>
 		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -216,9 +204,6 @@
 		           <a class="dropdown-item" href="#">silver</a>
 		           <a class="dropdown-item" href="#">diamond</a>
 		        </div>
-		     </li>
-		     <li class="nav-item active">
-		     	<a class="nav-link menufont_size" href="#" style="color:gray;">Sale</a>
 		     </li>
 		  </ul>
 		  <ul class="navbar-nav flex-row mb-2">
@@ -243,11 +228,10 @@
 	<div id="myNav" class="overlay">
 	  <a href="javascript:void(0)" class="closebtn"onclick="closeNav()" >&times;</a>
 	  <div class="overlay-content">
-	    <a href="#">Necklaces</a>
-	    <a href="#">Earring</a>
-	    <a href="#">Ring</a>
-	    <a href="#">Bracelets</a>
-	    <a href="#">Sale</a>
+	    <a href="<%= ctxPath %>/product/categoryClick.an?categorynum=1">Necklaces</a>
+	    <a href="<%= ctxPath %>/product/categoryClick.an?categorynum=2">Earring</a>
+	    <a href="<%= ctxPath %>/product/categoryClick.an?categorynum=3">Ring</a>
+	    <a href="<%= ctxPath %>/product/categoryClick.an?categorynum=4">Bracelets</a>
 	    <a href="#">Login</a>
 	    <a href="#">Join</a>
 	    <a href="#">Event</a>
