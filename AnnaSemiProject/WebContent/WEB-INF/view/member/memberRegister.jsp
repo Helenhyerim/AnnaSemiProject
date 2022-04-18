@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%
     String ctxPath = request.getContextPath();
-    //    /MyMVC
 %>
     
 <jsp:include page="../common/header_login.jsp"/>
@@ -435,8 +434,7 @@ $(document).ready(function(){
 
 	/// === 아이디 중복 검사하기 == ////
 	$("input#userid").bind("change", ()=>{
-			//입력하고자 하는 아이디가 데이터베이스 테이블에 존재하는지 존재하지 않는지 알아와야 한다. 
-	         // === jQuery를 이용한 Ajax(Asynchronous JavaScript and XML) 처리하기 === ..
+			//입력하고자 하는 아이디가 데이터베이스 테이블에 존재하는지 알아오기
                $.ajax({
             	   url: "<%= ctxPath%>/member/idDuplicateCheck.an",
             	   data: {"userid":$("input#userid").val()}, 
@@ -467,8 +465,7 @@ $(document).ready(function(){
 	
 	/// === 이메일 중복 검사하기 == ////
 	$("input#email").bind("change", ()=>{
-		//입력하고자 하는 아이디가 데이터베이스 테이블에 존재하는지 존재하지 않는지 알아와야 한다. 
-         // === jQuery를 이용한 Ajax(Asynchronous JavaScript and XML) 처리하기 === ..
+		//입력하고자 하는 아이디가 데이터베이스 테이블에 존재하는지 알아오기
            $.ajax({
         	   url: "<%= ctxPath%>/member/emailDuplicateCheck.an",
         	   data: {"email":$("input#email").val()}, 
@@ -601,6 +598,7 @@ function goRegister() {
 	      <tr>
 	         <td style="width: 30%;">비밀번호확인*</td>
 	         <td style="width: 100%; text-align: left;"><input type="password" id="pwdcheck" class="requiredInfo" /> 
+	         <span class="error">암호가 일치하지 않습니다.</span>
 	         </td>
 	      </tr>
 	      
@@ -705,8 +703,6 @@ function goRegister() {
 	               <option value ="31">31</option>
 	               --%>
 	            </select> &nbsp;일
-	            <span class="gIndent20 " style="padding-left:10px;"><input id="is_solar_calendar0" name="is_solar_calendar"  value="T" type="radio" checked="checked"><label for="is_solar_calendar0">양력</label>
-				<input id="is_solar_calendar1" name="is_solar_calendar"  value="F" type="radio"><label for="is_solar_calendar1">음력</label></span>
 	         </td>
 	      </tr>
 	      </tbody>
@@ -758,5 +754,7 @@ function goRegister() {
 	   </div>
    </form>
  </div>
+
+
 
 <jsp:include page="../common/footer.jsp"/>

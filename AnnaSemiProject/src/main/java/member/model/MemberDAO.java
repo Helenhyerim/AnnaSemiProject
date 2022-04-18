@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -596,4 +597,148 @@ public class MemberDAO implements InterMemberDAO {
 	}
 	      
 	      
-}
+
+
+	// 주문내역 페이징 처리를 위해 자신이 주문한 갯수 알아오기
+	@Override
+	public int getTotalCountOrder(String userid) throws SQLException {
+		int totalCountOrder = 0;
+		
+		try {
+			 conn = ds.getConnection();
+			 
+			 String sql = "select count(*) "+
+					 "from tbl_order A join tbl_orderdetail B "+
+					 "on A.ordernum = B.ordernum ";
+			 
+			 if("admin".equalsIgnoreCase(userid)) {
+				 pstmt = conn.prepareStatement(sql);
+			 }
+			 else {
+				 // 관리자가 아닌 일반사용자로 로그인한 경우
+				 sql += " where A.fk_userid = ? " ;
+				 
+				 pstmt = conn.prepareStatement(sql);
+				 pstmt.setString(1, userid);
+			 }
+
+			 rs = pstmt.executeQuery();
+			 
+			 rs.next();
+				
+			 totalCountOrder = rs.getInt(1);
+		} finally {
+			close();
+		}
+		
+		return totalCountOrder;
+	}
+
+	
+	 // 주문내역 페이징 처리하여 조회 해오기
+	//  **관리자가 아닌 일반사용자로 로그인 했을 경우에는 자신이 주문한 내역만 페이징 처리하여 조회를 해오고,
+    //     관리자로 로그인을 했을 경우에는 모든 사용자들의 주문내역을 페이징 처리하여 조회해온다.	
+	@Override
+	   public List<Map<String, String>> getOrderList(String userid, int currentShowPageNo, int sizePerPage)
+	         throws SQLException {
+	      
+	      List<Map<String, String>> orderList = new ArrayList<>();
+	      
+	      try {
+	          conn = ds.getConnection();
+	          
+	          String sql = " select ordernum, fk_userid, orderdate, orderseqnum, fk_productnum, orderqty, orderprice, orderstatus, deliverstatus "  
+	                   + "      , productname, productimage1, productprice, saleprice, point, ordertotalprice, ordertotalpoint "
+	                   + " from "
+	                   + " ( "
+	                   + " select row_number() over (order by B.ordernum desc, B.orderseqnum desc) AS RNO "
+	                   + "       , A.ordernum, A.fk_userid, A.ordertotalprice, A.ordertotalpoint "
+	                   + "       , to_char(A.orderdate, 'yyyy-mm-dd') AS orderdate "
+	                   + "       , A.orderstatus "
+	                   + "       , B.orderseqnum, B.fk_productnum, B.orderqty, B.orderprice "
+	                   + "       , case B.deliverstatus "
+	                   + "         when 1 then '주문완료' "
+	                   + "         when 2 then '배송중' "
+	                   + "         when 3 then '배송완료' "
+	                   + "         end AS deliverstatus "
+	                   + "     , C.productname, C.productimage1, C.productprice, C.saleprice, C.point "
+	                   + " from tbl_order A join tbl_orderdetail B "
+	                   + " on A.ordernum = B.ordernum "
+	                   + " join tbl_product C "
+	                   + " on B.fk_productnum = C.productnum ";
+	          
+	          if(!"admin".equals(userid)) { 
+	             // 관리자가 아닌 일반사용자로 로그인 한 경우 
+	             sql += " where A.fk_userid = ? ";
+	          }
+	          
+	          sql += " ) V "
+	               + " where RNO between ? and ? "; 
+	          
+	          pstmt = conn.prepareStatement(sql);
+	          
+	          if(!"admin".equals(userid)) { 
+	             // 관리자가 아닌 일반사용자로 로그인 한 경우 
+	             pstmt.setString(1, userid);
+	             pstmt.setInt(2, (currentShowPageNo*sizePerPage)-(sizePerPage-1) ); // 공식
+	              pstmt.setInt(3, currentShowPageNo*sizePerPage ); // 공식
+	          }
+	          else {
+	             // 관리자로 로그인 한 경우
+	             pstmt.setInt(1, (currentShowPageNo*sizePerPage)-(sizePerPage-1) ); // 공식
+	              pstmt.setInt(2, currentShowPageNo*sizePerPage ); // 공식
+	          }
+	          
+	          rs = pstmt.executeQuery();
+	          
+	          while(rs.next()) {
+	             String ordernum = rs.getString("ordernum");
+	             String fk_userid = rs.getString("fk_userid");
+	             String orderdate = rs.getString("orderdate");
+	             String orderseqnum = rs.getString("orderseqnum");
+	             String fk_productnum = rs.getString("fk_productnum");
+	             String orderqty = rs.getString("orderqty");
+	             String orderprice = rs.getString("orderprice");
+	             String orderstatus = rs.getString("orderstatus");
+	             String deliverstatus = rs.getString("deliverstatus");
+	             String productname = rs.getString("productname");
+	             String productimage1 = rs.getString("productimage1");
+	             String productprice = rs.getString("productprice");
+	             String saleprice = rs.getString("saleprice");
+	             String point = rs.getString("point");
+	             String ordertotalprice = rs.getString("ordertotalprice");
+	             String ordertotalpoint = rs.getString("ordertotalpoint");
+	             
+	             Map<String, String> ordermap = new HashMap<>();
+	             ordermap.put("ORDERNUM", ordernum);
+	             ordermap.put("FK_USERID", fk_userid);
+	             ordermap.put("ORDERDATE", orderdate);
+	             ordermap.put("ORDERSEQNUM", orderseqnum);
+	             ordermap.put("FK_PRODUCTNUM", fk_productnum);
+	             ordermap.put("ORDERQTY", orderqty);
+	             ordermap.put("ORDERPRICE", orderprice);
+	             ordermap.put("ORDERSTATUS", orderstatus);
+	             ordermap.put("DELIVERSTATUS", deliverstatus);
+	             ordermap.put("PRODUCTNAME", productname);
+	             ordermap.put("PRODUCTIMAGE1", productimage1);
+	             ordermap.put("PRODUCTPRICE", productprice);
+	             ordermap.put("SALEPRICE", saleprice);
+	             ordermap.put("POINT", point);
+	             ordermap.put("ORDERTOTALPRICE", ordertotalprice);
+	             ordermap.put("ORDERTOTALPOINT", ordertotalpoint);
+	             
+	             orderList.add(ordermap);
+	             
+	          }// end of while(rs.next())-----------------------------------
+	          
+	      } finally {
+	         close();
+	      }
+	      
+	      return orderList;
+	   }
+
+	
+	
+}    
+

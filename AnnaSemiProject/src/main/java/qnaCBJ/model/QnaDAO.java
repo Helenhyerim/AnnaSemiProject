@@ -1,5 +1,7 @@
 package qnaCBJ.model;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -105,6 +107,7 @@ public class QnaDAO implements InterQnaDAO {
 				qvo.setAnswerTitle(rs.getString(6));
 				qvo.setAnswerContents(rs.getString(7));
 				qvo.setAnswerDate(rs.getString(8));				
+				
 				
 				qnaList.add(qvo);
 			}// end of while -----------------------------------------------------
@@ -325,5 +328,127 @@ public class QnaDAO implements InterQnaDAO {
 				close();
 			}
 			return result;
+		}
+
+		//내가 작성한 총작성 페이지 조회하기
+		@Override
+		public int getMyTotalPage(Map<String, String> paraMap) throws SQLException {
+			int totalPage = 0;
+			
+			try {
+				conn = ds.getConnection();
+				
+				String sql = " select ceil( count(*)/? ) "
+						   + " from tbl_qna "
+						   + " where fk_userid = ? " ;
+				
+				String colname = paraMap.get("searchType");
+				String searchWord = paraMap.get("searchWord");
+				
+				
+				if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+						sql += " and "+colname+" like '%'|| ? ||'%' ";
+				}
+
+
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paraMap.get("sizePerPage"));
+				pstmt.setString(2, paraMap.get("userid"));
+				
+				if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+					
+					pstmt.setString(3, paraMap.get("searchWord")); // 암호화를 안한 것
+					
+				}
+				
+				rs = pstmt.executeQuery();
+				
+				rs.next();
+				
+				totalPage = rs.getInt(1);
+				
+			} finally {
+				close();
+			}
+			
+			return totalPage;
+		}
+
+		
+		//내가 작성한 글 조회하기
+		@Override
+		public List<QnaVO> selectPagingmyQna(Map<String, String> paraMap) throws SQLException {
+			
+			List<QnaVO> qnaList = new ArrayList<>();
+			
+			try {
+				conn = ds.getConnection();
+				
+				String sql = " select qnano, fk_userid, questiontitle, questioncontents, questiondate, answertitle, answercontents, answerdate "
+						+ " from "
+						+ " ( "
+						+ " 	select rownum AS rno, qnano, fk_userid, questiontitle, questioncontents, questiondate, answertitle, answercontents, answerdate "
+						+ " 	from "
+						+ " 	( "
+						+ " 		select qnano, fk_userid, questiontitle, questioncontents, questiondate, answertitle, answercontents, answerdate "
+						+ " 		from tbl_qna "
+						+ " 		where fk_userid = ? " ;
+						
+				String colname = paraMap.get("searchType");
+				String searchWord = paraMap.get("searchWord");
+				
+				if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {
+					
+					sql += " and "+colname+" like '%'|| ? ||'%' ";
+				
+				}
+				
+				sql += " 		order by qnano desc "
+					+ " 	) V "
+					+ " ) T "
+					+ " where rno between ? and ? ";
+				
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+				int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
+				
+				pstmt.setString(1, paraMap.get("userid"));
+				
+				if(colname != null && !"".equals(colname) && searchWord != null && !"".equals(searchWord)) {	
+					pstmt.setString(2, searchWord);		
+			 		pstmt.setInt(3, (currentShowPageNo * sizePerPage) -(sizePerPage - 1));
+					pstmt.setInt(4, (currentShowPageNo * sizePerPage));
+			 	}
+			 	else {
+			 		pstmt.setInt(2, (currentShowPageNo * sizePerPage) -(sizePerPage - 1));
+					pstmt.setInt(3, (currentShowPageNo * sizePerPage));
+			 	}
+				
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					
+					QnaVO qvo = new QnaVO();
+					qvo.setQnaNo(rs.getInt(1));
+					qvo.setFk_userId(rs.getString(2));
+					qvo.setQuestionTitle(rs.getString(3));
+					qvo.setQuestionContents(rs.getString(4));
+					qvo.setQuestionDate(rs.getString(5));
+					qvo.setAnswerTitle(rs.getString(6));
+					qvo.setAnswerContents(rs.getString(7));
+					qvo.setAnswerDate(rs.getString(8));				
+					
+					qnaList.add(qvo);
+				}// end of while -----------------------------------------------------
+			 } catch(Exception e) { 
+	             e.printStackTrace();   	
+			} finally {
+				close();
+			}
+			
+			return qnaList;
 		}
 }

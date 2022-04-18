@@ -45,4 +45,10 @@ public interface InterMemberDAO {
       // 회원탈퇴 메소드
 	  int leaveMember(Map<String, String> paraMap) throws SQLException;
 
+		// 주문내역에 대한 페이징 처리를 위해 자신이 주문한 갯수 알아오기
+		int getTotalCountOrder(String userid) throws SQLException;
+
+		 // 주문내역 페이징 처리하여 조회 해오기
+		List<Map<String, String>> getOrderList(String userid, int currentShowPageNo, int sizePerPage) throws SQLException;
+
 }

@@ -23,4 +23,10 @@ public interface InterQnaDAO {
 
 	int delete(int qnaNo) throws SQLException;
 
+	//내가 작성한 총작성 페이지 개수 조회하기
+	int getMyTotalPage(Map<String, String> paraMap) throws SQLException;
+
+	//내가 작성한 글 조회하기
+	List<QnaVO> selectPagingmyQna(Map<String, String> paraMap) throws SQLException;
+
 }

@@ -154,8 +154,8 @@
 		<p class="myshopTit">ADMIN INFO</p>
 		<ul>
 			<li class="shopMain" id="profile">
-                <h3><a href="<%= ctxPath%>"><i class="far fa-user fa-xs"></i><strong>PROFILE</strong></a></h3>
-                <p><a href="<%= ctxPath%>">관리자의 개인정보를 관리하는 공간입니다.<br>비밀번호 등의 정보를 수정하실 수 있습니다.</a></p>
+                <h3><a href="<%= ctxPath%>/member/memberEdit.an"><i class="far fa-user fa-xs"></i><strong>PROFILE</strong></a></h3>
+                <p><a href="<%= ctxPath%>/member/memberEdit.an">관리자의 개인정보를 관리하는 공간입니다.<br>비밀번호 등의 정보를 수정하실 수 있습니다.</a></p>
             </li>
 			<li class="shopMain" id="member">
                 <h3 class="txtTitle16B"><a href="<%= ctxPath%>/member/memberList.an"><i class="fas fa-users fa-xs"></i><strong>MEMBER</strong></a></h3>
@@ -165,10 +165,10 @@
             
             <li class="shopMain" id="board">
                 <h3><a href="<%= ctxPath%>"><i class="far fa-file-alt fa-xs"></i><strong>BOARD</strong></a></h3>
-                <p><a href="<%= ctxPath%>"><i class="far fa-edit"></i>&nbsp;공지사항 게시판</a></p>
-                <p><a href="<%= ctxPath%>"><i class="far fa-edit"></i>&nbsp;이벤트 게시판</a></p>
-                <p><a href="<%= ctxPath%>"><i class="far fa-edit"></i>&nbsp;FAQ 게시판</a></p>
-                <p><a href="<%= ctxPath%>"><i class="far fa-edit"></i>&nbsp;Q&A 게시판</a></p>
+                <p><a href="<%= ctxPath%>/notice.an"><i class="far fa-edit"></i>&nbsp;공지사항 게시판</a></p>
+                <p><a href="<%= ctxPath%>/event.an"><i class="far fa-edit"></i>&nbsp;이벤트 게시판</a></p>
+                <p><a href="<%= ctxPath%>/faq.an"><i class="far fa-edit"></i>&nbsp;FAQ 게시판</a></p>
+                <p><a href="<%= ctxPath%>/qna.an"><i class="far fa-edit"></i>&nbsp;Q&A 게시판</a></p>
                 <p><a href="<%= ctxPath%>"><i class="far fa-edit"></i>&nbsp;리뷰 게시판</a></p>
             </li>
             <li class="shopMain" id="order">
